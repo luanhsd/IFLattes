@@ -15,7 +15,7 @@ class Curriculo extends CI_Controller {
 
         $this->load->view('includes/header', $dados);
         $this->load->view('includes/sidebar', $dados);
-        $this->load->view('curriculo', $dados);
+        $this->load->view('curriculo_view', $dados);
         $this->load->view('includes/footer', $dados);
     }
 
