@@ -7,7 +7,7 @@ class Incluir extends CI_Controller {
     public function __construct(){
         parent::__construct();
         $this->load->helper('array');
-        $this->load->library('unzip');
+        //$this->load->library('unzip');
     }
 
     public function index() {
@@ -36,10 +36,10 @@ class Incluir extends CI_Controller {
             $targetPath = getcwd() . '/uploads/';
             $targetFile = $targetPath . $fileName ;
             move_uploaded_file($tempFile, $targetFile);
-            $this->unzip->allow(array('xml')); 
-            $this->unzip->extract($targetFile);
-            unlink($targetFile);
-            rename($targetPath.'curriculo.xml',explode('.',$targetFile)[0].'.xml');
+            //$this->unzip->allow(array('xml')); 
+            //$this->unzip->extract($targetFile);
+            //unlink($targetFile);
+            //rename($targetPath.'curriculo.xml',explode('.',$targetFile)[0].'.xml');
         }
         $alert =  '<div class="alert alert-dismissable alert-success">
                                 <strong>Well done!</strong> You successfully read this important alert message.

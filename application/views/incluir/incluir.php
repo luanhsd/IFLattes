@@ -28,6 +28,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 var_dump($alert);
                             }; ?>
                                 <form action="Incluir/inserir" class="dropzone" method="POST">
+                                <div class="fallback">
+    <input name="file" type="file" />
+  </div>
                         </div>
                         <div class="panel-footer">
                                     <button type="submit" class="btn btn-success">CADASTRAR</button>
