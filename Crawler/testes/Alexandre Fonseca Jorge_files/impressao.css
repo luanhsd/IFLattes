@@ -1,0 +1,187 @@
+@media print {
+	/*Estilo para impressão - inicio */
+	.header {
+		display:none !important;
+	}
+	.control-bar-wrapper {
+		display:none !important;
+	}
+	* {
+		/*	float: none !important;*/
+		height: auto !important;
+		overflow: visible !important;
+		position: inherit !important;
+	}
+	.logo {
+		left: 10px;
+		position: absolute;
+		top: -15px !important;
+	}
+	div {
+		display: block !important;
+		/*	float: none !important;*/
+		height: auto !important;
+		overflow: visible !important;
+		position: inherit !important;
+	}
+	div.navigation-wrapper a, div.navigation-wrapper, .megamenu {
+		display:none !important;
+	}
+	.main-content {
+		background: none repeat scroll 0 0 #FFFFFF !important;
+		border-radius: 4px 4px 4px 4px;
+		box-shadow: none !important;
+		display: inline-block;
+		margin-bottom: 16px;
+		margin-top: 16px;
+		width: auto;
+	}
+	.layout-cell {
+		left: 1px !important;
+		min-height: 1px !important;
+		min-width: 1px !important;
+		overflow-x: hidden;
+		
+	}
+	.moldal-resultados .layout-cell {
+		display: inline-block !important;
+		/*float: none !important;*/
+		left: 1px !important;
+		min-height: 1px !important;
+		min-width: 1px !important;
+	}
+	.max-width {
+		max-width: 90% !important;
+	}
+	.min-width {
+		min-width: 30px !important;
+	}
+	.logo a {
+		background-attachment: scroll;
+		background-clip: border-box;
+		background-color: transparent;
+		background-origin: padding-box;
+		background-position: 0 0;
+		background-repeat: no-repeat;
+		background-size: 100% auto;
+		height: 40px !important;
+		margin-top: 46px !important;
+		width: 80px !important;
+	}
+	.header {
+		background-color: white;
+		border-bottom: 2px solid #01629B;
+		height: 96px;
+	}
+	.menu-header {
+		background: none repeat scroll 0 0 #F3F3F3;
+		border-radius: 4px 4px 4px 4px;
+		bottom: 0;
+		box-shadow: 1px 1px 2px #999999 inset;
+		color: #333333;
+		display: block;
+		font-size: 13px;
+		height: 17px;
+		margin-top: 46px !important;
+		padding: 5px;
+		position: absolute;
+		right: 15px;
+		top: 16px;
+	}
+	.identity h1 img {
+		margin-left: -11px;
+		margin-top: -5px;
+		width: 104px;
+	}
+	.identity h1 {
+		background-image: url("../images/v2/identity-bkg_topcenter.png");
+		background-position: center bottom;
+		background-repeat: repeat-x;
+		background-size: 1px auto;
+		color: #1C6AA7;
+		display: block;
+		font-style: italic;
+		height: 23px;
+		line-height: 17px;
+		margin: 0 auto;
+		padding-top: 13px;
+		text-align: center;
+		text-shadow: 2px 1px 1px #FFFFFF, 2px 1px 1px #FFFFFF;
+		width: 85px;
+	}
+	.identity .combo {
+		background-image: url("../images/v2/identity-bkg_topright.png");
+		background-position: right top;
+		background-repeat: no-repeat;
+		background-size: 60px auto;
+		display: block;
+		height: 58px;
+		width: 196px;
+	}
+	.identity {
+		background-image: url("../images/v2/identity-bkg_topleft.png");
+		background-position: left top;
+		background-repeat: no-repeat;
+		background-size: 60px auto;
+		height: 66px;
+		width: 188px;
+	}
+	.menu-header {
+		background: none repeat scroll 0 0 #F3F3F3;
+		border-radius: 4px 4px 4px 4px;
+		bottom: 0;
+		box-shadow: 1px 1px 2px #999999 inset;
+		color: #333333;
+		display: block;
+		font-size: 13px;
+		height: 17px;
+		margin-top: 46px !important;
+		padding: 5px;
+		position: absolute;
+		right: 15px;
+		top: -3px !important;
+	}
+	.layout-cell-12 {
+		float: none !important;
+		width:100% !important;
+	}
+	ul.IndicProdTabela {
+		line-height: 2em;
+		list-style: decimal outside none;
+		margin-left: 80px !important;
+	}
+
+	.layout-cell-pad-5 {
+   		 padding: 3px 10px 0 0 !important;
+	}
+	.to-top-bar {
+	    display: none !important;
+	
+	}
+.layout-cell.layout-cell-3.text-align-right {
+    float: left !important;
+    width:33% !important;
+    text-align: right !important;
+}
+.layout-cell.layout-cell-9 {
+    float: left !important;
+    width: 67% !important;
+}
+
+.layout-cell-pad-5.text-align-right {
+    float: left !important;
+}
+	/*Estilo para impressão - fim */
+
+}
+@media all {
+	
+}
+ @media print {
+
+	.page-break {
+		display:block;
+		page-break-before:always;
+	}
+
+}

@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | environments.
 |
 */
-$config['base_url'] = 'http://luanhsd.bot.sh/IFLattes/';
+$config['base_url'] = 'http://localhost/IFLattes/';
 
 /*
 |--------------------------------------------------------------------------
