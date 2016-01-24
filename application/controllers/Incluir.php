@@ -11,7 +11,10 @@ class Incluir extends CI_Controller {
     }
 
     public function index() {
+        if ($this->input->post()) {
 
+
+        }
         $dados = array(
             'title' => "Curriculos",
             'h1'=>"Incluir",

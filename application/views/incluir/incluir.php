@@ -24,6 +24,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             </div>
                         </div> 
                         <div class="panel-body">
+                        <?php if(!empty($alert)){
+                                var_dump($alert);
+                            }; ?>
                                 <form action="Incluir/inserir" class="dropzone" method="POST">
                         </div>
                         <div class="panel-footer">
