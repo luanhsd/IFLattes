@@ -19,12 +19,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <link href='<?php echo base_url('assets/demo/variations/default.css'); ?>' rel='stylesheet' type='text/css' media='all' id='styleswitcher'> 
 
         <link href='<?php echo base_url('assets/demo/variations/default.css');?>' rel='stylesheet' type='text/css' media='all' id='headerswitcher'> 
-
-        <link rel='stylesheet' type='text/css' href='<?php echo base_url('assets/plugins/dropzone/css/dropzone.css')?>' />
+        
+        <link href='<?php echo base_url('assets/plugins/bootstrap-fileinput/css/fileinput.min.css'); ?>' rel='stylesheet' type='text/css' />
+        <link href='<?php echo base_url('assets/fonts/glyphicons/css/glyphicons.css') ?>' rel='stylesheet'>
         <link rel='stylesheet' type='text/css' href='<?php echo base_url('assets/plugins/codeprettifier/prettify.css')?>' /> 
         <link rel='stylesheet' type='text/css' href='<?php echo base_url('assets/plugins/form-toggle/toggles.css')?>' /> 
 
 <!-- <script type="text/javascript" src="assets/js/less.js"></script> -->
+
     </head>
 
     <body class=" ">

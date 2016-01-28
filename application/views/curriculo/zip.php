@@ -1,6 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+
 <div id="page-content">
     <div id='wrap'>
         <div id="page-heading">
@@ -17,6 +18,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
             <div class="row">
                 <div class="col-md-12">
+
                     <div class="panel panel-primary">
                         <div class="panel-heading">
                             <h4>Upload de Arquivos</h4>
@@ -24,24 +26,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             </div>
                         </div> 
                         <div class="panel-body">
-                        <?php if(!empty($alert)){
-                                var_dump($alert);
-                            }; ?>
-                                <form action="Incluir/inserir" class="dropzone" method="POST">
-                                <div class="fallback">
-    <input name="file" type="file" />
-  </div>
+                            <form action="Curriculo" method="POST" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <input type="file" multiple="multiple" name="file[]" name="file[]" multiple data-preview-file-type="any" data-upload-url="#">
+                                </div> 
                         </div>
                         <div class="panel-footer">
-                                    <button type="submit" class="btn btn-success">CADASTRAR</button>
+                            <button type="submit" class="btn btn-success " id="submit" name="submit">CADASTRAR</button> 
                         </div>
-                        </form>
-                   </div>
+                        </form> 
+                    </div>
                 </div>
             </div>
-
-
-
         </div> <!-- container -->
     </div> <!--wrap -->
 </div> <!-- page-content -->
+

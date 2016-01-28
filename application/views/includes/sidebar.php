@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <li class="divider"></li>        
             <li><a href="javascript:;"><i class="fa fa-list-ol"></i> <span>Metodos de Entrada</span> <span class="badge badge-indigo">1</span></a>
                 <ul class='acc-menu'>
-                    <li><?php echo anchor('Incluir',"ZipFile<span class='badge badge-success'>new</span>"); ?>
+                    <li><?php echo anchor('Curriculo',"ZipFile<span class='badge badge-success'>new</span>"); ?>
                     <li><a href="ui-buttons.htm">Url</a></li>
                 </ul>
             </li>
