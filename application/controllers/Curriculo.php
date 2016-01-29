@@ -52,20 +52,108 @@ class Curriculo extends CI_Controller {
 
     Private function readXml($file) {
         $xml = simplexml_load_file($file);
-        //DIM_PESSOA
-        $pessoa['id_user'] = $xml['NUMERO-IDENTIFICADOR'];
-        $pessoa['nm_user'] = $xml->{'DADOS-GERAIS'}['NOME-COMPLETO'];
-        $pessoa['citacao'] = $xml->{'DADOS-GERAIS'}['NOME-EM-CITACOES-BIBLIOGRAFICAS'];
+        $id = $xml['NUMERO-IDENTIFICADOR'];
+        $data_cur = $xml['DATA-ATUALIZACAO'];
+        foreach ($xml->children() as $child) {
+            $name = $child->getName();
+            switch ($name) {
+                case 'DADOS-GERAIS':
+                    $this->Gerais($id, $child);
+                    break;
+                case 'PRODUCAO-BIBLIOGRAFICA':
+                case 'PRODUCAO-TECNICA':
+                case 'OUTRA-PRODUCAO':
+                    $this->Producao($id, $child);
+                    break;
+                case 'DADOS-COMPLEMENTARES':
+                    $this->Complementos($id, $child);
+                    break;
+                default :
+                    var_dump($name);
+                    break;
+            }
+        }
+    }
+
+    private function Gerais($id, $node) {
+        $pessoa['id_user'] = $id;
+        $pessoa['nm_user'] = $node['NOME-COMPLETO'];
+        $pessoa['citacao'] = $node['NOME-EM-CITACOES-BIBLIOGRAFICAS'];
         //$this->Curriculo_model->insert('dim_pessoa',$pessoa);
-        //REF_ENDEREÇO
-        $endereco['id_user'] = $pessoa['id_user'];
-        $endereco['local'] = $xml->{'DADOS-GERAIS'}->ENDERECO->{'ENDERECO-PROFISSIONAL'}['NOME-INSTITUICAO-EMPRESA'];
-        $endereco['cep'] = $xml->{'DADOS-GERAIS'}->ENDERECO->{'ENDERECO-PROFISSIONAL'}['CEP'];
-        $endereco['estado'] = $xml->{'DADOS-GERAIS'}->ENDERECO->{'ENDERECO-PROFISSIONAL'}['UF'];
-        $endereco['cidade'] = $xml->{'DADOS-GERAIS'}->ENDERECO->{'ENDERECO-PROFISSIONAL'}['CIDADE'];
-        $endereco['bairro'] = $xml->{'DADOS-GERAIS'}->ENDERECO->{'ENDERECO-PROFISSIONAL'}['BAIRRO'];
-        $endereco['logradouro'] = $xml->{'DADOS-GERAIS'}->ENDERECO->{'ENDERECO-PROFISSIONAL'}['LOGRADOURO-COMPLEMENTO'];
+        foreach ($node->children() as $child) {
+            $name = $child->getName();
+            //var_dump($name);
+            switch ($name) {
+                case 'ENDERECO':
+                    $this->Endereco($id, $child);
+                    break;
+                case 'FORMACAO-ACADEMICA-TITULACAO':
+                    $this->Formacao($id, $child);
+                    break;
+                case 'ATUACOES-PROFISSIONAIS':
+                    $this->Atuacao($id, $child);
+                    break;
+                case 'AREAS-DE-ATUACAO':
+                    $this->Area($id, $child);
+                    break;
+                case 'IDIOMAS':
+                    $this->Idioma($id, $child);
+                    break;
+                case 'PREMIOS-TITULOS':
+                    $this->Premio($id, $child);
+                    break;
+            }
+        }
+    }
+
+    private function Endereco($id, $node) {
+        $endereco['id_user'] = $id;
+        $endereco['local'] = $node->{'ENDERECO-PROFISSIONAL'}['NOME-INSTITUICAO-EMPRESA'];
+        $endereco['cep'] = $node->{'ENDERECO-PROFISSIONAL'}['CEP'];
+        $endereco['estado'] = $node->{'ENDERECO-PROFISSIONAL'}['UF'];
+        $endereco['cidade'] = $node->{'ENDERECO-PROFISSIONAL'}['CIDADE'];
+        $endereco['bairro'] = $node->{'ENDERECO-PROFISSIONAL'}['BAIRRO'];
+        $endereco['logradouro'] = $node->{'ENDERECO-PROFISSIONAL'}['LOGRADOURO-COMPLEMENTO'];
         //$this->Curriculo_model->insert('ref_endereco',$endereco);
+    }
+
+    private function Formacao($id, $node) {
+        foreach ($node->children() as $child) {
+            //var_dump($child);
+            $formacao['id_user'] = $id;
+            $formacao['nivel'] = $child->getName();
+            $formacao['curso'] = $child['NOME-CURSO'];
+            $formacao['local'] = $child['NOME-INSTITUICAO'];
+        }
+    }
+
+    private function Atuacao($id, $node) {
+        
+    }
+
+    private function Area($id, $node) {
+        
+    }
+
+    private function Idioma($id, $node) {
+        $idioma['id_user'] = $id;
+        $idioma['idioma'] = $node->IDIOMA['IDIOMA'];
+        $idioma['leitura'] = $node->IDIOMA['PROFICIENCIA-DE-LEITURA'];
+        $idioma['fala'] = $node->IDIOMA['PROFICIENCIA-DE-FALA'];
+        $idioma['escrita'] = $node->IDIOMA['PROFICIENCIA-DE-ESCRITA'];
+        $idioma['compreensao'] = $node->IDIOMA['PROFICIENCIA-DE-COMPREENSAO'];
+    }
+
+    private function Premio($id, $node) {
+        
+    }
+
+    private function Producao($id, $node) {
+        
+    }
+
+    private function Complementos($id, $node) {
+        
     }
 
 }
