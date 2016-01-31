@@ -117,22 +117,37 @@ class Curriculo extends CI_Controller {
         //$this->Curriculo_model->insert('ref_endereco',$endereco);
     }
 
+    // Realizar tratamento de como obter as palavras chaves e setores de uma forma "BONITA"
     private function Formacao($id, $node) {
         foreach ($node->children() as $child) {
-            //var_dump($child);
             $formacao['id_user'] = $id;
+            //$formacao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $child['ANO-DE-INICIO'], 'ano_final'=>$child['ANO-DE-CONCLUSAO']));
             $formacao['nivel'] = $child->getName();
             $formacao['curso'] = $child['NOME-CURSO'];
-            $formacao['local'] = $child['NOME-INSTITUICAO'];
+            if ($formacao['nivel'] == 'GRADUACAO')
+                $formacao['titulo'] = $child['TITULO-DO-TRABALHO-DE-CONCLUSAO-DE-CURSO'];
+            else
+                $formacao['titulo'] = $child['TITULO-DA-DISSERTACAO-TESE'];
+            $formacao['orientador'] = $child['NOME-COMPLETO-DO-ORIENTADOR'];
+            $formacao['bolsa'] = $child['NOME-AGENCIA'];
+            //$this->Curriculo_model->insert('fat_formacao', $formacao);
         }
     }
 
     private function Atuacao($id, $node) {
-        
+        foreach ($node as $array) {
+            var_dump($array);
+        }
     }
 
     private function Area($id, $node) {
-        
+        $premio['id_user'] = $id;
+        //$premio['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $node->{'PREMIO-TITULO'}['ANO-DA-PREMIACAO']));
+        $premio['grande'] = $node->{'AREA-DE-ATUACAO'}['NOME-GRANDE-AREA-DO-CONHECIMENTO'];
+        $premio['area'] = $node->{'AREA-DE-ATUACAO'}['NOME-DA-SUB-AREA-DO-CONHECIMENTO'];
+        $premio['sub_area'] = $node->{'AREA-DE-ATUACAO'}['NOME-DA-SUB-AREA-DO-CONHECIMENTO'];
+        $premio['espec'] = $node->{'AREA-DE-ATUACAO'}['NOME-DA-ESPECIALIDADE'];
+        //$this->Curriculo_model->insert('fat_area', $premio);
     }
 
     private function Idioma($id, $node) {
@@ -142,10 +157,15 @@ class Curriculo extends CI_Controller {
         $idioma['fala'] = $node->IDIOMA['PROFICIENCIA-DE-FALA'];
         $idioma['escrita'] = $node->IDIOMA['PROFICIENCIA-DE-ESCRITA'];
         $idioma['compreensao'] = $node->IDIOMA['PROFICIENCIA-DE-COMPREENSAO'];
+        //$this->Curriculo_model->insert('fat_idioma', $idioma);
     }
 
     private function Premio($id, $node) {
-        
+        $premio['id_user'] = $id;
+        //$premio['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $node->{'PREMIO-TITULO'}['ANO-DA-PREMIACAO']));
+        $premio['nome'] = $node->{'PREMIO-TITULO'}['NOME-DO-PREMIO-OU-TITULO'];
+        $premio['entidade'] = $node->{'PREMIO-TITULO'}['NOME-DA-ENTIDADE-PROMOTORA'];
+        //$this->Curriculo_model->insert('fat_premio'),$premio);
     }
 
     private function Producao($id, $node) {
