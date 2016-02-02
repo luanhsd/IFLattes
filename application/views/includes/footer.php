@@ -45,9 +45,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         $('input:file[name="file[]"]').fileinput({
             language: 'pt-BR',
             showUpload: false,
-            //allowedFileExtensions: ['zip'],
+            allowedFileExtensions: ['zip'],
             browseClass: "btn btn-primary",
-            //allowedPreviewTypes: null,
+            allowedPreviewTypes: null,
             showRemove:true,
             previewFileIconSettings: {
                 'zip': '<i class="fa fa-book text-muted"></i>',
