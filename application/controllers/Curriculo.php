@@ -136,7 +136,18 @@ class Curriculo extends CI_Controller {
 
     private function Atuacao($id, $node) {
         foreach ($node as $array) {
-            var_dump($array);
+            //var_dump($array);
+            $atuacao['id_user'] = $id;
+            $atuacao['instituicao'] = $array['NOME-INSTITUICAO'];
+
+            //foreach ($array['VINCULOS'] as $vinc){
+            //    var_dump($array);
+            //   $atuacao['tipo_vinculo']=$vinc['TIPO-DE-VINCULO'];
+            //   $atuacao['enq_funcional']=$vinc['ENQUADRAMENTO-FUNCIONAL'];
+            //   $atuacao['carga_horaria']=$vinc['CARGA-HORARIA-SEMANAL'];
+            //    var_dump($atuacao);
+            //}
+            //$atuacao['tempo']= $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $node->{'PREMIO-TITULO'}['ANO-DA-PREMIACAO']));
         }
     }
 
@@ -169,11 +180,71 @@ class Curriculo extends CI_Controller {
     }
 
     private function Producao($id, $node) {
-        
+        foreach ($node->children() as $child) {
+            //var_dump($child);
+            $producao['id_user'] = $id;
+            //$producao['id_tempo']=$this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $child->{'DADOS-BASICOS-DA-PATENTE'}['ANO-DESENVOLVIMENTO']));
+            $producao['tipo'] = $child->getName();
+            switch ($child->getName()) {
+                case 'TRABALHOS-EM-EVENTOS':
+                    $producao['natureza'] = $child->{'DADOS-BASICOS-DO-TRABALHO'}['NATUREZA'];
+                    $producao['titulo'] = $child->{'DADOS-BASICOS-DO-TRABALHO'}['TITULO'];
+                    $producao['categoria'] = $child->{'DADOS-BASICOS-DO-TRABALHO'}['TIPO-PRODUTO'];
+                    break;
+                case 'ARTIGOS-PUBLICADOS':
+                    $producao['natureza'] = $child->{'DADOS-BASICOS-DO-ARTIGO'}['NATUREZA'];
+                    $producao['titulo'] = $child->{'DADOS-BASICOS-DO-ARTIGO'}['TITULO'];
+                    $producao['categoria'] = $child->{'DADOS-BASICOS-DO-ARTIGO'}['TIPO-PRODUTO'];
+                    break;
+                case 'PATENTE':
+                    $producao['natureza'] = $child->{'DADOS-BASICOS-DA-PATENTE'}['NATUREZA'];
+                    $producao['titulo'] = $child->{'DADOS-BASICOS-DA-PATENTE'}['TITULO'];
+                    $producao['categoria'] = $child->{'DADOS-BASICOS-DA-PATENTE'}['TIPO-PRODUTO'];
+                    break;
+                case 'PRODUTO-TECNOLOGICO':
+                    $producao['natureza'] = $child->{'DADOS-BASICOS-DA-PATENTE'}['NATUREZA'];
+                    $producao['titulo'] = $child->{'DADOS-BASICOS-DA-PATENTE'}['TITULO'];
+                    $producao['categoria'] = $child->{'DADOS-BASICOS-DA-PATENTE'}['TIPO-PRODUTO'];
+                    break;
+                case 'TRABALHO-TECNICO':
+                    $producao['natureza'] = $child->{'DADOS-BASICOS-DA-PATENTE'}['NATUREZA'];
+                    $producao['titulo'] = $child->{'DADOS-BASICOS-DA-PATENTE'}['TITULO'];
+                    $producao['categoria'] = $child->{'DADOS-BASICOS-DA-PATENTE'}['TIPO-PRODUTO'];
+                    break;
+                case 'DEMAIS-TIPOS-DE-PRODUCAO-TECNICA':
+                    break;
+                case 'PRODUCAO-ARTISTICA-CULTURAL':
+                    break;
+                case 'ORIENTACOES-CONCLUIDAS':
+                    break;
+                case 'DEMAIS-TIPOS-DE-PRODUCAO-BIBLIOGRAFICA':
+                    break;
+                case 'LIVROS-E-CAPITULOS':
+                    break;
+                case 'DEMAIS-TRABALHOS':
+                    break;
+                case 'SOFTWARE':
+                    break;
+                case 'TEXTOS-EM-JORNAIS-OU-REVISTAS':
+                    break;
+                case 'ARTIGOS-ACEITOS-PARA-PUBLICACAO':
+                    break;
+                default :
+                    echo $child->getName() . '<br>';
+                    break;
+            }
+            //$producao['keywords'];
+            //$producao['areas'];
+            //$producao['setor'];
+            $producao['inf_adicionais'] = $child->{'INFORMACOES-ADICIONAIS'}['DESCRICAO-INFORMACOES-ADICIONAIS'];
+            //var_dump($producao);
+        }
     }
 
     private function Complementos($id, $node) {
-        
+        foreach ($node->children() as $array) {
+            //var_dump($array->getName());
+        }
     }
 
 }
