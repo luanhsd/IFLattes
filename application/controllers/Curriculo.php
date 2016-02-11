@@ -243,7 +243,27 @@ class Curriculo extends CI_Controller {
 
     private function Complementos($id, $node) {
         foreach ($node->children() as $array) {
-            //var_dump($array->getName());
+            $title = $array->getName();
+            switch ($title) {
+                case 'PARTICIPACAO-EM-BANCA-JULGADORA':
+                    var_dump($array);
+                    break;
+                case 'PARTICIPACAO-EM-EVENTOS-CONGRESSOS':
+                    break;
+                case 'INFORMACOES-ADICIONAIS-INSTITUICOES':
+                    break;
+                case 'INFORMACOES-ADICIONAIS-CURSOS':
+                    break;
+                case 'FORMACAO-COMPLEMENTAR':
+                    break;
+                case 'PARTICIPACAO-EM-BANCA-TRABALHOS-CONCLUSAO':
+                    break;
+                case 'ORIENTACOES-EM-ANDAMENTO':
+                    break;
+                default :
+                    var_dump($title);
+                    break;
+            }
         }
     }
 
