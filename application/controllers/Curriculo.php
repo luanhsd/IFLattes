@@ -117,7 +117,6 @@ class Curriculo extends CI_Controller {
         //$this->Curriculo_model->insert('ref_endereco',$endereco);
     }
 
-    // Realizar tratamento de como obter as palavras chaves e setores de uma forma "BONITA"
     private function Formacao($id, $node) {
         foreach ($node->children() as $child) {
             $formacao['id_user'] = $id;
@@ -136,18 +135,15 @@ class Curriculo extends CI_Controller {
 
     private function Atuacao($id, $node) {
         foreach ($node as $array) {
-            //var_dump($array);
             $atuacao['id_user'] = $id;
             $atuacao['instituicao'] = $array['NOME-INSTITUICAO'];
-
-            //foreach ($array['VINCULOS'] as $vinc){
-            //    var_dump($array);
-            //   $atuacao['tipo_vinculo']=$vinc['TIPO-DE-VINCULO'];
-            //   $atuacao['enq_funcional']=$vinc['ENQUADRAMENTO-FUNCIONAL'];
-            //   $atuacao['carga_horaria']=$vinc['CARGA-HORARIA-SEMANAL'];
-            //    var_dump($atuacao);
-            //}
-            //$atuacao['tempo']= $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $node->{'PREMIO-TITULO'}['ANO-DA-PREMIACAO']));
+            foreach ($array->{'VINCULOS'} as $vinculo) {
+                //$atuacao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $vinculo['ANO-INICIO'],'mes_inicial'=>$vinculo['MES-INICIO'],'ano_final'=>$vinculo['ANO-FIM'],'mes_final'=>$vinculo['MES-FIM']));
+                $atuacao['tipo_vinculo'] = $vinculo['TIPO-DE-VINCULO'];
+                $atuacao['enq_funcional'] = $vinculo['OUTRO-ENQUADRAMENTO-FUNCIONAL-INFORMADO'];
+                $atuacao['carga_horaria'] = $vinculo['CARGA-HORARIA-SEMANAL'];
+                //$this->Curriculo_model->insert('fat_atuacao', $atuacao);
+            }
         }
     }
 
@@ -181,37 +177,112 @@ class Curriculo extends CI_Controller {
 
     private function Producao($id, $node) {
         foreach ($node->children() as $child) {
-            //var_dump($child);
             $producao['id_user'] = $id;
-            //$producao['id_tempo']=$this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $child->{'DADOS-BASICOS-DA-PATENTE'}['ANO-DESENVOLVIMENTO']));
-            $producao['tipo'] = $child->getName();
+            $producao['categoria'] = $child->getName();
             switch ($child->getName()) {
                 case 'TRABALHOS-EM-EVENTOS':
-                    $producao['natureza'] = $child->{'DADOS-BASICOS-DO-TRABALHO'}['NATUREZA'];
-                    $producao['titulo'] = $child->{'DADOS-BASICOS-DO-TRABALHO'}['TITULO'];
-                    $producao['categoria'] = $child->{'DADOS-BASICOS-DO-TRABALHO'}['TIPO-PRODUTO'];
+                    $aux = $child->{'TRABALHO-EM-EVENTOS'};
+                    //$producao['id_tempo']=$this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DO-TRABALHO'}['ANO-DESENVOLVIMENTO']));
+                    $producao['titulo'] = $aux->{'DADOS-BASICOS-DO-TRABALHO'}['TITULO-DO-TRABALHO'];
+                    $producao['natureza'] = $aux->{'DADOS-BASICOS-DO-TRABALHO'}['NATUREZA'];
+                    $producao['keywords'] = null;
+                    if (isset($aux->{'PALAVRAS-CHAVE'}) && count($aux->{'PALAVRAS-CHAVE'}) > 0) {
+                        foreach ($aux->{'PALAVRAS-CHAVE'}->attributes() as $attrib => $values) {
+                            if ($values != '')
+                                $producao['keywords'].='[' . ($values) . ']';
+                        }
+                    }
+                    $producao['setor'] = null;
+                    if (isset($aux->{'SETORES-DE-ATIVIDADE'}) && count($aux->{'SETORES-DE-ATIVIDADE'}) > 0) {
+                        foreach ($aux->{'SETORES-DE-ATIVIDADE'}->attributes() as $attrib => $values) {
+
+                            if ($values != '')
+                                $producao['setor'].='[' . ($values) . ']';
+                        }
+                    }
+                    //$this->Curriculo_model->insert('fat_producao'),$producao);
                     break;
                 case 'ARTIGOS-PUBLICADOS':
-                    $producao['natureza'] = $child->{'DADOS-BASICOS-DO-ARTIGO'}['NATUREZA'];
-                    $producao['titulo'] = $child->{'DADOS-BASICOS-DO-ARTIGO'}['TITULO'];
-                    $producao['categoria'] = $child->{'DADOS-BASICOS-DO-ARTIGO'}['TIPO-PRODUTO'];
+                    $aux = $child->{'ARTIGO-PUBLICADO'};
+                    //var_dump($aux);
+                    //$producao['id_tempo']=$this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DO-ARTIGO'}['ANO-DO-ARTIGO']));
+                    $producao['titulo'] = $aux->{'DADOS-BASICOS-DO-ARTIGO'}['TITULO-DO-ARTIGO'];
+                    $producao['natureza'] = $aux->{'DADOS-BASICOS-DO-ARTIGO'}['NATUREZA'];
+                    $producao['keywords'] = null;
+                    if (isset($aux->{'PALAVRAS-CHAVE'}) && count($aux->{'PALAVRAS-CHAVE'}) > 0) {
+                        foreach ($aux->{'PALAVRAS-CHAVE'}->attributes() as $attrib => $values) {
+                            if ($values != '')
+                                $producao['keywords'].='[' . ($values) . ']';
+                        }
+                    }
+                    $producao['setor'] = null;
+                    if (isset($aux->{'SETORES-DE-ATIVIDADE'}) && count($aux->{'SETORES-DE-ATIVIDADE'}) > 0) {
+                        foreach ($aux->{'SETORES-DE-ATIVIDADE'}->attributes() as $attrib => $values) {
+
+                            if ($values != '')
+                                $producao['setor'].='[' . ($values) . ']';
+                        }
+                    }
+                    //$this->Curriculo_model->insert('fat_producao'),$producao);
                     break;
                 case 'PATENTE':
-                    $producao['natureza'] = $child->{'DADOS-BASICOS-DA-PATENTE'}['NATUREZA'];
-                    $producao['titulo'] = $child->{'DADOS-BASICOS-DA-PATENTE'}['TITULO'];
-                    $producao['categoria'] = $child->{'DADOS-BASICOS-DA-PATENTE'}['TIPO-PRODUTO'];
+                    $aux = $child;
+                    //$producao['id_tempo']=$this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DA-PATENTE'}['ANO-DESENVOLVIMENTO']));
+                    $producao['titulo'] = $aux->{'DADOS-BASICOS-DA-PATENTE'}['TITULO'];
+                    $producao['natureza'] = $aux->{'DADOS-BASICOS-DA-PATENTE'}['NATUREZA'];
+                    $producao['keywords'] = null;
+                    if (isset($aux->{'PALAVRAS-CHAVE'}) && count($aux->{'PALAVRAS-CHAVE'}) > 0) {
+                        foreach ($aux->{'PALAVRAS-CHAVE'}->attributes() as $attrib => $values) {
+                            if ($values != '')
+                                $producao['keywords'].='[' . ($values) . ']';
+                        }
+                    }
+                    $producao['setor'] = null;
+                    if (isset($aux->{'SETORES-DE-ATIVIDADE'}) && count($aux->{'SETORES-DE-ATIVIDADE'}) > 0) {
+                        foreach ($aux->{'SETORES-DE-ATIVIDADE'}->attributes() as $attrib => $values) {
+
+                            if ($values != '')
+                                $producao['setor'].='[' . ($values) . ']';
+                        }
+                    }
+                    //$this->Curriculo_model->insert('fat_producao'),$producao);
                     break;
+
+
+
                 case 'PRODUTO-TECNOLOGICO':
-                    $producao['natureza'] = $child->{'DADOS-BASICOS-DA-PATENTE'}['NATUREZA'];
-                    $producao['titulo'] = $child->{'DADOS-BASICOS-DA-PATENTE'}['TITULO'];
-                    $producao['categoria'] = $child->{'DADOS-BASICOS-DA-PATENTE'}['TIPO-PRODUTO'];
+                    $aux = $child;
+                    var_dump($aux);
+                    //$producao['id_tempo']=$this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DA-PATENTE'}['ANO-DESENVOLVIMENTO']));
+                    $producao['titulo'] = $aux->{'DADOS-BASICOS-DA-PATENTE'}['TITULO'];
+                    $producao['natureza'] = $aux->{'DADOS-BASICOS-DA-PATENTE'}['NATUREZA'];
+                    $producao['keywords'] = null;
+                    if (isset($aux->{'PALAVRAS-CHAVE'}) && count($aux->{'PALAVRAS-CHAVE'}) > 0) {
+                        foreach ($aux->{'PALAVRAS-CHAVE'}->attributes() as $attrib => $values) {
+                            if ($values != '')
+                                $producao['keywords'].='[' . ($values) . ']';
+                        }
+                    }
+                    $producao['setor'] = null;
+                    if (isset($aux->{'SETORES-DE-ATIVIDADE'}) && count($aux->{'SETORES-DE-ATIVIDADE'}) > 0) {
+                        foreach ($aux->{'SETORES-DE-ATIVIDADE'}->attributes() as $attrib => $values) {
+
+                            if ($values != '')
+                                $producao['setor'].='[' . ($values) . ']';
+                        }
+                    }
+                    //$this->Curriculo_model->insert('fat_producao'),$producao);
                     break;
+
+
+
                 case 'TRABALHO-TECNICO':
                     $producao['natureza'] = $child->{'DADOS-BASICOS-DA-PATENTE'}['NATUREZA'];
                     $producao['titulo'] = $child->{'DADOS-BASICOS-DA-PATENTE'}['TITULO'];
                     $producao['categoria'] = $child->{'DADOS-BASICOS-DA-PATENTE'}['TIPO-PRODUTO'];
                     break;
                 case 'DEMAIS-TIPOS-DE-PRODUCAO-TECNICA':
+
                     break;
                 case 'PRODUCAO-ARTISTICA-CULTURAL':
                     break;
@@ -230,14 +301,9 @@ class Curriculo extends CI_Controller {
                 case 'ARTIGOS-ACEITOS-PARA-PUBLICACAO':
                     break;
                 default :
-                    echo $child->getName() . '<br>';
+                    //echo $child->getName() . '<br>';
                     break;
             }
-            //$producao['keywords'];
-            //$producao['areas'];
-            //$producao['setor'];
-            $producao['inf_adicionais'] = $child->{'INFORMACOES-ADICIONAIS'}['DESCRICAO-INFORMACOES-ADICIONAIS'];
-            //var_dump($producao);
         }
     }
 
@@ -246,7 +312,6 @@ class Curriculo extends CI_Controller {
             $title = $array->getName();
             switch ($title) {
                 case 'PARTICIPACAO-EM-BANCA-JULGADORA':
-                    var_dump($array);
                     break;
                 case 'PARTICIPACAO-EM-EVENTOS-CONGRESSOS':
                     break;
@@ -261,7 +326,7 @@ class Curriculo extends CI_Controller {
                 case 'ORIENTACOES-EM-ANDAMENTO':
                     break;
                 default :
-                    var_dump($title);
+                    //var_dump($title);
                     break;
             }
         }
