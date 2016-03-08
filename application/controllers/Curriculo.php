@@ -62,12 +62,12 @@ class Curriculo extends CI_Controller {
             $name = $child->getName();
             switch ($name) {
                 case 'DADOS-GERAIS':
-//$this->Gerais($id, $child, $data_cur);
+                    //$this->Gerais($id, $child, $data_cur);
                     break;
                 case 'PRODUCAO-BIBLIOGRAFICA':
                 case 'PRODUCAO-TECNICA':
                 case 'OUTRA-PRODUCAO':
-//$this->Producao($id, $child);
+                    //$this->Producao($id, $child);
                     break;
                 case 'DADOS-COMPLEMENTARES':
                     $this->Complementos($id, $child);
@@ -88,21 +88,21 @@ class Curriculo extends CI_Controller {
             $name = $child->getName();
             switch ($name) {
                 case 'ENDERECO':
-                    //$this->Endereco($id, $child);
+                    $this->Endereco($id, $child);
                     break;
                 case 'FORMACAO-ACADEMICA-TITULACAO':
-                    //$this->Formacao($id, $child);
+                    $this->Formacao($id, $child);
                     break;
                 case 'ATUACOES-PROFISSIONAIS':
-                    //$this->Atuacao($id, $child);
+                    $this->Atuacao($id, $child);
                     break;
                 case 'AREAS-DE-ATUACAO':
                     break;
                 case 'IDIOMAS':
-                    //$this->Idioma($id, $child, $data_cur);
+                    $this->Idioma($id, $child, $data_cur);
                     break;
                 case 'PREMIOS-TITULOS':
-                    //$this->Premio($id, $child);
+                    $this->Premio($id, $child);
                     break;
             }
         }
@@ -122,7 +122,7 @@ class Curriculo extends CI_Controller {
     private function Formacao($id, $node) {
         foreach ($node->children() as $child) {
             $formacao['id_user'] = $id;
-//$formacao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $child['ANO-DE-INICIO'], 'ano_final'=>$child['ANO-DE-CONCLUSAO']));
+            $formacao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $child['ANO-DE-INICIO'], 'ano_final' => $child['ANO-DE-CONCLUSAO']));
             $formacao['nivel'] = $child->getName();
             $formacao['curso'] = $child['NOME-CURSO'];
             if ($formacao['curso'] == null) {
@@ -134,8 +134,7 @@ class Curriculo extends CI_Controller {
                 $formacao['titulo'] = $child['TITULO-DA-DISSERTACAO-TESE'];
             $formacao['orientador'] = $child['NOME-COMPLETO-DO-ORIENTADOR'];
             $formacao['bolsa'] = $child['NOME-AGENCIA'];
-//var_dump($child);
-//$this->Curriculo_model->insert('fat_formacao', $formacao);
+            $this->Curriculo_model->insert('fat_formacao', $formacao);
             if (isset($child->{'AREAS-DO-CONHECIMENTO'}) && count($child->{'AREAS-DO-CONHECIMENTO'}) > 0) {
                 $date = array("ano_inicial" => $child['ANO-DE-INICIO'], "ano_final" => $child['ANO-DE-CONCLUSAO']);
                 $node = $child->{'AREAS-DO-CONHECIMENTO'}->children();
@@ -315,7 +314,6 @@ class Curriculo extends CI_Controller {
 //VERIFICAR E ARRUMAR OBS: CORRIGIR CAMPOS EM BRANCO  
                 case 'DEMAIS-TIPOS-DE-PRODUCAO-TECNICA':
                     $aux = $child->{'APRESENTACAO-DE-TRABALHO'};
-//var_dump($aux);
 //$producao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DA-APRESENTACAO-DE-TRABALHO'}['ANO']));
                     $producao['titulo'] = $aux->{'DADOS-BASICOS-DA-APRESENTACAO-DE-TRABALHO'}['TITULO'];
                     $producao['natureza'] = $aux->{'DADOS-BASICOS-DA-APRESENTACAO-DE-TRABALHO'}['NATUREZA'];
@@ -364,25 +362,27 @@ class Curriculo extends CI_Controller {
                 case 'ORIENTACOES-CONCLUIDAS':
                     foreach ($child->children() as $aux) {
                         $tipo = $aux->getName();
-                        $producao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DE-' . $tipo}['ANO']));
-                        $producao['titulo'] = $aux->{'DADOS-BASICOS-DE-' . $tipo}['TITULO'];
-                        $producao['natureza'] = $aux->{'DADOS-BASICOS-DE-' . $tipo}['NATUREZA'];
-                        $producao['keywords'] = null;
+                        $orientacao['id_user'] = $id;
+                        $orientacao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DE-' . $tipo}['ANO']));
+                        $orientacao['titulo'] = $aux->{'DADOS-BASICOS-DE-' . $tipo}['TITULO'];
+                        $orientacao['natureza'] = $aux->{'DADOS-BASICOS-DE-' . $tipo}['NATUREZA'];
+                        $orientacao['keywords'] = null;
                         if (isset($aux->{'PALAVRAS-CHAVE'}) && count($aux->{'PALAVRAS-CHAVE'}) > 0) {
                             foreach ($aux->{'PALAVRAS-CHAVE'}->attributes() as $attrib => $values) {
                                 if ($values != '')
-                                    $producao['keywords'].='[' . ($values) . ']';
+                                    $orientacao['keywords'].='[' . ($values) . ']';
                             }
                         }
-                        $producao['setor'] = null;
+                        $orientacao['setor'] = null;
                         if (isset($aux->{'SETORES-DE-ATIVIDADE'}) && count($aux->{'SETORES-DE-ATIVIDADE'}) > 0) {
                             foreach ($aux->{'SETORES-DE-ATIVIDADE'}->attributes() as $attrib => $values) {
 
                                 if ($values != '')
-                                    $producao['setor'].='[' . ($values) . ']';
+                                    $orientacao['setor'].='[' . ($values) . ']';
                             }
                         }
-                        $this->Curriculo_model->insert('fat_producao', $producao);
+                        $orientacao['status'] = "CONCLUIDA";
+                        $this->Curriculo_model->insert('fat_orientacao', $orientacao);
                     }
                     break;
 
@@ -413,7 +413,7 @@ class Curriculo extends CI_Controller {
 
                 case 'LIVROS-E-CAPITULOS':
                     $aux = $child->{'CAPITULOS-DE-LIVROS-PUBLICADOS'}->{'CAPITULO-DE-LIVRO-PUBLICADO'};
-//$producao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DO-CAPITULO'}['ANO']));
+                    $producao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DO-CAPITULO'}['ANO']));
                     $producao['titulo'] = $aux->{'DADOS-BASICOS-DO-CAPITULO'}['TITULO-DO-CAPITULO-DO-LIVRO'];
                     $producao['natureza'] = $aux->{'DADOS-BASICOS-DO-CAPITULO'}['NATUREZA'];
                     $producao['keywords'] = null;
@@ -431,12 +431,12 @@ class Curriculo extends CI_Controller {
                                 $producao['setor'].='[' . ($values) . ']';
                         }
                     }
-//$this->Curriculo_model->insert('fat_producao', $producao);
+                    $this->Curriculo_model->insert('fat_producao', $producao);
                     break;
 
                 case 'DEMAIS-TRABALHOS':
                     $aux = $child;
-//$producao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DE-DEMAIS-TRABALHOS'}['ANO']));
+                    $producao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DE-DEMAIS-TRABALHOS'}['ANO']));
                     $producao['titulo'] = $aux->{'DADOS-BASICOS-DE-DEMAIS-TRABALHOS'}['TITULO'];
                     $producao['natureza'] = $aux->{'DADOS-BASICOS-DE-DEMAIS-TRABALHOS'}['NATUREZA'];
                     $producao['keywords'] = null;
@@ -454,12 +454,12 @@ class Curriculo extends CI_Controller {
                                 $producao['setor'].='[' . ($values) . ']';
                         }
                     }
-//$this->Curriculo_model->insert('fat_producao', $producao);
+                    $this->Curriculo_model->insert('fat_producao', $producao);
                     break;
 
                 case 'SOFTWARE':
                     $aux = $child;
-//$producao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DO-SOFTWARE'}['ANO']));
+                    $producao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DO-SOFTWARE'}['ANO']));
                     $producao['titulo'] = $aux->{'DADOS-BASICOS-DO-SOFTWARE'}['TITULO-DO-SOFTWARE'];
                     $producao['natureza'] = $aux->{'DADOS-BASICOS-DO-SOFTWARE'}['NATUREZA'];
                     $producao['keywords'] = null;
@@ -477,12 +477,12 @@ class Curriculo extends CI_Controller {
                                 $producao['setor'].='[' . ($values) . ']';
                         }
                     }
-//$this->Curriculo_model->insert('fat_producao', $producao);
+                    $this->Curriculo_model->insert('fat_producao', $producao);
                     break;
 
                 case 'TEXTOS-EM-JORNAIS-OU-REVISTAS':
                     $aux = $child->{'TEXTO-EM-JORNAL-OU-REVISTA'};
-//$producao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DO-TEXTO'}['ANO-DO-TEXTO']));
+                    $producao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DO-TEXTO'}['ANO-DO-TEXTO']));
                     $producao['titulo'] = $aux->{'DADOS-BASICOS-DO-TEXTO'}['TITULO-DO-TEXTO'];
                     $producao['natureza'] = $aux->{'DADOS-BASICOS-DO-TEXTO'}['NATUREZA'];
                     $producao['keywords'] = null;
@@ -500,12 +500,12 @@ class Curriculo extends CI_Controller {
                                 $producao['setor'].='[' . ($values) . ']';
                         }
                     }
-//$this->Curriculo_model->insert('fat_producao', $producao);
+                    $this->Curriculo_model->insert('fat_producao', $producao);
                     break;
 
                 case 'ARTIGOS-ACEITOS-PARA-PUBLICACAO':
                     $aux = $child->{'ARTIGO-ACEITO-PARA-PUBLICACAO'};
-//$producao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DO-ARTIGO'}['ANO-DO-ARTIGO']));
+                    $producao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DO-ARTIGO'}['ANO-DO-ARTIGO']));
                     $producao['titulo'] = $aux->{'DADOS-BASICOS-DO-ARTIGO'}['TITULO-DO-ARTIGO'];
                     $producao['natureza'] = $aux->{'DADOS-BASICOS-DO-ARTIGO'}['NATUREZA'];
                     $producao['keywords'] = null;
@@ -523,7 +523,7 @@ class Curriculo extends CI_Controller {
                                 $producao['setor'].='[' . ($values) . ']';
                         }
                     }
-//$this->Curriculo_model->insert('fat_producao', $producao);
+                    $this->Curriculo_model->insert('fat_producao', $producao);
                     break;
 
                 default :
@@ -544,22 +544,22 @@ class Curriculo extends CI_Controller {
                         $aux = $child;
                         switch ($title) {
                             case 'BANCA-JULGADORA-PARA-CONCURSO-PUBLICO':
-                                $banca['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DA-BANCA-JULGADORA-PARA-CONCURSO-PUBLICO'}['ANO']));
+                                //$banca['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DA-BANCA-JULGADORA-PARA-CONCURSO-PUBLICO'}['ANO']));
                                 $banca['banca'] = $title;
                                 $banca['tipo'] = $aux->{'DADOS-BASICOS-DA-' . $title}['TIPO'];
                                 $banca['natureza'] = $aux->{'DADOS-BASICOS-DA-' . $title}['NATUREZA'];
                                 $banca['titulo'] = $aux->{'DADOS-BASICOS-DA-' . $title}['TITULO'];
                                 $banca['sobre'] = $aux->{'INFORMACOES-ADICIONAIS'}['DESCRICAO-INFORMACOES-ADICIONAIS'];
-                                //$this->Curriculo_model->insert('fat_banca',$banca);
+                                //$this->Curriculo_model->insert('fat_banca', $banca);
                                 break;
                             case 'OUTRAS-BANCAS-JULGADORAS':
-                                $banca['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DE-OUTRAS-BANCAS-JULGADORAS'}['ANO']));
+                                //$banca['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DE-OUTRAS-BANCAS-JULGADORAS'}['ANO']));
                                 $banca['banca'] = $title;
                                 $banca['tipo'] = $aux->{'DADOS-BASICOS-DE-' . $title}['TIPO'];
                                 $banca['natureza'] = $aux->{'DADOS-BASICOS-DE-' . $title}['NATUREZA'];
                                 $banca['titulo'] = $aux->{'DADOS-BASICOS-DE-' . $title}['TITULO'];
                                 $banca['sobre'] = $aux->{'INFORMACOES-ADICIONAIS'}['DESCRICAO-INFORMACOES-ADICIONAIS'];
-                                //$this->Curriculo_model->insert('fat_banca',$banca);
+                                //$this->Curriculo_model->insert('fat_banca', $banca);
                                 break;
                             default :
                                 var_dump($title);
@@ -577,7 +577,7 @@ class Curriculo extends CI_Controller {
                                 $evento['natureza'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-SIMPOSIO'}['NATUREZA'];
                                 $evento['titulo'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-SIMPOSIO'}['TITULO'];
                                 $evento['nome'] = $child->{'DETALHAMENTO-DA-PARTICIPACAO-EM-SIMPOSIO'}['NOME-DO-EVENTO'];
-                                //$this->Curriculo_model->insert('fat_evento',$evento);
+                                //$this->Curriculo_model->insert('fat_evento', $evento);
                                 break;
 
                             case 'PARTICIPACAO-EM-ENCONTRO':
@@ -593,7 +593,7 @@ class Curriculo extends CI_Controller {
                                 $evento['natureza'] = $child->{'DADOS-BASICOS-DE-OUTRAS-PARTICIPACOES-EM-EVENTOS-CONGRESSOS'}['NATUREZA'];
                                 $evento['titulo'] = $child->{'DADOS-BASICOS-DE-OUTRAS-PARTICIPACOES-EM-EVENTOS-CONGRESSOS'}['TITULO'];
                                 $evento['nome'] = $child->{'DETALHAMENTO-DE-OUTRAS-PARTICIPACOES-EM-EVENTOS-CONGRESSOS'}['NOME-DO-EVENTO'];
-                                //$this->Curriculo_model->insert('fat_evento',$evento);
+                                //$this->Curriculo_model->insert('fat_evento', $evento);
                                 break;
 
                             case 'PARTICIPACAO-EM-CONGRESSO':
@@ -601,7 +601,7 @@ class Curriculo extends CI_Controller {
                                 $evento['natureza'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-CONGRESSO'}['NATUREZA'];
                                 $evento['titulo'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-CONGRESSO'}['TITULO'];
                                 $evento['nome'] = $child->{'DETALHAMENTO-DA-PARTICIPACAO-EM-CONGRESSO'}['NOME-DO-EVENTO'];
-                                //$this->Curriculo_model->insert('fat_evento',$evento);
+                                //$this->Curriculo_model->insert('fat_evento', $evento);
                                 break;
 
 
@@ -610,7 +610,7 @@ class Curriculo extends CI_Controller {
                                 $evento['natureza'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-SEMINARIO'}['NATUREZA'];
                                 $evento['titulo'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-SEMINARIO'}['TITULO'];
                                 $evento['nome'] = $child->{'DETALHAMENTO-DA-PARTICIPACAO-EM-SEMINARIO'}['NOME-DO-EVENTO'];
-                                //$this->Curriculo_model->insert('fat_evento',$evento);
+                                //$this->Curriculo_model->insert('fat_evento', $evento);
                                 break;
 
                             case 'PARTICIPACAO-EM-OFICINA':
@@ -618,7 +618,7 @@ class Curriculo extends CI_Controller {
                                 $evento['natureza'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-OFICINA'}['NATUREZA'];
                                 $evento['titulo'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-OFICINA'}['TITULO'];
                                 $evento['nome'] = $child->{'DETALHAMENTO-DA-PARTICIPACAO-EM-OFICINA'}['NOME-DO-EVENTO'];
-                                //$this->Curriculo_model->insert('fat_evento',$evento);
+                                //$this->Curriculo_model->insert('fat_evento', $evento);
                                 break;
 
                             case 'PARTICIPACAO-EM-OLIMPIADA':
@@ -626,7 +626,7 @@ class Curriculo extends CI_Controller {
                                 $evento['natureza'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-OLIMPIADA'}['NATUREZA'];
                                 $evento['titulo'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-OLIMPIADA'}['TITULO'];
                                 $evento['nome'] = $child->{'DETALHAMENTO-DA-PARTICIPACAO-EM-OLIMPIADA'}['NOME-DO-EVENTO'];
-                                //$this->Curriculo_model->insert('fat_evento',$evento);
+                                //$this->Curriculo_model->insert('fat_evento', $evento);
                                 break;
 
                             default :
@@ -644,20 +644,64 @@ class Curriculo extends CI_Controller {
                     break;
 
                 case 'FORMACAO-COMPLEMENTAR':
-                    $formacao['id_user']
                     $aux = $array->{'FORMACAO-COMPLEMENTAR-DE-EXTENSAO-UNIVERSITARIA'};
-                    
-                    var_dump($aux);
+                    $formacao['id_user'] = $id;
+                    //$formacao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux['ANO-DE-INICIO'], 'ano_final' => 'ANO-DE-CONCLUSAO'));
+                    $formacao['nivel'] = 'FORMACAO-COMPLEMENTAR';
+                    $formacao['curso'] = $aux['NOME-CURSO'];
+                    $formacao['local'] = $aux['NOME-INSTITUICAO'];
+                    //$this->Curriculo_model->insert('fat_formacao', $formacao);
                     break;
+
 
                 case 'PARTICIPACAO-EM-BANCA-TRABALHOS-CONCLUSAO':
+                    $aux = $array->children();
+                    switch ($aux->getName()) {
+                        case 'PARTICIPACAO-EM-BANCA-DE-MESTRADO';
+                            //var_dump(count($aux->{'PARTICIPACAO-EM-BANCA-DE-DOUTORADO'}));
+                            break;
+
+                        case 'PARTICIPACAO-EM-BANCA-DE-APERFEICOAMENTO-ESPECIALIZACAO':
+                            break;
+
+                        case 'PARTICIPACAO-EM-BANCA-DE-GRADUACAO':
+                            break;
+
+                        default :
+                            var_dump($aux->getName());
+                            break;
+                    }
                     break;
+
+
 
                 case 'ORIENTACOES-EM-ANDAMENTO':
+                    $aux = $array->children();
+                    $tipo=$aux->getName();
+                    switch ($tipo) {
+                        case 'ORIENTACAO-EM-ANDAMENTO-DE-APERFEICOAMENTO-ESPECIALIZACAO':
+                            var_dump($aux->{$tipo});
+                            break;
+                        
+                        case 'ORIENTACAO-EM-ANDAMENTO-DE-GRADUACAO':
+                            break;
+                        
+                        case 'ORIENTACAO-EM-ANDAMENTO-DE-MESTRADO':
+                            break;
+                        
+                        case 'ORIENTACAO-EM-ANDAMENTO-DE-INICIACAO-CIENTIFICA':
+                            break;
+                        
+                        default :
+                            var_dump($tipo);
+                            break;
+                    }
                     break;
 
+
+
                 default :
-                    var_dump($title);
+                    //var_dump($title);
                     break;
             }
         }
