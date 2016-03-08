@@ -676,27 +676,114 @@ class Curriculo extends CI_Controller {
 
 
                 case 'ORIENTACOES-EM-ANDAMENTO':
-                    $aux = $array->children();
-                    $tipo=$aux->getName();
-                    switch ($tipo) {
-                        case 'ORIENTACAO-EM-ANDAMENTO-DE-APERFEICOAMENTO-ESPECIALIZACAO':
-                            var_dump($aux->{$tipo});
-                            break;
-                        
-                        case 'ORIENTACAO-EM-ANDAMENTO-DE-GRADUACAO':
-                            break;
-                        
-                        case 'ORIENTACAO-EM-ANDAMENTO-DE-MESTRADO':
-                            break;
-                        
-                        case 'ORIENTACAO-EM-ANDAMENTO-DE-INICIACAO-CIENTIFICA':
-                            break;
-                        
-                        default :
-                            var_dump($tipo);
-                            break;
-                    }
-                    break;
+				$aux = $array->children();
+				$tipo=$aux->getName();
+				switch ($tipo) {
+					case 'ORIENTACAO-EM-ANDAMENTO-DE-APERFEICOAMENTO-ESPECIALIZACAO':
+					//var_dump($aux->{$tipo});
+						$orientacao['id_user'] = $id;
+						//$orientacao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DE-' . $tipo}['ANO']));
+						$orientacao['titulo'] = $aux->{'DADOS-BASICOS-DE-' . $tipo}['TITULO'];
+						$orientacao['natureza'] = $aux->{'DADOS-BASICOS-DE-' . $tipo}['NATUREZA'];
+						$orientacao['keywords'] = null;
+						if (isset($aux->{'PALAVRAS-CHAVE'}) && count($aux->{'PALAVRAS-CHAVE'}) > 0) {
+							foreach ($aux->{'PALAVRAS-CHAVE'}->attributes() as $attrib => $values) {
+								if ($values != '')
+									$orientacao['keywords'].='[' . ($values) . ']';
+							}
+						}
+						$orientacao['setor'] = null;
+						if (isset($aux->{'SETORES-DE-ATIVIDADE'}) && count($aux->{'SETORES-DE-ATIVIDADE'}) > 0) {
+							foreach ($aux->{'SETORES-DE-ATIVIDADE'}->attributes() as $attrib => $values) {
+
+								if ($values != '')
+									$orientacao['setor'].='[' . ($values) . ']';
+							}
+						}
+						$orientacao['status'] = "EM ANDAMENTO";
+						//$this->Curriculo_model->insert('fat_orientacao', $orientacao);
+					break;
+
+					case 'ORIENTACAO-EM-ANDAMENTO-DE-GRADUACAO':
+					//var_dump($aux->{$tipo});
+						$orientacao['id_user'] = $id;
+						//$orientacao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DE-' . $tipo}['ANO']));
+						$orientacao['titulo'] = $aux->{'DADOS-BASICOS-DE-' . $tipo}['TITULO'];
+						$orientacao['natureza'] = $aux->{'DADOS-BASICOS-DE-' . $tipo}['NATUREZA'];
+						$orientacao['keywords'] = null;
+						if (isset($aux->{'PALAVRAS-CHAVE'}) && count($aux->{'PALAVRAS-CHAVE'}) > 0) {
+							foreach ($aux->{'PALAVRAS-CHAVE'}->attributes() as $attrib => $values) {
+								if ($values != '')
+									$orientacao['keywords'].='[' . ($values) . ']';
+							}
+						}
+						$orientacao['setor'] = null;
+						if (isset($aux->{'SETORES-DE-ATIVIDADE'}) && count($aux->{'SETORES-DE-ATIVIDADE'}) > 0) {
+							foreach ($aux->{'SETORES-DE-ATIVIDADE'}->attributes() as $attrib => $values) {
+
+								if ($values != '')
+									$orientacao['setor'].='[' . ($values) . ']';
+							}
+						}
+						$orientacao['status'] = "EM ANDAMENTO";
+						//$this->Curriculo_model->insert('fat_orientacao', $orientacao);
+					break;
+
+					case 'ORIENTACAO-EM-ANDAMENTO-DE-MESTRADO':
+					//var_dump($aux->{$tipo});
+						$orientacao['id_user'] = $id;
+						//$orientacao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DE-' . $tipo}['ANO']));
+						$orientacao['titulo'] = $aux->{'DADOS-BASICOS-DE-' . $tipo}['TITULO'];
+						$orientacao['natureza'] = $aux->{'DADOS-BASICOS-DE-' . $tipo}['NATUREZA'];
+						$orientacao['keywords'] = null;
+						if (isset($aux->{'PALAVRAS-CHAVE'}) && count($aux->{'PALAVRAS-CHAVE'}) > 0) {
+							foreach ($aux->{'PALAVRAS-CHAVE'}->attributes() as $attrib => $values) {
+								if ($values != '')
+									$orientacao['keywords'].='[' . ($values) . ']';
+							}
+						}
+						$orientacao['setor'] = null;
+						if (isset($aux->{'SETORES-DE-ATIVIDADE'}) && count($aux->{'SETORES-DE-ATIVIDADE'}) > 0) {
+							foreach ($aux->{'SETORES-DE-ATIVIDADE'}->attributes() as $attrib => $values) {
+
+								if ($values != '')
+									$orientacao['setor'].='[' . ($values) . ']';
+							}
+						}
+						$orientacao['status'] = "EM ANDAMENTO";
+						//$this->Curriculo_model->insert('fat_orientacao', $orientacao);
+					break;
+
+					case 'ORIENTACAO-EM-ANDAMENTO-DE-INICIACAO-CIENTIFICA':
+					//var_dump($aux->{$tipo});
+						$orientacao['id_user'] = $id;
+						//$orientacao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DE-' . $tipo}['ANO']));
+						$orientacao['titulo'] = $aux->{'DADOS-BASICOS-DE-' . $tipo}['TITULO'];
+						$orientacao['natureza'] = $aux->{'DADOS-BASICOS-DE-' . $tipo}['NATUREZA'];
+						$orientacao['keywords'] = null;
+						if (isset($aux->{'PALAVRAS-CHAVE'}) && count($aux->{'PALAVRAS-CHAVE'}) > 0) {
+							foreach ($aux->{'PALAVRAS-CHAVE'}->attributes() as $attrib => $values) {
+								if ($values != '')
+									$orientacao['keywords'].='[' . ($values) . ']';
+							}
+						}
+						$orientacao['setor'] = null;
+						if (isset($aux->{'SETORES-DE-ATIVIDADE'}) && count($aux->{'SETORES-DE-ATIVIDADE'}) > 0) {
+							foreach ($aux->{'SETORES-DE-ATIVIDADE'}->attributes() as $attrib => $values) {
+
+								if ($values != '')
+									$orientacao['setor'].='[' . ($values) . ']';
+							}
+						}
+						$orientacao['status'] = "EM ANDAMENTO";
+						//$this->Curriculo_model->insert('fat_orientacao', $orientacao);
+					break;
+
+					default :
+					var_dump($tipo);
+					break;
+				}
+				break;
 
 
 
