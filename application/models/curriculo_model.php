@@ -21,8 +21,8 @@ class Curriculo_model extends CI_Model {
         }
     }
 
-    public function datalist() {
-        $query = $this->db->get('view_cliente');
+    public function datalist($table) {
+        $query = $this->db->get($table);
         return $query->result();
     }
 

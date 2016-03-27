@@ -1,10 +1,11 @@
+
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 <footer role="contentinfo">
     <div class="clearfix">
         <ul class="list-unstyled list-inline">
-            <li><?php echo $name; ?> &copy; 2015</li>
+            <li><?php echo $name; ?> &copy; 2016</li>
             <button class="pull-right btn btn-inverse-alt btn-xs hidden-print" id="back-to-top"><i class="fa fa-arrow-up"></i></button>
         </ul>
     </div>
@@ -21,22 +22,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 -->
 
 
-<script type='text/javascript' src='<?php echo base_url('assets/js/jquery-1.10.2.min.js') ?>'></script> 
-<script type='text/javascript' src='<?php echo base_url('assets/js/jqueryui-1.10.3.min.js') ?>'></script> 
-<script type='text/javascript' src='<?php echo base_url('assets/js/bootstrap.min.js') ?>'></script> 
-<script type='text/javascript' src='<?php echo base_url('assets/js/enquire.js') ?>'></script> 
-<script type='text/javascript' src='<?php echo base_url('assets/js/jquery.cookie.js') ?>'></script> 
-<script type='text/javascript' src='<?php echo base_url('assets/js/jquery.nicescroll.min.js') ?>'></script> 
-<script type='text/javascript' src='<?php echo base_url('assets/plugins/codeprettifier/prettify.js') ?>'></script> 
-<script type='text/javascript' src='<?php echo base_url('assets/plugins/easypiechart/jquery.easypiechart.min.js') ?>'></script> 
-<script type='text/javascript' src='<?php echo base_url('assets/plugins/sparklines/jquery.sparklines.min.js') ?>'></script> 
-<script type='text/javascript' src='<?php echo base_url('assets/plugins/form-toggle/toggle.min.js') ?>'></script> 
-<script type='text/javascript' src='<?php echo base_url('assets/plugins/datatables/jquery.dataTables.min.js') ?>'></script> 
-<script type='text/javascript' src='<?php echo base_url('assets/plugins/datatables/dataTables.bootstrap.js') ?>'></script> 
-<script type='text/javascript' src='<?php echo base_url('assets/demo/demo-datatables.js') ?>'></script> 
-<script type='text/javascript' src='<?php echo base_url('assets/js/placeholdr.js') ?>'></script> 
-<script type='text/javascript' src='<?php echo base_url('assets/js/application.js') ?>'></script> 
-<script type='text/javascript' src='<?php echo base_url('assets/demo/demo.js') ?>'></script> 
+<script type='text/javascript' src='<?php echo base_url('assets/js/jquery-1.10.2.min.js')?>'></script> 
+<script type='text/javascript' src='<?php echo base_url('assets/js/jqueryui-1.10.3.min.js')?>'></script> 
+<script type='text/javascript' src='<?php echo base_url('assets/js/bootstrap.min.js')?>'></script> 
+<script type='text/javascript' src='<?php echo base_url('assets/js/enquire.js')?>'></script> 
+<script type='text/javascript' src='<?php echo base_url('assets/js/jquery.cookie.js')?>'></script> 
+<script type='text/javascript' src='<?php echo base_url('assets/js/jquery.nicescroll.min.js')?>'></script> 
+<script type='text/javascript' src='<?php echo base_url('assets/plugins/codeprettifier/prettify.js')?>'></script> 
+<script type='text/javascript' src='<?php echo base_url('assets/plugins/easypiechart/jquery.easypiechart.min.js')?>'></script> 
+<script type='text/javascript' src='<?php echo base_url('assets/plugins/sparklines/jquery.sparklines.min.js')?>'></script> 
+<script type='text/javascript' src='<?php echo base_url('assets/plugins/form-toggle/toggle.min.js')?>'></script> 
+<script type='text/javascript' src='<?php echo base_url('assets/plugins/datatables/jquery.dataTables.min.js')?>'></script> 
+<script type='text/javascript' src='<?php echo base_url('assets/plugins/datatables/dataTables.bootstrap.js')?>'></script> 
+<script type='text/javascript' src='<?php echo base_url('assets/demo/demo-datatables.js')?>'></script> 
+<script type='text/javascript' src='<?php echo base_url('assets/js/placeholdr.js')?>'></script> 
+<script type='text/javascript' src='<?php echo base_url('assets/js/application.js')?>'></script> 
+<script type='text/javascript' src='<?php echo base_url('assets/demo/demo.js')?>'></script> 
+
 <script src='<?php echo base_url('assets/plugins/bootstrap-fileinput/js/fileinput.min.js'); ?>' type='text/javascript'></script>
 <script src='<?php echo base_url('assets/plugins/bootstrap-fileinput/js/fileinput_locale_pt-BR.js'); ?>' type='text/javascript'></script>
 <script type="text/javascript">
