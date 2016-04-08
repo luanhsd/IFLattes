@@ -69,10 +69,10 @@ class Curriculo extends CI_Controller {
                 case 'PRODUCAO-BIBLIOGRAFICA':
                 case 'PRODUCAO-TECNICA':
                 case 'OUTRA-PRODUCAO':
-                    $this->Producao($id, $child);
+                    //$this->Producao($id, $child);
                     break;
                 case 'DADOS-COMPLEMENTARES':
-                    $this->Complementos($id, $child);
+                    //$this->Complementos($id, $child);
                     break;
                 default :
                     var_dump($name);
@@ -83,7 +83,7 @@ class Curriculo extends CI_Controller {
         $curriculo['id_curriculo'] = $id;
         $curriculo['url'] = 'http://lattes.cnpq.br/'.$id;
         $curriculo['content'] = $xml;
-        $this->Curriculo_model->insert('curriculum', $curriculo);
+        //$this->Curriculo_model->insert('curriculum', $curriculo);
     }
 
     private function Gerais($id, $node, $data_cur) {
@@ -91,6 +91,7 @@ class Curriculo extends CI_Controller {
         $pessoa['nm_user'] = $node['NOME-COMPLETO'];
         $pessoa['citacao'] = $node['NOME-EM-CITACOES-BIBLIOGRAFICAS'];
         $this->Curriculo_model->insert('dim_pessoa', $pessoa);
+  
         foreach ($node->children() as $child) {
             $name = $child->getName();
             switch ($name) {
@@ -110,6 +111,8 @@ class Curriculo extends CI_Controller {
                     break;
                 case 'PREMIOS-TITULOS':
                     $this->Premio($id, $child);
+                    break;
+                default :
                     break;
             }
         }

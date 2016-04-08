@@ -1,4 +1,6 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php
+
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Curriculo_model extends CI_Model {
 
@@ -6,10 +8,11 @@ class Curriculo_model extends CI_Model {
         parent::__construct();
     }
 
-    public function insert($table,$dados = NULL) {
+    public function insert($table, $dados = NULL) {
         if ($dados != null) {
             //var_dump($table);
             $this->db->insert($table, $dados);
+            var_dump($this->db->last_query());
             return $this->db->insert_id();
         }
     }
@@ -37,6 +40,5 @@ class Curriculo_model extends CI_Model {
         $row = $query->row_array();
         return $row['id_cliente'];
     }
-    
 
 }
