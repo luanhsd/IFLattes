@@ -51,9 +51,18 @@ class Curriculo extends CI_Controller {
         return $nameFile;
     }
 
+    public function getID($file) {
+        $aux = explode('/', $file);
+        $id = explode('.', $aux[2])[0];
+        return $id;
+    }
+
     Private function readXml($file) {
         $xml = simplexml_load_file($file);
         $id = $xml['NUMERO-IDENTIFICADOR'];
+        if ($xml['NUMERO-IDENTIFICADOR'] == '') {
+            $id = $this->getID($file);
+        }
         $data_cur = $xml['DATA-ATUALIZACAO'];
         $dia = substr($data_cur, 0, 2);
         $mes = substr($data_cur, 2, 2);
@@ -69,7 +78,7 @@ class Curriculo extends CI_Controller {
                 case 'PRODUCAO-BIBLIOGRAFICA':
                 case 'PRODUCAO-TECNICA':
                 case 'OUTRA-PRODUCAO':
-                    //$this->Producao($id, $child);
+                    $this->Producao($id, $child);
                     break;
                 case 'DADOS-COMPLEMENTARES':
                     //$this->Complementos($id, $child);
@@ -81,7 +90,7 @@ class Curriculo extends CI_Controller {
         }
         $curriculo['data_cadastro'] = $this->Curriculo_model->insert('dim_cadastro', array('data_cadastro' => $data_cur));
         $curriculo['id_curriculo'] = $id;
-        $curriculo['url'] = 'http://lattes.cnpq.br/'.$id;
+        $curriculo['url'] = 'http://lattes.cnpq.br/' . $id;
         $curriculo['content'] = $xml;
         //$this->Curriculo_model->insert('curriculum', $curriculo);
     }
@@ -91,7 +100,7 @@ class Curriculo extends CI_Controller {
         $pessoa['nm_user'] = $node['NOME-COMPLETO'];
         $pessoa['citacao'] = $node['NOME-EM-CITACOES-BIBLIOGRAFICAS'];
         $this->Curriculo_model->insert('dim_pessoa', $pessoa);
-  
+
         foreach ($node->children() as $child) {
             $name = $child->getName();
             switch ($name) {
@@ -202,9 +211,11 @@ class Curriculo extends CI_Controller {
     }
 
     private function Producao($id, $node) {
+        //var_dump('ID: ' . $id);
         foreach ($node->children() as $child) {
             $producao['id_user'] = $id;
             $producao['categoria'] = $child->getName();
+            //var_dump($child->getName());
             switch ($child->getName()) {
                 case 'TRABALHOS-EM-EVENTOS':
                     $aux = $child->{'TRABALHO-EM-EVENTOS'};
@@ -230,7 +241,8 @@ class Curriculo extends CI_Controller {
                     break;
 
                 case 'ARTIGOS-PUBLICADOS':
-                    $aux = $child->{'ARTIGO-PUBLICADO'};
+                    $tipo = $child->children()->getName();
+                    $aux = $child->{$tipo};
                     $producao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DO-ARTIGO'}['ANO-DO-ARTIGO']));
                     $producao['titulo'] = $aux->{'DADOS-BASICOS-DO-ARTIGO'}['TITULO-DO-ARTIGO'];
                     $producao['natureza'] = $aux->{'DADOS-BASICOS-DO-ARTIGO'}['NATUREZA'];
@@ -334,10 +346,10 @@ class Curriculo extends CI_Controller {
                     break;
 
                 case 'PRODUCAO-ARTISTICA-CULTURAL':
-                    $aux = $child->{'OUTRA-PRODUCAO-ARTISTICA-CULTURAL'};
-                    $producao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DE-OUTRA-PRODUCAO-ARTISTICA-CULTURAL'}['ANO']));
-                    $producao['titulo'] = $aux->{'DADOS-BASICOS-DE-OUTRA-PRODUCAO-ARTISTICA-CULTURAL'}['TITULO'];
-                    $producao['natureza'] = $aux->{'DADOS-BASICOS-DE-OUTRA-PRODUCAO-ARTISTICA-CULTURAL'}['NATUREZA'];
+                    $aux = $child->{$child->children()->getName()};
+                    $producao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{$aux->children()->getName()}['ANO']));
+                    $producao['titulo'] = $aux->{$aux->children()->getName()}['TITULO'];
+                    $producao['natureza'] = $aux->{$aux->children()->getName()}['NATUREZA'];
                     $producao['keywords'] = null;
                     if (isset($aux->{'PALAVRAS-CHAVE'}) && count($aux->{'PALAVRAS-CHAVE'}) > 0) {
                         foreach ($aux->{'PALAVRAS-CHAVE'}->attributes() as $attrib => $values) {
@@ -410,10 +422,18 @@ class Curriculo extends CI_Controller {
                     break;
 
                 case 'LIVROS-E-CAPITULOS':
-                    $aux = $child->{'CAPITULOS-DE-LIVROS-PUBLICADOS'}->{'CAPITULO-DE-LIVRO-PUBLICADO'};
-                    $producao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DO-CAPITULO'}['ANO']));
-                    $producao['titulo'] = $aux->{'DADOS-BASICOS-DO-CAPITULO'}['TITULO-DO-CAPITULO-DO-LIVRO'];
-                    $producao['natureza'] = $aux->{'DADOS-BASICOS-DO-CAPITULO'}['NATUREZA'];
+                    $aux = $child->children();
+                    $tipo = $aux->children()->getName();
+                    switch ($tipo) {
+                        case 'DADOS-BASICOS-DO-TRABALHO':
+                            $producao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{$tipo}['ANO-DO-TRABALHO']));
+                            $producao['titulo'] = $aux->{$tipo}['TITULO-DO-TRABALHO'];
+                            $producao['natureza'] = $aux->{$tipo}['NATUREZA'];
+                            break;
+                        default :
+                            //var_dump($tipo);
+                            break;
+                    }
                     $producao['keywords'] = null;
                     if (isset($aux->{'PALAVRAS-CHAVE'}) && count($aux->{'PALAVRAS-CHAVE'}) > 0) {
                         foreach ($aux->{'PALAVRAS-CHAVE'}->attributes() as $attrib => $values) {
