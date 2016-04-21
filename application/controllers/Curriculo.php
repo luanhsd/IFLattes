@@ -78,13 +78,13 @@ class Curriculo extends CI_Controller {
                 case 'PRODUCAO-BIBLIOGRAFICA':
                 case 'PRODUCAO-TECNICA':
                 case 'OUTRA-PRODUCAO':
-                    $this->Producao($id, $child);
+                    //$this->Producao($id, $child);
                     break;
                 case 'DADOS-COMPLEMENTARES':
-                    //$this->Complementos($id, $child);
+                    $this->Complementos($id, $child);
                     break;
                 default :
-                    var_dump($name);
+                    //var_dump($name);
                     break;
             }
         }
@@ -211,11 +211,9 @@ class Curriculo extends CI_Controller {
     }
 
     private function Producao($id, $node) {
-        //var_dump('ID: ' . $id);
         foreach ($node->children() as $child) {
             $producao['id_user'] = $id;
             $producao['categoria'] = $child->getName();
-            //var_dump($child->getName());
             switch ($child->getName()) {
                 case 'TRABALHOS-EM-EVENTOS':
                     $aux = $child->{'TRABALHO-EM-EVENTOS'};
@@ -430,8 +428,20 @@ class Curriculo extends CI_Controller {
                             $producao['titulo'] = $aux->{$tipo}['TITULO-DO-TRABALHO'];
                             $producao['natureza'] = $aux->{$tipo}['NATUREZA'];
                             break;
+                        case 'CAPITULO-DE-LIVRO-PUBLICADO':
+                            $aux = $aux->{'CAPITULOS-DE-LIVROS-PUBLICADOS'}->{$tipo}->{'DADOS-BASICOS-DO-CAPITULO'};
+                            $producao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux['ANO']));
+                            $producao['titulo'] = $aux['TITULO-DO-CAPITULO-DO-LIVRO'];
+                            $producao['natureza'] = $aux['NATUREZA'];
+                            break;
+                        case 'LIVRO-PUBLICADO-OU-ORGANIZADO':
+                            $aux = $aux->{'LIVROS-PUBLICADOS-OU-ORGANIZADOS'}->{$tipo}->{'DADOS-BASICOS-DO-LIVRO'};
+                            $producao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux['ANO']));
+                            $producao['titulo'] = $aux['TITULO-DO-LIVRO'];
+                            $producao['natureza'] = $aux['NATUREZA'];
+                            break;
                         default :
-                            //var_dump($tipo);
+                            var_dump($tipo);
                             break;
                     }
                     $producao['keywords'] = null;
@@ -552,8 +562,10 @@ class Curriculo extends CI_Controller {
     }
 
     private function Complementos($id, $node) {
+        var_dump($id);
         foreach ($node->children() as $array) {
             $title = $array->getName();
+            var_dump($title);
             switch ($title) {
                 case 'PARTICIPACAO-EM-BANCA-JULGADORA':
                     $banca['id_user'] = $id;
@@ -662,7 +674,7 @@ class Curriculo extends CI_Controller {
                     break;
 
                 case 'FORMACAO-COMPLEMENTAR':
-                    $aux = $array->{'FORMACAO-COMPLEMENTAR-DE-EXTENSAO-UNIVERSITARIA'};
+                    $aux = $array->{$array->children()->getName()};
                     $formacao['id_user'] = $id;
                     $formacao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux['ANO-DE-INICIO'], 'ano_final' => 'ANO-DE-CONCLUSAO'));
                     $formacao['nivel'] = 'FORMACAO-COMPLEMENTAR';
