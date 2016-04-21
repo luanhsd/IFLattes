@@ -24,7 +24,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <script type='text/javascript' src='<?php echo base_url('assets/js/jquery-1.10.2.min.js')?>'></script> 
 <script type='text/javascript' src='<?php echo base_url('assets/js/jqueryui-1.10.3.min.js')?>'></script> 
+
 <script type='text/javascript' src='<?php echo base_url('assets/js/bootstrap.min.js')?>'></script> 
+
 <script type='text/javascript' src='<?php echo base_url('assets/js/enquire.js')?>'></script> 
 <script type='text/javascript' src='<?php echo base_url('assets/js/jquery.cookie.js')?>'></script> 
 <script type='text/javascript' src='<?php echo base_url('assets/js/jquery.nicescroll.min.js')?>'></script> 
@@ -38,7 +40,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script type='text/javascript' src='<?php echo base_url('assets/js/placeholdr.js')?>'></script> 
 <script type='text/javascript' src='<?php echo base_url('assets/js/application.js')?>'></script> 
 <script type='text/javascript' src='<?php echo base_url('assets/demo/demo.js')?>'></script> 
-
 <script src='<?php echo base_url('assets/plugins/bootstrap-fileinput/js/fileinput.min.js'); ?>' type='text/javascript'></script>
 <script src='<?php echo base_url('assets/plugins/bootstrap-fileinput/js/fileinput_locale_pt-BR.js'); ?>' type='text/javascript'></script>
 <script type="text/javascript">
@@ -58,7 +59,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     });
 
 </script>
-
+<script type='text/javascript' src='<?php echo base_url('assets/js/progressbar/script.js')?>'></script> 
 
 
 </body>

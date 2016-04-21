@@ -78,7 +78,7 @@ class Curriculo extends CI_Controller {
                 case 'PRODUCAO-BIBLIOGRAFICA':
                 case 'PRODUCAO-TECNICA':
                 case 'OUTRA-PRODUCAO':
-                    //$this->Producao($id, $child);
+                    $this->Producao($id, $child);
                     break;
                 case 'DADOS-COMPLEMENTARES':
                     $this->Complementos($id, $child);
@@ -92,7 +92,7 @@ class Curriculo extends CI_Controller {
         $curriculo['id_curriculo'] = $id;
         $curriculo['url'] = 'http://lattes.cnpq.br/' . $id;
         $curriculo['content'] = $xml;
-        //$this->Curriculo_model->insert('curriculum', $curriculo);
+        $this->Curriculo_model->insert('curriculum', $curriculo);
     }
 
     private function Gerais($id, $node, $data_cur) {
@@ -441,7 +441,7 @@ class Curriculo extends CI_Controller {
                             $producao['natureza'] = $aux['NATUREZA'];
                             break;
                         default :
-                            var_dump($tipo);
+                            //var_dump($tipo);
                             break;
                     }
                     $producao['keywords'] = null;
@@ -554,6 +554,9 @@ class Curriculo extends CI_Controller {
                     $this->Curriculo_model->insert('fat_producao', $producao);
                     break;
 
+                case 'PROCESSOS-OU-TECNICAS':
+                    break;
+
                 default :
                     echo $child->getName() . '<br>';
                     break;
@@ -562,10 +565,8 @@ class Curriculo extends CI_Controller {
     }
 
     private function Complementos($id, $node) {
-        var_dump($id);
         foreach ($node->children() as $array) {
             $title = $array->getName();
-            var_dump($title);
             switch ($title) {
                 case 'PARTICIPACAO-EM-BANCA-JULGADORA':
                     $banca['id_user'] = $id;
@@ -592,7 +593,7 @@ class Curriculo extends CI_Controller {
                                 $this->Curriculo_model->insert('fat_banca', $banca);
                                 break;
                             default :
-                                var_dump($title);
+                                //var_dump($title);
                                 break;
                         }
                     }
@@ -660,7 +661,7 @@ class Curriculo extends CI_Controller {
                                 break;
 
                             default :
-                                var_dump($child->getName());
+                                //var_dump($child->getName());
                                 break;
                         }
                     }
@@ -698,7 +699,7 @@ class Curriculo extends CI_Controller {
                             break;
 
                         default :
-                            var_dump($aux->getName());
+                            //var_dump($aux->getName());
                             break;
                     }
                     break;
