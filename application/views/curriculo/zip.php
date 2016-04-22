@@ -28,11 +28,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <div class="panel-body">
                             <form id="uploadform" action="Curriculo" method="POST" enctype="multipart/form-data">
                                 <div class="progress progress-striped active">
-                                    <div class="progress-bar progress-bar-info" style="width:0%">
+                                    <div class="progress-bar progress-bar-info" id="progressbar" style="width:0%">
                                     </div>                                        
                                 </div>
                                 <div class="form-group">
-                                    <input type="file" multiple="multiple" name="file[]" name="file[]" multiple data-preview-file-type="any" data-upload-url="#">
+                                    <input type="file" multiple="multiple" id="file" name="file[]" multiple data-preview-file-type="any" data-upload-url="#">
                                 </div> 
                         </div>
                         <div class="panel-footer">

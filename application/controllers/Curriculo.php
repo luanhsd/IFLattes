@@ -12,7 +12,6 @@ class Curriculo extends CI_Controller {
     }
 
     public function index() {
-        $this->output->enable_profiler(TRUE);
         if ($this->input->post()) {
             $cpt = count($_FILES['file']['name']);
             $files = $_FILES;
@@ -26,7 +25,7 @@ class Curriculo extends CI_Controller {
                 $targetFile = $targetPath . $_FILES['file']['name'];
                 move_uploaded_file($_FILES['file']['tmp_name'], $targetFile);
                 $FileXML = $this->extrair($targetFile);
-                $this->readXml($FileXML);
+                //$this->readXml($FileXML);
             }
         }
 
