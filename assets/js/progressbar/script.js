@@ -2,15 +2,15 @@ $(function () {
     var inputFile = $('input:file');
     var uploadURI = $('#uploadform').attr('action');
     var progressBar = $('#progressbar');
-    var data = new formData();
 
     $('#submit').on('click', function (event) {
         var FilesToUpload = inputFile[0].files;
         if (FilesToUpload.length > 0) {
             for (var i = 0; i < FilesToUpload.length; i++) {
                 console.log('oi');
+                var data = new formData(null);
                 var file = FilesToUpload[i];
-                data.append("file[]", file, file.name);
+                data.append("file", file, file.name);
             }
 
             $.ajax({

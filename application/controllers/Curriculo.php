@@ -25,7 +25,7 @@ class Curriculo extends CI_Controller {
                 $targetFile = $targetPath . $_FILES['file']['name'];
                 move_uploaded_file($_FILES['file']['tmp_name'], $targetFile);
                 $FileXML = $this->extrair($targetFile);
-                //$this->readXml($FileXML);
+                $this->readXml($FileXML);
             }
         }
 
@@ -83,7 +83,7 @@ class Curriculo extends CI_Controller {
                     $this->Complementos($id, $child);
                     break;
                 default :
-                    //var_dump($name);
+                    //echo "<br>" . 'READXML: ' . $name;
                     break;
             }
         }
@@ -120,7 +120,12 @@ class Curriculo extends CI_Controller {
                 case 'PREMIOS-TITULOS':
                     $this->Premio($id, $child);
                     break;
+                case 'RESUMO-CV':
+                    break;
+                case 'OUTRAS-INFORMACOES-RELEVANTES':
+                    break;
                 default :
+                    //echo "<br>" . 'GERAL: ' . $name;
                     break;
             }
         }
@@ -440,7 +445,7 @@ class Curriculo extends CI_Controller {
                             $producao['natureza'] = $aux['NATUREZA'];
                             break;
                         default :
-                            //var_dump($tipo);
+                            //echo "<br>" . 'PRODUÇÃO: ' . $tipo;
                             break;
                     }
                     $producao['keywords'] = null;
@@ -556,8 +561,16 @@ class Curriculo extends CI_Controller {
                 case 'PROCESSOS-OU-TECNICAS':
                     break;
 
+                case 'MARCA':
+                    $aux = $child;
+                    $producao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DA-MARCA'}['ANO-DESENVOLVIMENTO']));
+                    $producao['titulo'] = $aux->{'DADOS-BASICOS-DA-MARCA'}['TITULO'];
+                    $producao['natureza'] = $aux->{'DETALHAMENTO-DA-MARCA'}['NATUREZA'];
+                    $this->Curriculo_model->insert('fat_producao', $producao);
+                    break;
+
                 default :
-                    echo $child->getName() . '<br>';
+                    //echo "<br>" . 'PRODUÇÃO: ' . $child->getName();
                     break;
             }
         }
@@ -591,8 +604,13 @@ class Curriculo extends CI_Controller {
                                 $banca['sobre'] = $aux->{'INFORMACOES-ADICIONAIS'}['DESCRICAO-INFORMACOES-ADICIONAIS'];
                                 $this->Curriculo_model->insert('fat_banca', $banca);
                                 break;
+                            case 'BANCA-JULGADORA-PARA-PROFESSOR-TITULAR':
+                                break;
+                            case 'BANCA-JULGADORA-PARA-AVALIACAO-CURSOS':
+                                break;
+
                             default :
-                                //var_dump($title);
+                                //echo "<br>" . 'BANCAS: ' . $title;
                                 break;
                         }
                     }
@@ -658,9 +676,13 @@ class Curriculo extends CI_Controller {
                                 $evento['nome'] = $child->{'DETALHAMENTO-DA-PARTICIPACAO-EM-OLIMPIADA'}['NOME-DO-EVENTO'];
                                 $this->Curriculo_model->insert('fat_evento', $evento);
                                 break;
-
+                            case 'PARTICIPACAO-EM-FEIRA':
+                                break;
+                            case 'PARTICIPACAO-EM-EXPOSICAO':
+                                break;
+                            
                             default :
-                                //var_dump($child->getName());
+                                //echo "<br>" . 'PARTICIPAÇÃO: ' . $child->getName();
                                 break;
                         }
                     }
@@ -696,9 +718,12 @@ class Curriculo extends CI_Controller {
 
                         case 'PARTICIPACAO-EM-BANCA-DE-GRADUACAO':
                             break;
-
+                        case 'PARTICIPACAO-EM-BANCA-DE-DOUTORADO':
+                            break;
+                        case 'PARTICIPACAO-EM-BANCA-DE-EXAME-QUALIFICACAO':
+                            break;
                         default :
-                            //var_dump($aux->getName());
+                            //echo "<br>" . 'PARTICIPACAO_BANCA: ' . $aux->getName();
                             break;
                     }
                     break;
@@ -809,9 +834,11 @@ class Curriculo extends CI_Controller {
                             $orientacao['status'] = "EM ANDAMENTO";
                             $this->Curriculo_model->insert('fat_orientacao', $orientacao);
                             break;
-
+                            
+                        case 'OUTRAS-ORIENTACOES-EM-ANDAMENTO':
+                            break;
                         default :
-                            //var_dump($tipo);
+                            //echo "<br>" . 'ORIENTAÇÃO: ' . $tipo;
                             break;
                     }
                     break;
@@ -819,7 +846,7 @@ class Curriculo extends CI_Controller {
 
 
                 default :
-                    //var_dump($title);
+                    //echo "<br>" . 'COMPLEMENTOS: ' . $title;
                     break;
             }
         }

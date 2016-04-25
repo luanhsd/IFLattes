@@ -10,7 +10,6 @@ class Curriculo_model extends CI_Model {
 
     public function insert($table, $dados = NULL) {
         if ($dados != null) {
-            //var_dump($table);
             $this->db->insert($table, $dados);
             return $this->db->insert_id();
         }
