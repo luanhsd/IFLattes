@@ -25,6 +25,7 @@ class Curriculo extends CI_Controller {
                 $targetFile = $targetPath . $_FILES['file']['name'];
                 move_uploaded_file($_FILES['file']['tmp_name'], $targetFile);
                 $FileXML = $this->extrair($targetFile);
+                sleep(180);
                 //$this->readXml($FileXML);
             }
         }

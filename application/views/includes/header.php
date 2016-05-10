@@ -11,19 +11,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <meta name="description" content="<?php echo $name; ?>">
         <meta name="author" content="<?php echo $autor ?>">
 
-        <!-- <link href="assets/less/styles.less" rel="stylesheet/less" media="all">  -->
+        <!-- DC.JS -->
+        <link rel="stylesheet" type="text/css" href="http://dc-js.github.io/dc.js/css/dc.css"/>
+        <script type="text/javascript" src="http://dc-js.github.io/dc.js/js/d3.js"></script>
+        <script type="text/javascript" src="http://dc-js.github.io/dc.js/js/crossfilter.js"></script>
+        <script type="text/javascript" src="http://dc-js.github.io/dc.js/js/dc.js"></script>
+        
+        <link href="assets/less/styles.less" rel="stylesheet/less" media="all">  
         <link rel="stylesheet" href="<?php echo base_url('assets/css/styles.min.css?=113'); ?>">
         <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600' rel='stylesheet' type='text/css'>
 
 
         <link href='<?php echo base_url('assets/demo/variations/default.css'); ?>' rel='stylesheet' type='text/css' media='all' id='styleswitcher'> 
 
-        <link href='<?php echo base_url('assets/demo/variations/default.css');?>' rel='stylesheet' type='text/css' media='all' id='headerswitcher'> 
-        
+        <link href='<?php echo base_url('assets/demo/variations/default.css'); ?>' rel='stylesheet' type='text/css' media='all' id='headerswitcher'> 
+
         <link href='<?php echo base_url('assets/plugins/bootstrap-fileinput/css/fileinput.min.css'); ?>' rel='stylesheet' type='text/css' />
         <link href='<?php echo base_url('assets/fonts/glyphicons/css/glyphicons.css') ?>' rel='stylesheet'>
-        <link rel='stylesheet' type='text/css' href='<?php echo base_url('assets/plugins/codeprettifier/prettify.css')?>' /> 
-        <link rel='stylesheet' type='text/css' href='<?php echo base_url('assets/plugins/form-toggle/toggles.css')?>' /> 
+        <link rel='stylesheet' type='text/css' href='<?php echo base_url('assets/plugins/codeprettifier/prettify.css') ?>' /> 
+        <link rel='stylesheet' type='text/css' href='<?php echo base_url('assets/plugins/form-toggle/toggles.css') ?>' /> 
 <!-- <script type="text/javascript" src="assets/js/less.js"></script> -->
 
     </head>
@@ -34,9 +40,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <a id="leftmenu-trigger" class="tooltips" data-toggle="tooltip" data-placement="right" title="Toggle Sidebar"></a>
 
             <div class="navbar-header pull-left">
-                 <a class="navbar-brand" href="index.htm"></a>
+                <a class="navbar-brand" href="index.htm"></a>
             </div>
-            
+
         </header>
 
         <div id="page-container">         

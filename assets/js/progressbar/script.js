@@ -23,6 +23,7 @@ $('#uploadform').submit(function (e) {
             var myXhr = $.ajaxSettings.xhr();
             if (myXhr.upload) {
                 myXhr.upload.addEventListener('progress', progress, false);
+                
             }
             return myXhr;
         },
