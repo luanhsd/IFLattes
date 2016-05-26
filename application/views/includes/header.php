@@ -16,6 +16,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <script type="text/javascript" src="http://dc-js.github.io/dc.js/js/d3.js"></script>
         <script type="text/javascript" src="http://dc-js.github.io/dc.js/js/crossfilter.js"></script>
         <script type="text/javascript" src="http://dc-js.github.io/dc.js/js/dc.js"></script>
+
+        <script type='text/javascript' src='<?php echo base_url('assets/js/jquery-1.10.2.min.js') ?>'></script> 
+        <script type='text/javascript' src='<?php echo base_url('assets/js/jqueryui-1.10.3.min.js') ?>'></script> 
         
         <link href="assets/less/styles.less" rel="stylesheet/less" media="all">  
         <link rel="stylesheet" href="<?php echo base_url('assets/css/styles.min.css?=113'); ?>">

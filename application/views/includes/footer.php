@@ -22,8 +22,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 -->
 
 
-<script type='text/javascript' src='<?php echo base_url('assets/js/jquery-1.10.2.min.js')?>'></script> 
-<script type='text/javascript' src='<?php echo base_url('assets/js/jqueryui-1.10.3.min.js')?>'></script> 
+
 
 <script type='text/javascript' src='<?php echo base_url('assets/js/bootstrap.min.js')?>'></script> 
 
@@ -59,8 +58,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     });
 
 </script>
-<script type='text/javascript' src='<?php echo base_url('assets/js/progressbar/script.js')?>'></script> 
-
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDeewbHaInUFv1a6vtaWdZuPPt30ksa1Z8&callback=initMap">
+</script>
 
 
 </body>

@@ -9,7 +9,7 @@ class Curriculo_model extends CI_Model {
     }
 
     public function insert($table, $dados = NULL) {
-        if ($dados != null) {
+       if ($dados != null) {
             $this->db->insert($table, $dados);
             return $this->db->insert_id();
         }

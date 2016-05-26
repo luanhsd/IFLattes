@@ -25,8 +25,7 @@ class Curriculo extends CI_Controller {
                 $targetFile = $targetPath . $_FILES['file']['name'];
                 move_uploaded_file($_FILES['file']['tmp_name'], $targetFile);
                 $FileXML = $this->extrair($targetFile);
-                sleep(180);
-                //$this->readXml($FileXML);
+                $this->readXml($FileXML);
             }
         }
 
@@ -78,10 +77,10 @@ class Curriculo extends CI_Controller {
                 case 'PRODUCAO-BIBLIOGRAFICA':
                 case 'PRODUCAO-TECNICA':
                 case 'OUTRA-PRODUCAO':
-                    $this->Producao($id, $child);
+                    //$this->Producao($id, $child);
                     break;
                 case 'DADOS-COMPLEMENTARES':
-                    $this->Complementos($id, $child);
+                    //$this->Complementos($id, $child);
                     break;
                 default :
                     //echo "<br>" . 'READXML: ' . $name;
@@ -140,7 +139,27 @@ class Curriculo extends CI_Controller {
         $endereco['cidade'] = $node->{'ENDERECO-PROFISSIONAL'}['CIDADE'];
         $endereco['bairro'] = $node->{'ENDERECO-PROFISSIONAL'}['BAIRRO'];
         $endereco['logradouro'] = $node->{'ENDERECO-PROFISSIONAL'}['LOGRADOURO-COMPLEMENTO'];
+        $coordinates = $this->getLongLat($endereco);
+        $endereco['latitude'] = $coordinates['lat'];
+        $endereco['longitude'] = $coordinates['long'];
         $this->Curriculo_model->insert('ref_endereco', $endereco);
+    }
+
+    private function getLongLat($endereco) {
+        $key = 'AIzaSyDk-WqSjJlaaxV5lWft133p2esKGW9aJ5w';
+        $address = $endereco['cidade'] . ',' . $endereco['cep'] . ',' . $endereco['estado'];
+        $address = urlencode($address);
+        $url = "https://maps.google.com/maps/api/geocode/json?address={$address}&key={$key}";
+        $resp_json = file_get_contents($url);
+        $resp = json_decode($resp_json, true);
+        $coordinates['lat'] = 0;
+        $coordinates['long'] = 0;
+        if ($resp['status'] == 'OK') {
+            $coordinates['lat'] = $resp['results'][0]['geometry']['location']['lat'];
+            $coordinates['long'] = $resp['results'][0]['geometry']['location']['lng'];
+        } else {
+        }
+        return $coordinates;
     }
 
     private function Formacao($id, $node) {
