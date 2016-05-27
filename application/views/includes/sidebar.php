@@ -19,8 +19,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <ul class='acc-menu'>
                     <li><?php echo anchor('Curriculo',"ZipFile<span class='badge badge-success'>new</span>"); ?></li>
                     <li><?php echo anchor('Curriculo',"URL"); ?></li>
-                    <li><?php echo anchor('Curriculo',"Registros"); ?></li>
-                    <li><?php echo anchor('Curriculo',"Maps"); ?></li>
                 </ul>
             </li>
             <li><?php echo anchor('Pessoas',"Registros"); ?></li>

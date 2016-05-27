@@ -35,8 +35,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </div>
         </div> <!-- container -->
     </div> <!--wrap -->
-</div> <!-- page-content -->
-
+</div> <!-- page-content --> 
 <script>
     var map; // Global declaration of the map  
     var iw = new google.maps.InfoWindow(); // Global declaration of the infowindow  
@@ -44,30 +43,35 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     function initialize()
     {
         var myOptions = {
-            zoom: 13,
-            center: new google.maps.LatLng(37.4419, -122.1419),
+            zoom: 9,
+            center: new google.maps.LatLng(-23.5489, -46.6388),
             mapTypeId: google.maps.MapTypeId.ROADMAP
         }
         map = new google.maps.Map(document.getElementById("map"), myOptions);
 
-        var markerOptions = {
-            map: map,
-            position: new google.maps.LatLng(37.429, -122.1419)
-        };
-        marker = new google.maps.Marker(markerOptions);
 
-        google.maps.event.addListener(marker, "click", function ()
-        {
-            // Make an AJAX request to get the data  
-            // The return will be put into the InfoWindow  
-            $.ajax({
-                url: 'ajax/get_infowindow_content.php',
-                success: function (data) {
-                    iw.setContent(data);
-                    iw.open(map, marker);
+        $.ajax({
+            url: "Maps/getEndereco",
+            dataType: "json",
+            success: function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    console.log(data[i]);
+                    var markerOptions = {
+                        map: map,
+                        position: new google.maps.LatLng(data[i].latitude, data[i].longitude),
+                        title: data[i].local
+                    };
+                    marker = new google.maps.Marker(markerOptions);
+                    
+                    google.maps.event.addListener(marker, "click", function ()
+                    {
+                        console.log((data[i].local));
+                        iw.content("data[i]");
+                        iw.open(map, marker);
+                    });
                 }
-            });
-        });
+            }
+        }
+        );
     }
-
 </script>

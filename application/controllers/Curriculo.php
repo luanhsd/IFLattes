@@ -107,18 +107,18 @@ class Curriculo extends CI_Controller {
                     $this->Endereco($id, $child);
                     break;
                 case 'FORMACAO-ACADEMICA-TITULACAO':
-                    $this->Formacao($id, $child);
+                    //$this->Formacao($id, $child);
                     break;
                 case 'ATUACOES-PROFISSIONAIS':
-                    $this->Atuacao($id, $child);
+                    //$this->Atuacao($id, $child);
                     break;
                 case 'AREAS-DE-ATUACAO':
                     break;
                 case 'IDIOMAS':
-                    $this->Idioma($id, $child, $data_cur);
+                    //$this->Idioma($id, $child, $data_cur);
                     break;
                 case 'PREMIOS-TITULOS':
-                    $this->Premio($id, $child);
+                    //$this->Premio($id, $child);
                     break;
                 case 'RESUMO-CV':
                     break;
