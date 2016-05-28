@@ -132,17 +132,20 @@ class Curriculo extends CI_Controller {
     }
 
     private function Endereco($id, $node) {
-        $endereco['id_user'] = $id;
-        $endereco['local'] = $node->{'ENDERECO-PROFISSIONAL'}['NOME-INSTITUICAO-EMPRESA'];
-        $endereco['cep'] = $node->{'ENDERECO-PROFISSIONAL'}['CEP'];
-        $endereco['estado'] = $node->{'ENDERECO-PROFISSIONAL'}['UF'];
-        $endereco['cidade'] = $node->{'ENDERECO-PROFISSIONAL'}['CIDADE'];
-        $endereco['bairro'] = $node->{'ENDERECO-PROFISSIONAL'}['BAIRRO'];
-        $endereco['logradouro'] = $node->{'ENDERECO-PROFISSIONAL'}['LOGRADOURO-COMPLEMENTO'];
-        $coordinates = $this->getLongLat($endereco);
-        $endereco['latitude'] = $coordinates['lat'];
-        $endereco['longitude'] = $coordinates['long'];
-        $this->Curriculo_model->insert('ref_endereco', $endereco);
+        if ($node->{'ENDERECO-PROFISSIONAL'}['CODIGO-INSTITUICAO-EMPRESA'] != '') {
+            $endereco['id_user'] = $id;
+            $endereco['local'] = $node->{'ENDERECO-PROFISSIONAL'}['NOME-INSTITUICAO-EMPRESA'];
+            $endereco['cep'] = $node->{'ENDERECO-PROFISSIONAL'}['CEP'];
+            $endereco['estado'] = $node->{'ENDERECO-PROFISSIONAL'}['UF'];
+            $endereco['cidade'] = $node->{'ENDERECO-PROFISSIONAL'}['CIDADE'];
+            $endereco['bairro'] = $node->{'ENDERECO-PROFISSIONAL'}['BAIRRO'];
+            $endereco['logradouro'] = $node->{'ENDERECO-PROFISSIONAL'}['LOGRADOURO-COMPLEMENTO'];
+            $coordinates = $this->getLongLat($endereco);
+            $endereco['latitude'] = $coordinates['lat'];
+            $endereco['longitude'] = $coordinates['long'];
+            echo $endereco['id_user'];
+            $this->Curriculo_model->insert('ref_endereco', $endereco);
+        }
     }
 
     private function getLongLat($endereco) {
@@ -158,6 +161,7 @@ class Curriculo extends CI_Controller {
             $coordinates['lat'] = $resp['results'][0]['geometry']['location']['lat'];
             $coordinates['long'] = $resp['results'][0]['geometry']['location']['lng'];
         } else {
+            
         }
         return $coordinates;
     }

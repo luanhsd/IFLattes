@@ -43,12 +43,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     function initialize()
     {
         var myOptions = {
-            zoom: 9,
+            zoom: 7,
             center: new google.maps.LatLng(-23.5489, -46.6388),
             mapTypeId: google.maps.MapTypeId.ROADMAP
         }
         map = new google.maps.Map(document.getElementById("map"), myOptions);
-
 
         $.ajax({
             url: "Maps/getEndereco",
@@ -62,12 +61,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         title: data[i].local
                     };
                     marker = new google.maps.Marker(markerOptions);
-                    
-                    google.maps.event.addListener(marker, "click", function ()
-                    {
-                        console.log((data[i].local));
-                        iw.content("data[i]");
-                        iw.open(map, marker);
+
+                    var infowindow = new google.maps.InfoWindow({
+                        content: data[i].local
+                    });
+
+                    marker.addListener('click', function () {
+                        infowindow.open(map, marker);
                     });
                 }
             }
