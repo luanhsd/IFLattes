@@ -37,8 +37,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     </div> <!--wrap -->
 </div> <!-- page-content --> 
 <script>
-    var map; // Global declaration of the map  
-    var iw = new google.maps.InfoWindow(); // Global declaration of the infowindow  
+    var map; // Global declaration of the map    
 
     function initialize()
     {
@@ -54,7 +53,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             dataType: "json",
             success: function (data) {
                 for (var i = 0; i < data.length; i++) {
-                    console.log(data[i]);
+
                     var markerOptions = {
                         map: map,
                         position: new google.maps.LatLng(data[i].latitude, data[i].longitude),
@@ -62,13 +61,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     };
                     marker = new google.maps.Marker(markerOptions);
 
-                    var infowindow = new google.maps.InfoWindow({
-                        content: data[i].local
-                    });
+                    var iw = new google.maps.InfoWindow();
+                    var content = "<b>" + data[i].cidade + "<b>";
+                    
+                    google.maps.event.addListener(marker, 'click', (function (marker, content, iw) {
+                        return function () {
+                            iw.setContent(content);
+                            iw.open(map, marker);
+                        };
+                    })(marker, content, iw));
 
-                    marker.addListener('click', function () {
-                        infowindow.open(map, marker);
-                    });
+
+
                 }
             }
         }
