@@ -25,7 +25,7 @@ class Maps extends CI_Controller {
     }
 
     public function getEndereco() {
-        $data = $this->Curriculo_model->datalist('ref_endereco');
+        $data = $this->Curriculo_model->datalist('campus_cadastrado');
         echo json_encode($data);
     }
 
