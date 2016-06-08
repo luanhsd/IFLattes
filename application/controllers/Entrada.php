@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Curriculo extends CI_Controller {
+class Entrada extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
@@ -12,6 +12,10 @@ class Curriculo extends CI_Controller {
     }
 
     public function index() {
+        
+    }
+
+    public function zip() {
         if ($this->input->post()) {
             $cpt = count($_FILES['file']['name']);
             $files = $_FILES;
@@ -31,13 +35,26 @@ class Curriculo extends CI_Controller {
 
         $dados = array(
             'title' => "Curriculos",
-            'h1' => "Incluir",
+            'h1' => "Incluir/Zip",
             'name' => "IFLattes",
             'autor' => "Luan Dantas"
         );
         $this->load->view('includes/header', $dados);
         $this->load->view('includes/sidebar', $dados);
-        $this->load->view('curriculo/zip', $dados);
+        $this->load->view('entrada/zip', $dados);
+        $this->load->view('includes/footer', $dados);
+    }
+
+    public function url() {
+        $dados = array(
+            'title' => "Curriculos",
+            'h1' => "Incluir/Url",
+            'name' => "IFLattes",
+            'autor' => "Luan Dantas"
+        );
+        $this->load->view('includes/header', $dados);
+        $this->load->view('includes/sidebar', $dados);
+        $this->load->view('entrada/url', $dados);
         $this->load->view('includes/footer', $dados);
     }
 
@@ -77,10 +94,10 @@ class Curriculo extends CI_Controller {
                 case 'PRODUCAO-BIBLIOGRAFICA':
                 case 'PRODUCAO-TECNICA':
                 case 'OUTRA-PRODUCAO':
-                    $this->Producao($id, $child);
+                    //$this->Producao($id, $child);
                     break;
                 case 'DADOS-COMPLEMENTARES':
-                    $this->Complementos($id, $child);
+                    //$this->Complementos($id, $child);
                     break;
                 default :
                     //echo "<br>" . 'READXML: ' . $name;
@@ -104,10 +121,10 @@ class Curriculo extends CI_Controller {
             $name = $child->getName();
             switch ($name) {
                 case 'ENDERECO':
-                    $this->Endereco($id, $child);
+                    //$this->Endereco($id, $child);
                     break;
                 case 'FORMACAO-ACADEMICA-TITULACAO':
-                    $this->Formacao($id, $child);
+                    //$this->Formacao($id, $child);
                     break;
                 case 'ATUACOES-PROFISSIONAIS':
                     $this->Atuacao($id, $child);
@@ -115,10 +132,10 @@ class Curriculo extends CI_Controller {
                 case 'AREAS-DE-ATUACAO':
                     break;
                 case 'IDIOMAS':
-                    $this->Idioma($id, $child, $data_cur);
+                    //$this->Idioma($id, $child, $data_cur);
                     break;
                 case 'PREMIOS-TITULOS':
-                    $this->Premio($id, $child);
+                    //$this->Premio($id, $child);
                     break;
                 case 'RESUMO-CV':
                     break;
@@ -191,10 +208,15 @@ class Curriculo extends CI_Controller {
 
     private function Atuacao($id, $node) {
         foreach ($node as $array) {
+            var_dump($array);
             $atuacao['id_user'] = $id;
             $atuacao['instituicao'] = $array['NOME-INSTITUICAO'];
             foreach ($array->{'VINCULOS'} as $vinculo) {
-                $atuacao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $vinculo['ANO-INICIO'], 'mes_inicial' => $vinculo['MES-INICIO'], 'ano_final' => $vinculo['ANO-FIM'], 'mes_final' => $vinculo['MES-FIM']));
+                //$ano_inic=$vinculo['ANO-INICIO'];
+                //$ano_final=$vinculo['ANO-FIM'];
+                //$mes_inic=$vinculo['MES-INICIO'];
+                //$mes_final=$vinculo['MES-FIM'];
+                $atuacao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => , 'mes_inicial' => $vinculo['MES-INICIO'], 'ano_final' => $vinculo['ANO-FIM'], 'mes_final' => $vinculo['MES-FIM']));
                 $atuacao['tipo_vinculo'] = $vinculo['TIPO-DE-VINCULO'];
                 $atuacao['enq_funcional'] = $vinculo['OUTRO-ENQUADRAMENTO-FUNCIONAL-INFORMADO'];
                 $atuacao['carga_horaria'] = $vinculo['CARGA-HORARIA-SEMANAL'];

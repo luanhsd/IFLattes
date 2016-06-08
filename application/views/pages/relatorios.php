@@ -53,7 +53,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             dataType: "json",
             success: function (data) {
                 for (var i = 0; i < data.length; i++) {
-
                     var markerOptions = {
                         map: map,
                         position: new google.maps.LatLng(data[i].latitude, data[i].longitude),

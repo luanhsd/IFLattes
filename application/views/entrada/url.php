@@ -13,15 +13,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <h1><?php echo $h1; ?></h1>
         </div>
         <div class="container">
-
-
-
             <div class="row">
                 <div class="col-md-12">
 
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <h4>Upload de Arquivos</h4>
+                            <h4>Url List</h4>
                             <div class="options">
                             </div>
                         </div> 
@@ -31,9 +28,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <div class="progress-bar progress-bar-info" id="progressbar" style="width:0%">
                                     </div>                                        
                                 </div>
-                                <div class="form-group">
-                                    <input type="file" multiple="multiple" id="file" name="file[]" multiple data-preview-file-type="any" data-upload-url="#">
-                                </div> 
+                                <textarea></textarea>
                         </div>
                         <div class="panel-footer">
                             <button type="submit" class="btn btn-success " id="submit" name="submit">CADASTRAR</button> 
