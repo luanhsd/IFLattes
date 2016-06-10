@@ -216,7 +216,7 @@ class Entrada extends CI_Controller {
                 //$ano_final=$vinculo['ANO-FIM'];
                 //$mes_inic=$vinculo['MES-INICIO'];
                 //$mes_final=$vinculo['MES-FIM'];
-                $atuacao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => , 'mes_inicial' => $vinculo['MES-INICIO'], 'ano_final' => $vinculo['ANO-FIM'], 'mes_final' => $vinculo['MES-FIM']));
+                //$atuacao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => , 'mes_inicial' => $vinculo['MES-INICIO'], 'ano_final' => $vinculo['ANO-FIM'], 'mes_final' => $vinculo['MES-FIM']));
                 $atuacao['tipo_vinculo'] = $vinculo['TIPO-DE-VINCULO'];
                 $atuacao['enq_funcional'] = $vinculo['OUTRO-ENQUADRAMENTO-FUNCIONAL-INFORMADO'];
                 $atuacao['carga_horaria'] = $vinculo['CARGA-HORARIA-SEMANAL'];
