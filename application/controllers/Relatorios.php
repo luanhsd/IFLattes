@@ -24,9 +24,10 @@ class Relatorios extends CI_Controller {
         $this->load->view('includes/footer', $dados);
     }
 
-    public function getEndereco() {
+    public function getCampus() {
         $data = $this->Relatorio_model->campus();
-        echo json_encode($data);
+        for ($i = 0; $i < sizeof($data); $i++) {
+            $makers[$i]['lat'] = $data[$i]->latitude;
     }
 
 }

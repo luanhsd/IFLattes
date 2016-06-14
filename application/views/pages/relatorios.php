@@ -14,173 +14,160 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="panel-group">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <h4>CAMPUS CADASTRADOS</h4>
+                    <div class="panel panel-primary ">
+                        <div class="panel-heading">
+                            <h4>CAMPUS CADASTRADOS</h4>
+                            <div class="options">
+                                <a onclick="maps()" name = "view" id="campus">
+                                    <i class="glyphicon glyphicon-download"></i></a>
                             </div>
-                            <div class="panel-body">
-
-                            </div>
-                        </div> 
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <h4>TITULAÇÃO</h4>
-                            </div>
-                            <div class="panel-body">
-
-                            </div>
-                        </div> 
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <h4>PUBLICAÇÃO POR CAMPUS</h4>
-                            </div>
-                            <div class="panel-body">
-
-                            </div>
-                        </div> 
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <h4>PUBLICAÇÃO POR TITULAÇÃO</h4>
-                            </div>
-                            <div class="panel-body">
-
-                            </div>
-                        </div> 
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <h4>PUBLICAÇÃO POR TEMPO</h4>
-                            </div>
-                            <div class="panel-body">
-
-                            </div>
-                        </div> 
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <h4>TEMPO DE ATUAÇÃO</h4>
-                            </div>
-                            <div class="panel-body">
-
-                            </div>
-                        </div> 
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <h4>AREAS DE ATUAÇÃO/CONHECIMENTO</h4>
-                            </div>
-                            <div class="panel-body">
-
-                            </div>
-                        </div> 
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <h4>AREAS DE CONHECIMENTO POR CAMPUS</h4>
-                            </div>
-                            <div class="panel-body">
-
-                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div id="map_campus" style="height:400px"></div>
                         </div>
                     </div> 
                 </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h4>TITULAÇÃO</h4>
+                            <div class="options">
+                                <a onclick="maps()" name = "view" id="qtd_titulacao">
+                                    <i class="glyphicon glyphicon-download"></i></a>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+
+                        </div>
+                    </div> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h4>PUBLICAÇÃO POR CAMPUS</h4>
+                            <div class="options">
+                                <a onclick="maps()" name = "view" id="null">
+                                    <i class="glyphicon glyphicon-download"></i></a>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+
+                        </div>
+                    </div> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h4>PUBLICAÇÃO POR TITULAÇÃO</h4>
+                            <div class="options">
+                                <a onclick="maps()" name = "view" id="campus">
+                                    <i class="glyphicon glyphicon-download"></i></a>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+
+                        </div>
+                    </div> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h4>PUBLICAÇÃO POR TEMPO</h4>
+                            <div class="options">
+                                <a onclick="maps()" name = "view" id="campus">
+                                    <i class="glyphicon glyphicon-download"></i></a>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+
+                        </div>
+                    </div> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h4>TEMPO DE ATUAÇÃO</h4>
+                            <div class="options">
+                                <a onclick="maps()" name = "view" id="campus">
+                                    <i class="glyphicon glyphicon-download"></i></a>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+
+                        </div>
+                    </div> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h4>AREAS DE ATUAÇÃO/CONHECIMENTO</h4>
+                            <div class="options">
+                                <a onclick="maps()" name = "view" id="campus">
+                                    <i class="glyphicon glyphicon-download"></i></a>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                        </div>
+                    </div> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h4>AREAS DE CONHECIMENTO POR CAMPUS</h4>
+                            <div class="options">
+                                <a onclick="maps()" name = "view" id="campus">
+                                    <i class="glyphicon glyphicon-download"></i></a>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+
+                        </div>
+                    </div>
+                </div> 
             </div>
 
         </div> <!-- container -->
     </div> <!--wrap -->
 </div> <!-- page-content --> 
-<script>
-    var map; // Global declaration of the map    
-
-    function initialize()
-    {
-        var myOptions = {
-            zoom: 7,
-            center: new google.maps.LatLng(-23.5489, -46.6388),
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        }
-        map = new google.maps.Map(document.getElementById("map"), myOptions);
-
-        $.ajax({
-            url: "Relatorios/getEndereco",
-            dataType: "json",
-            success: function (data) {
-                for (var i = 0; i < data.length; i++) {
-                    var markerOptions = {
-                        map: map,
-                        position: new google.maps.LatLng(data[i].latitude, data[i].longitude),
-                        title: data[i].local
-                    };
-                    marker = new google.maps.Marker(markerOptions);
-
-                    var iw = new google.maps.InfoWindow();
-                    var content = "<b>" + data[i].cidade + "<b>";
-
-                    google.maps.event.addListener(marker, 'click', (function (marker, content, iw) {
-                        return function () {
-                            iw.setContent(content);
-                            iw.open(map, marker);
-                        };
-                    })(marker, content, iw));
-
-
-
-                }
-            }
-        }
-        );
-    }
-</script>
 
 
 <script type="text/javascript">
 
     var yearRingChart = dc.pieChart("#chart-ring-year"),
-    spenderRowChart = dc.rowChart("#chart-row-spenders");
+            spenderRowChart = dc.rowChart("#chart-row-spenders");
 
     var data1 = [
-    {Name: 'Mr A', Spent: 40, Year: 2011},
-    {Name: 'Mr B', Spent: 10, Year: 2011},
-    {Name: 'Mr C', Spent: 40, Year: 2011},
-    {Name: 'Mr A', Spent: 70, Year: 2012},
-    {Name: 'Mr B', Spent: 20, Year: 2012},
-    {Name: 'Mr B', Spent: 50, Year: 2013},
-    {Name: 'Mr C', Spent: 30, Year: 2013}
+        {Name: 'Mr A', Spent: 40, Year: 2011},
+        {Name: 'Mr B', Spent: 10, Year: 2011},
+        {Name: 'Mr C', Spent: 40, Year: 2011},
+        {Name: 'Mr A', Spent: 70, Year: 2012},
+        {Name: 'Mr B', Spent: 20, Year: 2012},
+        {Name: 'Mr B', Spent: 50, Year: 2013},
+        {Name: 'Mr C', Spent: 30, Year: 2013}
     ];
 
     var data2 = [
-    {Name: 'Mr A', Spent: 10, Year: 2011},
-    {Name: 'Mr B', Spent: 20, Year: 2011},
-    {Name: 'Mr C', Spent: 50, Year: 2011},
-    {Name: 'Mr A', Spent: 20, Year: 2012},
-    {Name: 'Mr B', Spent: 40, Year: 2012},
-    {Name: 'Mr B', Spent: 50, Year: 2013},
-    {Name: 'Mr C', Spent: 50, Year: 2013}
+        {Name: 'Mr A', Spent: 10, Year: 2011},
+        {Name: 'Mr B', Spent: 20, Year: 2011},
+        {Name: 'Mr C', Spent: 50, Year: 2011},
+        {Name: 'Mr A', Spent: 20, Year: 2012},
+        {Name: 'Mr B', Spent: 40, Year: 2012},
+        {Name: 'Mr B', Spent: 50, Year: 2013},
+        {Name: 'Mr C', Spent: 50, Year: 2013}
     ];
 
     // data reset function (adapted)
@@ -193,35 +180,35 @@
 
     // set crossfilter with first dataset
     var ndx = crossfilter(data1),
-    yearDim = ndx.dimension(function (d) {
-        return +d.Year;
-    }),
-    spendDim = ndx.dimension(function (d) {
-        return Math.floor(d.Spent / 10);
-    }),
-    nameDim = ndx.dimension(function (d) {
-        return d.Name;
-    }),
-    spendPerYear = yearDim.group().reduceSum(function (d) {
+            yearDim = ndx.dimension(function (d) {
+                return +d.Year;
+            }),
+            spendDim = ndx.dimension(function (d) {
+                return Math.floor(d.Spent / 10);
+            }),
+            nameDim = ndx.dimension(function (d) {
+                return d.Name;
+            }),
+            spendPerYear = yearDim.group().reduceSum(function (d) {
         return +d.Spent;
     }),
-    spendPerName = nameDim.group().reduceSum(function (d) {
+            spendPerName = nameDim.group().reduceSum(function (d) {
         return +d.Spent;
     }),
-    spendHist = spendDim.group().reduceCount();
+            spendHist = spendDim.group().reduceCount();
 
     function render_plots() {
         yearRingChart
-        .width(200).height(200)
-        .dimension(yearDim)
-        .group(spendPerYear)
-        .innerRadius(50);
+                .width(200).height(200)
+                .dimension(yearDim)
+                .group(spendPerYear)
+                .innerRadius(50);
 
         spenderRowChart
-        .width(250).height(200)
-        .dimension(nameDim)
-        .group(spendPerName)
-        .elasticX(true);
+                .width(250).height(200)
+                .dimension(nameDim)
+                .group(spendPerName)
+                .elasticX(true);
 
         dc.renderAll();
     }
@@ -234,23 +221,23 @@
         resetData(ndx, [yearDim, spendDim, nameDim]);
 
         ndx = crossfilter(data2),
-        yearDim = ndx.dimension(function (d) {
-            return +d.Year;
-        }),
-        spendDim = ndx.dimension(function (d) {
-            return Math.floor(d.Spent / 10);
-        }),
-        nameDim = ndx.dimension(function (d) {
-            return d.Name;
-        }),
-        spendPerYear = yearDim.group().reduceSum(function (d) {
+                yearDim = ndx.dimension(function (d) {
+                    return +d.Year;
+                }),
+                spendDim = ndx.dimension(function (d) {
+                    return Math.floor(d.Spent / 10);
+                }),
+                nameDim = ndx.dimension(function (d) {
+                    return d.Name;
+                }),
+                spendPerYear = yearDim.group().reduceSum(function (d) {
             return +d.Spent;
         }),
-        spendPerName = nameDim.group().reduceSum(function (d) {
+                spendPerName = nameDim.group().reduceSum(function (d) {
             return +d.Spent;
         }),
-        x = spendPerName,
-        spendHist = spendDim.group().reduceCount();
+                x = spendPerName,
+                spendHist = spendDim.group().reduceCount();
 
         render_plots();
     }, 3000);

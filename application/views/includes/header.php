@@ -20,6 +20,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <script type='text/javascript' src='<?php echo base_url('assets/js/jquery-1.10.2.min.js') ?>'></script> 
         <script type='text/javascript' src='<?php echo base_url('assets/js/jqueryui-1.10.3.min.js') ?>'></script> 
         
+        <script type='text/javascript' src='<?php echo base_url('assets/js/relatorios/maps.js') ?>'></script> 
+        
         <link href="assets/less/styles.less" rel="stylesheet/less" media="all">  
         <link rel="stylesheet" href="<?php echo base_url('assets/css/styles.min.css?=113'); ?>">
         <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600' rel='stylesheet' type='text/css'>
