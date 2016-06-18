@@ -14,7 +14,12 @@ class Relatorio_model extends CI_Model {
     }
 
     public function qtd_titulacao() {
-        $query = $this->db->query('select local,cidade,latitude,longitude from ref_endereco group by cidade');
+        $query = $this->db->query('select e.cidade,f.nivel,count(f.nivel) as qtd from fat_formacao as f inner join ref_endereco as e where f.id_user=e.id_user group by e.cidade,f.nivel order by e.cidade');
+        return $query->result();
+    }
+
+    public function areas_tree() {
+        $query = $this->db->query('select a.grande_area, a.area,a.sub_area,a.espec from fat_area as a where area!=""');
         return $query->result();
     }
 
@@ -39,6 +44,5 @@ class Relatorio_model extends CI_Model {
         $query = $this->db->query('select f.id_user,r.cidade,f.id_tempo,f.espec from fat_area as f inner join ref_endereco as r where f.id_user = r.id_user and f.espec!="" group by f.espec;');
         return $query->result();
     }
-    
-        
+
 }

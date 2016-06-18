@@ -1,10 +1,6 @@
-function maps() {
+function maps(id) {
     var map;
     var url; // url do metodo php que retorna a consulta com o db
-    var id; //identificação da div onde ira ser gerado o map
-    var element = document.getElementsByName("view");
-    $(element).click(function () {
-        var id = this.id;
         switch (id) {
             case 'campus':
                 var url = "/IFLattes/Relatorios/getCampus";
@@ -45,6 +41,5 @@ function maps() {
             }
         }
         );
-    });
 }
 
