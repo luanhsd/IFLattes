@@ -3,10 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/wamp/www/IFLattes/application/controllers/Relatorios.php</file>
-            <file>file:/C:/wamp/www/IFLattes/assets/js/relatorios/tree.js</file>
-            <file>file:/C:/wamp/www/IFLattes/application/models/relatorio_model.php</file>
-            <file>file:/C:/wamp/www/IFLattes/assets/js/relatorios/graphs.js</file>
+            <file>file:/C:/wamp/www/IFLattes/application/controllers/Entrada.php</file>
+            <file>file:/C:/wamp/www/IFLattes/application/models/curriculo_model.php</file>
         </group>
     </open-files>
 </project-private>
