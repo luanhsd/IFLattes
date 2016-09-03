@@ -94,10 +94,10 @@ class Entrada extends CI_Controller {
                 case 'PRODUCAO-BIBLIOGRAFICA':
                 case 'PRODUCAO-TECNICA':
                 case 'OUTRA-PRODUCAO':
-                    //$this->Producao($id, $child);
+                    $this->Producao($id, $child);
                     break;
                 case 'DADOS-COMPLEMENTARES':
-                    //$this->Complementos($id, $child);
+                    $this->Complementos($id, $child);
                     break;
                 default :
                     //echo "<br>" . 'READXML: ' . $name;
@@ -115,13 +115,13 @@ class Entrada extends CI_Controller {
         $pessoa['id_user'] = $id;
         $pessoa['nm_user'] = $node['NOME-COMPLETO'];
         $pessoa['citacao'] = $node['NOME-EM-CITACOES-BIBLIOGRAFICAS'];
-        //$this->Curriculo_model->insert('dim_pessoa', $pessoa);
+        $this->Curriculo_model->insert('dim_pessoa', $pessoa);
 
         foreach ($node->children() as $child) {
             $name = $child->getName();
             switch ($name) {
                 case 'ENDERECO':
-                    //$this->Endereco($id, $child);
+                    $this->Endereco($id, $child);
                     break;
                 case 'FORMACAO-ACADEMICA-TITULACAO':
                     $this->Formacao($id, $child);
@@ -132,10 +132,10 @@ class Entrada extends CI_Controller {
                 case 'AREAS-DE-ATUACAO':
                     break;
                 case 'IDIOMAS':
-                    //$this->Idioma($id, $child, $data_cur);
+                    $this->Idioma($id, $child, $data_cur);
                     break;
                 case 'PREMIOS-TITULOS':
-                    //$this->Premio($id, $child);
+                    $this->Premio($id, $child);
                     break;
                 case 'RESUMO-CV':
                     break;
@@ -185,7 +185,7 @@ class Entrada extends CI_Controller {
     private function Formacao($id, $node) {
         foreach ($node->children() as $child) {
             $formacao['id_user'] = $id;
-            $formacao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $child['ANO-DE-INICIO'], 'ano_final' => (int)$child['ANO-DE-CONCLUSAO']));
+            $formacao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $child['ANO-DE-INICIO'], 'ano_final' => (int) $child['ANO-DE-CONCLUSAO']));
             $formacao['nivel'] = $child->getName();
             $formacao['curso'] = $child['NOME-CURSO'];
             if ($formacao['curso'] == null) {
@@ -200,7 +200,7 @@ class Entrada extends CI_Controller {
             $formacao['local'] = $child['NOME-INSTITUICAO'];
             $this->Curriculo_model->insert('fat_formacao', $formacao);
             if (isset($child->{'AREAS-DO-CONHECIMENTO'}) && count($child->{'AREAS-DO-CONHECIMENTO'}) > 0) {
-                $date = array("ano_inicial" => (int)$child['ANO-DE-INICIO'], "ano_final" => (int)$child['ANO-DE-CONCLUSAO']);
+                $date = array("ano_inicial" => (int) $child['ANO-DE-INICIO'], "ano_final" => (int) $child['ANO-DE-CONCLUSAO']);
                 $node = $child->{'AREAS-DO-CONHECIMENTO'}->children();
                 $this->Area($id, $node, $date);
             }
@@ -212,7 +212,6 @@ class Entrada extends CI_Controller {
             $atuacao['id_user'] = $id;
             $atuacao['instituicao'] = $array['NOME-INSTITUICAO'];
             foreach ($array->{'VINCULOS'} as $vinculo) {
-                var_dump($vinculo);
                 $ano_inic = (int) $vinculo['ANO-INICIO'];
                 $ano_final = (int) $vinculo['ANO_FIM'] == "" ? date("Y") : $vinculo['ANO_FIM'];
                 $mes_inic = (int) $vinculo['MES-INICIO'];
@@ -220,7 +219,7 @@ class Entrada extends CI_Controller {
                 $atuacao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $ano_inic, 'mes_inicial' => $mes_inic, 'ano_final' => $ano_final, 'mes_final' => $mes_final));
                 $atuacao['tipo_vinculo'] = $vinculo['TIPO-DE-VINCULO'];
                 $atuacao['enq_funcional'] = $vinculo['OUTRO-ENQUADRAMENTO-FUNCIONAL-INFORMADO'];
-                $atuacao['carga_horaria'] = $vinculo['CARGA-HORARIA-SEMANAL'];
+                $atuacao['carga_horaria'] = (int) $vinculo['CARGA-HORARIA-SEMANAL'];
                 $this->Curriculo_model->insert('fat_atuacao', $atuacao);
             }
         }
@@ -653,7 +652,7 @@ class Entrada extends CI_Controller {
                         $aux = $child;
                         switch ($title) {
                             case 'BANCA-JULGADORA-PARA-CONCURSO-PUBLICO':
-                                $banca['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DA-BANCA-JULGADORA-PARA-CONCURSO-PUBLICO'}['ANO']));
+                                $banca['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $aux->{'DADOS-BASICOS-DA-BANCA-JULGADORA-PARA-CONCURSO-PUBLICO'}['ANO']));
                                 $banca['banca'] = $title;
                                 $banca['tipo'] = $aux->{'DADOS-BASICOS-DA-' . $title}['TIPO'];
                                 $banca['natureza'] = $aux->{'DADOS-BASICOS-DA-' . $title}['NATUREZA'];
@@ -662,7 +661,7 @@ class Entrada extends CI_Controller {
                                 $this->Curriculo_model->insert('fat_banca', $banca);
                                 break;
                             case 'OUTRAS-BANCAS-JULGADORAS':
-                                $banca['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DE-OUTRAS-BANCAS-JULGADORAS'}['ANO']));
+                                $banca['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $aux->{'DADOS-BASICOS-DE-OUTRAS-BANCAS-JULGADORAS'}['ANO']));
                                 $banca['banca'] = $title;
                                 $banca['tipo'] = $aux->{'DADOS-BASICOS-DE-' . $title}['TIPO'];
                                 $banca['natureza'] = $aux->{'DADOS-BASICOS-DE-' . $title}['NATUREZA'];
@@ -671,7 +670,7 @@ class Entrada extends CI_Controller {
                                 $this->Curriculo_model->insert('fat_banca', $banca);
                                 break;
                             case 'BANCA-JULGADORA-PARA-PROFESSOR-TITULAR':
-                                $banca['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DA-' . $title}['ANO']));
+                                $banca['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $aux->{'DADOS-BASICOS-DA-' . $title}['ANO']));
                                 $banca['banca'] = $title;
                                 $banca['tipo'] = $aux->{'DADOS-BASICOS-DA-' . $title}['TIPO'];
                                 $banca['natureza'] = $aux->{'DADOS-BASICOS-DA-' . $title}['NATUREZA'];
@@ -680,7 +679,7 @@ class Entrada extends CI_Controller {
                                 $this->Curriculo_model->insert('fat_banca', $banca);
                                 break;
                             case 'BANCA-JULGADORA-PARA-AVALIACAO-CURSOS':
-                                $banca['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DA-' . $title}['ANO']));
+                                $banca['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $aux->{'DADOS-BASICOS-DA-' . $title}['ANO']));
                                 $banca['banca'] = $title;
                                 $banca['tipo'] = $aux->{'DADOS-BASICOS-DA-' . $title}['TIPO'];
                                 $banca['natureza'] = $aux->{'DADOS-BASICOS-DA-' . $title}['NATUREZA'];
@@ -701,7 +700,7 @@ class Entrada extends CI_Controller {
                         $evento['id_user'] = $id;
                         switch ($child->getName()) {
                             case 'PARTICIPACAO-EM-SIMPOSIO':
-                                $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-SIMPOSIO'}['ANO']));
+                                $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-SIMPOSIO'}['ANO']));
                                 $evento['natureza'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-SIMPOSIO'}['NATUREZA'];
                                 $evento['titulo'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-SIMPOSIO'}['TITULO'];
                                 $evento['nome'] = $child->{'DETALHAMENTO-DA-PARTICIPACAO-EM-SIMPOSIO'}['NOME-DO-EVENTO'];
@@ -709,7 +708,7 @@ class Entrada extends CI_Controller {
                                 break;
 
                             case 'PARTICIPACAO-EM-ENCONTRO':
-                                $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-ENCONTRO'}['ANO']));
+                                $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-ENCONTRO'}['ANO']));
                                 $evento['natureza'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-ENCONTRO'}['NATUREZA'];
                                 $evento['titulo'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-ENCONTRO'}['TITULO'];
                                 $evento['nome'] = $child->{'DETALHAMENTO-DA-PARTICIPACAO-EM-ENCONTRO'}['NOME-DO-EVENTO'];
@@ -717,7 +716,7 @@ class Entrada extends CI_Controller {
                                 break;
 
                             case 'OUTRAS-PARTICIPACOES-EM-EVENTOS-CONGRESSOS':
-                                $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $child->{'DADOS-BASICOS-DE-OUTRAS-PARTICIPACOES-EM-EVENTOS-CONGRESSOS'}['ANO']));
+                                $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $child->{'DADOS-BASICOS-DE-OUTRAS-PARTICIPACOES-EM-EVENTOS-CONGRESSOS'}['ANO']));
                                 $evento['natureza'] = $child->{'DADOS-BASICOS-DE-OUTRAS-PARTICIPACOES-EM-EVENTOS-CONGRESSOS'}['NATUREZA'];
                                 $evento['titulo'] = $child->{'DADOS-BASICOS-DE-OUTRAS-PARTICIPACOES-EM-EVENTOS-CONGRESSOS'}['TITULO'];
                                 $evento['nome'] = $child->{'DETALHAMENTO-DE-OUTRAS-PARTICIPACOES-EM-EVENTOS-CONGRESSOS'}['NOME-DO-EVENTO'];
@@ -725,7 +724,7 @@ class Entrada extends CI_Controller {
                                 break;
 
                             case 'PARTICIPACAO-EM-CONGRESSO':
-                                $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-CONGRESSO'}['ANO']));
+                                $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-CONGRESSO'}['ANO']));
                                 $evento['natureza'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-CONGRESSO'}['NATUREZA'];
                                 $evento['titulo'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-CONGRESSO'}['TITULO'];
                                 $evento['nome'] = $child->{'DETALHAMENTO-DA-PARTICIPACAO-EM-CONGRESSO'}['NOME-DO-EVENTO'];
@@ -734,7 +733,7 @@ class Entrada extends CI_Controller {
 
 
                             case 'PARTICIPACAO-EM-SEMINARIO':
-                                $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-SEMINARIO'}['ANO']));
+                                $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-SEMINARIO'}['ANO']));
                                 $evento['natureza'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-SEMINARIO'}['NATUREZA'];
                                 $evento['titulo'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-SEMINARIO'}['TITULO'];
                                 $evento['nome'] = $child->{'DETALHAMENTO-DA-PARTICIPACAO-EM-SEMINARIO'}['NOME-DO-EVENTO'];
@@ -742,7 +741,7 @@ class Entrada extends CI_Controller {
                                 break;
 
                             case 'PARTICIPACAO-EM-OFICINA':
-                                $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-OFICINA'}['ANO']));
+                                $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-OFICINA'}['ANO']));
                                 $evento['natureza'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-OFICINA'}['NATUREZA'];
                                 $evento['titulo'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-OFICINA'}['TITULO'];
                                 $evento['nome'] = $child->{'DETALHAMENTO-DA-PARTICIPACAO-EM-OFICINA'}['NOME-DO-EVENTO'];
@@ -750,21 +749,21 @@ class Entrada extends CI_Controller {
                                 break;
 
                             case 'PARTICIPACAO-EM-OLIMPIADA':
-                                $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-OLIMPIADA'}['ANO']));
+                                $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-OLIMPIADA'}['ANO']));
                                 $evento['natureza'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-OLIMPIADA'}['NATUREZA'];
                                 $evento['titulo'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-OLIMPIADA'}['TITULO'];
                                 $evento['nome'] = $child->{'DETALHAMENTO-DA-PARTICIPACAO-EM-OLIMPIADA'}['NOME-DO-EVENTO'];
                                 $this->Curriculo_model->insert('fat_evento', $evento);
                                 break;
                             case 'PARTICIPACAO-EM-FEIRA':
-                                $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-FEIRA'}['ANO']));
+                                $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-FEIRA'}['ANO']));
                                 $evento['natureza'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-FEIRA'}['NATUREZA'];
                                 $evento['titulo'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-FEIRA'}['TITULO'];
                                 $evento['nome'] = $child->{'DETALHAMENTO-DA-PARTICIPACAO-EM-FEIRA'}['NOME-DO-EVENTO'];
                                 $this->Curriculo_model->insert('fat_evento', $evento);
                                 break;
                             case 'PARTICIPACAO-EM-EXPOSICAO':
-                                $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-EXPOSICAO'}['ANO']));
+                                $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-EXPOSICAO'}['ANO']));
                                 $evento['natureza'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-EXPOSICAO'}['NATUREZA'];
                                 $evento['titulo'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-EXPOSICAO'}['TITULO'];
                                 $evento['nome'] = $child->{'DETALHAMENTO-DA-PARTICIPACAO-EM-EXPOSICAO'}['NOME-DO-EVENTO'];
@@ -788,7 +787,7 @@ class Entrada extends CI_Controller {
                 case 'FORMACAO-COMPLEMENTAR':
                     $aux = $array->{$array->children()->getName()};
                     $formacao['id_user'] = $id;
-                    $formacao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux['ANO-DE-INICIO'], 'ano_final' => $aux['ANO-DE-CONCLUSAO']));
+                    $formacao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $aux['ANO-DE-INICIO'], 'ano_final' => (int) $aux['ANO-DE-CONCLUSAO']));
                     $formacao['nivel'] = 'FORMACAO-COMPLEMENTAR';
                     $formacao['curso'] = $aux['NOME-CURSO'];
                     $formacao['local'] = $aux['NOME-INSTITUICAO'];
