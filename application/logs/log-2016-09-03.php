@@ -1,0 +1,13 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+
+ERROR - 2016-09-03 20:28:10 --> Severity: Warning --> move_uploaded_file(C:\wamp\www\IFLattes/uploads/0041476511097254.zip): failed to open stream: No such file or directory C:\wamp\www\IFLattes\application\controllers\Entrada.php 30
+ERROR - 2016-09-03 20:28:10 --> Severity: Warning --> move_uploaded_file(): Unable to move 'C:\wamp\tmp\phpC7B8.tmp' to 'C:\wamp\www\IFLattes/uploads/0041476511097254.zip' C:\wamp\www\IFLattes\application\controllers\Entrada.php 30
+ERROR - 2016-09-03 20:28:10 --> Severity: Warning --> fopen(C:\wamp\www\IFLattes/uploads/0041476511097254.zip): failed to open stream: No such file or directory C:\wamp\www\IFLattes\application\libraries\Unzip.php 246
+ERROR - 2016-09-03 20:28:10 --> Severity: Warning --> rename(C:\wamp\www\IFLattes/uploads/curriculo.xml,C:\wamp\www\IFLattes/uploads/0041476511097254.xml): O sistema n�o pode encontrar o caminho especificado. (code: 3) C:\wamp\www\IFLattes\application\controllers\Entrada.php 66
+ERROR - 2016-09-03 20:28:10 --> Severity: Warning --> simplexml_load_file(): I/O warning : failed to load external entity &quot;file:/C:/wamp/www/IFLattes/uploads/0041476511097254.xml&quot; C:\wamp\www\IFLattes\application\controllers\Entrada.php 77
+ERROR - 2016-09-03 20:28:10 --> Severity: Warning --> Cannot modify header information - headers already sent by (output started at C:\wamp\www\IFLattes\system\core\Exceptions.php:272) C:\wamp\www\IFLattes\system\core\Common.php 573
+ERROR - 2016-09-03 20:28:10 --> Severity: Error --> Call to a member function children() on boolean C:\wamp\www\IFLattes\application\controllers\Entrada.php 87
+ERROR - 2016-09-03 20:38:37 --> Severity: Warning --> file_get_contents(https://maps.google.com/maps/api/geocode/json?address=Guarulhos%2C07115-000%2CSP&amp;key=AIzaSyDk-WqSjJlaaxV5lWft133p2esKGW9aJ5w): failed to open stream: HTTP request failed!  C:\wamp\www\IFLattes\application\controllers\Entrada.php 172
+ERROR - 2016-09-03 20:42:54 --> Severity: Warning --> file_get_contents(): SSL: Handshake timed out C:\wamp\www\IFLattes\application\controllers\Entrada.php 172
+ERROR - 2016-09-03 20:42:54 --> Severity: Warning --> file_get_contents(): Failed to enable crypto C:\wamp\www\IFLattes\application\controllers\Entrada.php 172
+ERROR - 2016-09-03 20:42:54 --> Severity: Warning --> file_get_contents(https://maps.google.com/maps/api/geocode/json?address=Piracicaba%2C13414-155%2CSP&amp;key=AIzaSyDk-WqSjJlaaxV5lWft133p2esKGW9aJ5w): failed to open stream: operation failed C:\wamp\www\IFLattes\application\controllers\Entrada.php 172
