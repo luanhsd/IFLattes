@@ -1,6 +1,9 @@
-$("#submit").click(function (e) {
-    $('html, body').animate({scrollTop: 0}, 'fast');
-    $("#submit").click();
+$("#progress").hide();
+$('#submitzip').click(function () {
+    $('body,html').animate({
+        scrollTop: 0
+    }, 500);
+   $("#submit").click();
     e.preventDefault();
 });
 
@@ -11,19 +14,19 @@ $('#submit').change(function (e) {
 
 });
 
+
 $('#uploadform').submit(function (e) {
 
     var formData = new FormData(this);
-
+    $("#progress").show();
     $.ajax({
         type: 'POST',
-        url: 'Curriculo/',
+        url: 'zip/',
         data: formData,
         xhr: function () {
             var myXhr = $.ajaxSettings.xhr();
             if (myXhr.upload) {
                 myXhr.upload.addEventListener('progress', progress, false);
-                
             }
             return myXhr;
         },
@@ -31,13 +34,12 @@ $('#uploadform').submit(function (e) {
         contentType: false,
         processData: false,
         success: function (data) {
-            console.log(data);
+            //console.log(data);
         },
         error: function (data) {
-            console.log(data);
+            //console.log(data);
         }
     });
-
     e.preventDefault();
 
 });
@@ -50,11 +52,12 @@ function progress(e) {
         var current = e.loaded;
 
         var Percentage = (current * 100) / max;
-        console.log(Percentage);
         progressbar.style.width = Percentage + '%';
-
+        
         if (Percentage >= 100)
-        {
+        {       
+            jQuery('#panel-zip').prepend("<div class='alert alert-dismissable alert-success'>Arquivos inseridos para fila de processamento<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>x</button></div>");
         }
+        
     }
 }

@@ -21,9 +21,83 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <li><?php echo anchor('Entrada/url',"<i class='glyphicon glyphicon-link'></i><span>URL</span>"); ?></li>
                 </ul>
             </li>
-            <li><?php echo anchor('Registros',"<i class='glyphicon glyphicon-list-alt'></i><span>Registros</span>"); ?></li>
-            <li><?php echo anchor('Curriculos',"<i class='glyphicon glyphicon-briefcase'></i><span>Currículos</span>"); ?></li>
-            <li><?php echo anchor('Relatorios',"<i class='glyphicon glyphicon-bookmark'></i><span>Relatórios</span>"); ?></li>
+            <li><a href="javascript:;"><i class="fa fa-user"></i> <span>Docentes</span></a>
+                <ul class='acc-menu'>
+                    <li><?php echo anchor('Entrada/zip',"<i class='glyphicon glyphicon-book'></i><span>ZipFile</span><span class='badge badge-success'>new</span>"); ?></li>
+                </ul>
+            </li>
+            <li><a href="javascript:;"><i class="fa fa-sitemap"></i> <span>Formação</span></a>
+                <ul class='acc-menu'>
+                    <li><?php echo anchor('Entrada/zip',"<i class='glyphicon glyphicon-book'></i><span>ZipFile</span><span class='badge badge-success'>new</span>"); ?></li>
+                </ul>
+            </li>
+            <li><a href="javascript:;"><i class="fa fa-suitcase"></i> <span>Atuação</span></a>
+                <ul class='acc-menu'>
+                    <li><?php echo anchor('Entrada/zip',"<i class='glyphicon glyphicon-book'></i><span>ZipFile</span><span class='badge badge-success'>new</span>"); ?></li>
+                </ul>
+            </li>
+            <li><a href="javascript:;"><i class="fa fa-book"></i> <span>Áreas de Estudo</span></a>
+                <ul class='acc-menu'>
+                    <li><?php echo anchor('Entrada/zip',"<i class='glyphicon glyphicon-book'></i><span>ZipFile</span><span class='badge badge-success'>new</span>"); ?></li>
+                </ul>
+            </li>
+            <li><a href="javascript:;"><i class="fa fa-globe"></i> <span>Idioma</span></a>
+                <ul class='acc-menu'>
+                    <li><?php echo anchor('Entrada/zip',"<i class='glyphicon glyphicon-book'></i><span>ZipFile</span><span class='badge badge-success'>new</span>"); ?></li>
+                </ul>
+            </li>
+            <li><a href="javascript:;"><i class="fa fa-wrench"></i> <span>Produção</span></a>
+                <ul class='acc-menu'>
+                    <li><?php echo anchor('Entrada/zip',"<i class='glyphicon glyphicon-book'></i><span>ZipFile</span><span class='badge badge-success'>new</span>"); ?></li>
+                </ul>
+            </li>
+            <li><a href="javascript:;"><i class="fa fa-flask"></i> <span>Pesquisa</span></a>
+                <ul class='acc-menu'>
+                    <li><?php echo anchor('Entrada/zip',"<i class='glyphicon glyphicon-book'></i><span>ZipFile</span><span class='badge badge-success'>new</span>"); ?></li>
+                </ul>
+            </li>
+            <li><a href="javascript:;"><i class="fa fa-thumb-tack"></i> <span>Orientação</span></a>
+                <ul class='acc-menu'>
+                    <li><?php echo anchor('Entrada/zip',"<i class='glyphicon glyphicon-book'></i><span>ZipFile</span><span class='badge badge-success'>new</span>"); ?></li>
+                </ul>
+            </li>
+            <li><a href="javascript:;"><i class="fa fa-trophy"></i> <span>Prêmio</span></a>
+                <ul class='acc-menu'>
+                    <li><?php echo anchor('Entrada/zip',"<i class='glyphicon glyphicon-book'></i><span>ZipFile</span><span class='badge badge-success'>new</span>"); ?></li>
+                </ul>
+            </li>
+            <li><a href="javascript:;"><i class="fa fa-legal"></i> <span>Banca</span></a>
+                <ul class='acc-menu'>
+                    <li><?php echo anchor('Entrada/zip',"<i class='glyphicon glyphicon-book'></i><span>ZipFile</span><span class='badge badge-success'>new</span>"); ?></li>
+                </ul>
+            </li>
+            <li><a href="javascript:;"><i class="fa fa-edit"></i> <span>Revisor</span></a>
+                <ul class='acc-menu'>
+                    <li><?php echo anchor('Entrada/zip',"<i class='glyphicon glyphicon-book'></i><span>ZipFile</span><span class='badge badge-success'>new</span>"); ?></li>
+                </ul>
+            </li>
+            <li><a href="javascript:;"><i class="fa fa-code-fork"></i> <span>Projeto</span></a>
+                <ul class='acc-menu'>
+                    <li><?php echo anchor('Entrada/zip',"<i class='glyphicon glyphicon-book'></i><span>ZipFile</span><span class='badge badge-success'>new</span>"); ?></li>
+                </ul>
+            </li>
+            <li><a href="javascript:;"><i class="fa fa-folder"></i> <span>Patente</span></a>
+                <ul class='acc-menu'>
+                    <li><?php echo anchor('Entrada/zip',"<i class='glyphicon glyphicon-book'></i><span>ZipFile</span><span class='badge badge-success'>new</span>"); ?></li>
+                </ul>
+            </li>
+            <li><a href="javascript:;"><i class="fa fa-group"></i> <span>Corpo Editorial</span></a>
+                <ul class='acc-menu'>
+                    <li><?php echo anchor('Entrada/zip',"<i class='glyphicon glyphicon-book'></i><span>ZipFile</span><span class='badge badge-success'>new</span>"); ?></li>
+
+                </ul>
+            </li>
+            <li><a href="javascript:;"><i class="fa fa-star"></i> <span>Evento</span></a>
+                <ul class='acc-menu'>
+                    <li><?php echo anchor('Entrada/zip',"<i class='glyphicon glyphicon-book'></i><span>ZipFile</span><span class='badge badge-success'>new</span>"); ?></li>
+                </ul>
+            </li>
+            
             
     </ul>
     <!-- END SIDEBAR MENU -->

@@ -25,9 +25,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <div class="options">
                             </div>
                         </div> 
-                        <div class="panel-body">
+                        <div class="panel-body" id="panel-zip">
                             <form id="uploadform" action="zip" method="POST" enctype="multipart/form-data">
-                                <div class="progress progress-striped active">
+                                <div class="progress progress-striped active" id="progress">
                                     <div class="progress-bar progress-bar-info" id="progressbar" style="width:0%">
                                     </div>                                        
                                 </div>
@@ -35,8 +35,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <input type="file" multiple="multiple" id="file" name="file[]" multiple data-preview-file-type="any" data-upload-url="#">
                                 </div> 
                         </div>
-                        <div class="panel-footer">
-                            <button type="submit" class="btn btn-success " id="submit" name="submit">CADASTRAR</button> 
+                        <div class="panel-footer" id="panel-footer-zip">
+                            <button type="submit" class="btn btn-success " id="submitzip" name="submit">CADASTRAR</button> 
                         </div>
                         </form> 
                     </div>
