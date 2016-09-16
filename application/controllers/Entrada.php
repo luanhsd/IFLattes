@@ -29,7 +29,7 @@ class Entrada extends CI_Controller {
                 $targetFile = $targetPath . $_FILES['file']['name'];
                 move_uploaded_file($_FILES['file']['tmp_name'], $targetFile);
                 $FileXML = $this->extrair($targetFile);
-                //$this->readXml($FileXML);
+                $this->Curriculo_model->insert('fila_process', array('url' => $FileXML, 'log' => null, 'type' => 'XML'));
             }
         }
 
@@ -56,6 +56,10 @@ class Entrada extends CI_Controller {
         $this->load->view('includes/sidebar', $dados);
         $this->load->view('entrada/url', $dados);
         $this->load->view('includes/footer', $dados);
+    }
+
+    private function processList() {
+                
     }
 
     private function extrair($file) {
