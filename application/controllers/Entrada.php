@@ -19,13 +19,14 @@ class Entrada extends CI_Controller {
         if ($this->input->post()) {
             $cpt = count($_FILES['file']['name']);
             $files = $_FILES;
+            echo base_path();
             for ($i = 0; $i < $cpt; $i++) {
                 $_FILES['file']['name'] = $files['file']['name'][$i];
                 $_FILES['file']['type'] = $files['file']['type'][$i];
                 $_FILES['file']['tmp_name'] = $files['file']['tmp_name'][$i];
                 $_FILES['file']['error'] = $files['file']['error'][$i];
                 $_FILES['file']['size'] = $files['file']['size'][$i];
-                $targetPath = getcwd() . "/uploads/";
+                $targetPath = base_path() . '\\uploads\\';
                 $targetFile = $targetPath . $_FILES['file']['name'];
                 move_uploaded_file($_FILES['file']['tmp_name'], $targetFile);
                 $FileXML = $this->extrair($targetFile);
@@ -65,7 +66,7 @@ class Entrada extends CI_Controller {
     }
 
     private function extrair($file) {
-        $targetPath = getcwd() . "/uploads/";
+        $targetPath = base_path() . '\\uploads\\';
         $this->unzip->allow(array('xml'));
         $this->unzip->extract($file);
         $nameFile = explode('.', $file)[0] . '.xml';
