@@ -58,8 +58,10 @@ class Entrada extends CI_Controller {
         $this->load->view('includes/footer', $dados);
     }
 
-    private function processList() {
-                
+    public function processList() {
+        $first = $this->Curriculo_model->returnFirstUrl();
+        $this->readXml($first);
+        $this->Curriculo_model->delete($first, 'fila_process');
     }
 
     private function extrair($file) {

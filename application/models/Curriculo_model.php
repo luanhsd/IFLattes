@@ -22,6 +22,11 @@ class Curriculo_model extends CI_Model {
         }
     }
 
+    public function delete($url, $table) {
+        $this->db->where('url', $url);
+        $this->db->delete($table);
+    }
+
     public function datalist($table) {
         $query = $this->db->get($table);
         return $query->result();
@@ -31,6 +36,12 @@ class Curriculo_model extends CI_Model {
         $query = $this->db->query('select c.id_cliente as id, c.nm_cliente as nome, c.cpf_cnpj, c.rg,c.email, t.tel_local, t.celular, t.tel_comercial, e.cep, e.estado, e.cidade, e.bairro, e.logradouro, e.numero, e.complemento from cliente as c inner join endereco as e inner join telefone as t where c.id_endereco=e.id_endereco and c.id_telefone=t.id_telefone and c.id_cliente=' . $id);
         $row = $query->row();
         return $row;
+    }
+
+    public function returnFirstUrl() {
+        $query = $this->db->query('select url from fila_process limit 1');
+        $row = $query->row_array();
+        return $row['url'];
     }
 
     public function returnLastId() {
