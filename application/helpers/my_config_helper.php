@@ -3,5 +3,5 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 function base_path() {
-    return "C:\\wamp\\www\\IFLattes\\";
+    return "/home/luanhsd/luanhsd.bot.sh/";
 }

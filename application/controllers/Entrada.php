@@ -12,24 +12,23 @@ class Entrada extends CI_Controller {
     }
 
     public function index() {
-        
+
     }
 
     public function zip() {
         if ($this->input->post()) {
             $cpt = count($_FILES['file']['name']);
             $files = $_FILES;
-            echo base_path();
             for ($i = 0; $i < $cpt; $i++) {
                 $_FILES['file']['name'] = $files['file']['name'][$i];
                 $_FILES['file']['type'] = $files['file']['type'][$i];
                 $_FILES['file']['tmp_name'] = $files['file']['tmp_name'][$i];
                 $_FILES['file']['error'] = $files['file']['error'][$i];
                 $_FILES['file']['size'] = $files['file']['size'][$i];
-                $targetPath = base_path() . '\\uploads\\';
-                $targetFile = $targetPath . $_FILES['file']['name'];
-                move_uploaded_file($_FILES['file']['tmp_name'], $targetFile);
-                $FileXML = $this->extrair($targetFile);
+                $targetPath = base_path() . 'uploads/';
+                $targetFile = $_FILES['file']['name'];
+                move_uploaded_file($_FILES['file']['tmp_name'], $targetPath.$targetFile);
+                $FileXML = $this->extrair($targetPath.$targetFile);
                 $this->Curriculo_model->insert('fila_process', array('url' => $FileXML, 'log' => null, 'type' => 'XML'));
             }
         }
@@ -66,11 +65,12 @@ class Entrada extends CI_Controller {
     }
 
     private function extrair($file) {
-        $targetPath = base_path() . '\\uploads\\';
+        $targetPath = base_path() . 'uploads/';
         $this->unzip->allow(array('xml'));
+        $nameFile =basename($file,'.zip').'.xml'; 
         $this->unzip->extract($file);
-        $nameFile = explode('.', $file)[0] . '.xml';
-        rename($targetPath . 'curriculo.xml', $nameFile);
+        chmod($targetPath.'curriculo.xml',0777);
+        rename($targetPath.'curriculo.xml', $targetPath.$nameFile);
         return $nameFile;
     }
 
@@ -184,7 +184,7 @@ class Entrada extends CI_Controller {
             $coordinates['lat'] = $resp['results'][0]['geometry']['location']['lat'];
             $coordinates['long'] = $resp['results'][0]['geometry']['location']['lng'];
         } else {
-            
+
         }
         return $coordinates;
     }
