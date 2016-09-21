@@ -12,7 +12,7 @@ class Entrada extends CI_Controller {
     }
 
     public function index() {
-
+        
     }
 
     public function zip() {
@@ -27,8 +27,8 @@ class Entrada extends CI_Controller {
                 $_FILES['file']['size'] = $files['file']['size'][$i];
                 $targetPath = base_path() . 'uploads/';
                 $targetFile = $_FILES['file']['name'];
-                move_uploaded_file($_FILES['file']['tmp_name'], $targetPath.$targetFile);
-                $FileXML = $this->extrair($targetPath.$targetFile);
+                move_uploaded_file($_FILES['file']['tmp_name'], $targetPath . $targetFile);
+                $FileXML = $this->extrair($targetPath . $targetFile);
                 $this->Curriculo_model->insert('fila_process', array('url' => $FileXML, 'log' => null, 'type' => 'XML'));
             }
         }
@@ -67,10 +67,10 @@ class Entrada extends CI_Controller {
     private function extrair($file) {
         $targetPath = base_path() . 'uploads/';
         $this->unzip->allow(array('xml'));
-        $nameFile =basename($file,'.zip').'.xml'; 
+        $nameFile = basename($file, '.zip') . '.xml';
         $this->unzip->extract($file);
-        chmod($targetPath.'curriculo.xml',0777);
-        rename($targetPath.'curriculo.xml', $targetPath.$nameFile);
+        chmod($targetPath . 'curriculo.xml', 0777);
+        rename($targetPath . 'curriculo.xml', $targetPath . $nameFile);
         return $nameFile;
     }
 
@@ -184,7 +184,7 @@ class Entrada extends CI_Controller {
             $coordinates['lat'] = $resp['results'][0]['geometry']['location']['lat'];
             $coordinates['long'] = $resp['results'][0]['geometry']['location']['lng'];
         } else {
-
+            
         }
         return $coordinates;
     }
