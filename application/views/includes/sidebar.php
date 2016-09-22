@@ -25,12 +25,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <ul class="acc-menu">
                 <li><a href="javascript:;"><i class="fa fa-user"></i> <span>Docentes</span></a>
                     <ul class='acc-menu'>
-                        <li><?php echo anchor('Entrada/zip', "<i class='glyphicon glyphicon-book'></i><span>ZipFile</span><span class='badge badge-success'>new</span>"); ?></li>
+                        <li><?php echo anchor('Docentes', "<span>Quem são ?</span>"); ?></li>
                     </ul>
                 </li>
                 <li><a href="javascript:;"><i class="fa fa-sitemap"></i> <span>Formação</span></a>
                     <ul class='acc-menu'>
-                        <li><?php echo anchor('Entrada/zip', "<i class='glyphicon glyphicon-book'></i><span>ZipFile</span><span class='badge badge-success'>new</span>"); ?></li>
+                        <li><?php echo anchor('*', "<i class='glyphicon glyphicon-book'></i><span>ZipFile</span>"); ?></li>
                     </ul>
                 </li>
                 <li><a href="javascript:;"><i class="fa fa-suitcase"></i> <span>Atuação</span></a>

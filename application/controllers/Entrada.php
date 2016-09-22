@@ -71,7 +71,7 @@ class Entrada extends CI_Controller {
         $this->unzip->extract($file);
         chmod($targetPath . 'curriculo.xml', 0777);
         rename($targetPath . 'curriculo.xml', $targetPath . $nameFile);
-        return $nameFile;
+        return $targetPath . $nameFile;
     }
 
     public function getID($file) {
