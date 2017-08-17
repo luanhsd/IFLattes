@@ -8,5 +8,9 @@ class Atuacao_model extends CI_Model {
         parent::__construct();
     }
 
+    public function vinculo_count() {
+        $query = $this->db->query("select count(a.id_user), a.tipo_vinculo from fat_atuacao as a where a.tipo_vinculo != '' group by a.tipo_vinculo;");
+        return $query->result();
+    }
 
 }

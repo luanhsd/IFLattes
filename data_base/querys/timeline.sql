@@ -1,0 +1,9 @@
+select t.ano_inicial,t.mes_inicial,a.grande_area,a.area,a.sub_area,a.espec from fat_area as a inner join dim_tempo as t where a.id_tempo=t.id_tempo and a.id_user='3036922516937013'; 
+select t.ano_inicial,t.mes_inicial,a.instituicao,a.tipo_vinculo,a.enq_funcional,a.carga_horaria from fat_atuacao as a inner join dim_tempo as t where a.id_tempo=t.id_tempo and a.id_user='3036922516937013'; 
+select t.ano_inicial,t.mes_inicial,b.banca,b.tipo,b.natureza,b.titulo,b.sobre from fat_banca as b inner join dim_tempo as t where b.id_tempo=t.id_tempo and b.id_user='3036922516937013'; 
+select t.ano_inicial,t.mes_inicial,e.nome,e.titulo,e.natureza from fat_evento as e inner join dim_tempo as t where e.id_tempo=t.id_tempo and e.id_user='3036922516937013';
+select t.ano_inicial,t.mes_inicial,f.nivel,f.curso,f.local,f.titulo,f.orientador,f.bolsa from fat_formacao as f inner join dim_tempo as t where f.id_tempo=t.id_tempo and f.id_user='3036922516937013';
+select t.ano_inicial,t.mes_inicial,o.titulo,o.natureza,o.tipo,o.categoria,o.keywords,o.setor,o.status from fat_orientacao as o inner join dim_tempo as t where o.id_tempo=t.id_tempo and o.id_user='3036922516937013';
+select t.ano_inicial,t.mes_inicial,p.titulo,p.categoria,p.instituicao,p.descricao from fat_patente as p inner join dim_tempo as t where p.id_tempo=t.id_tempo and p.id_user='3036922516937013';
+select t.ano_inicial,t.mes_inicial,p.nome,p.entidade from fat_premio as p inner join dim_tempo as t where p.id_tempo=t.id_tempo and p.id_user='3036922516937013';
+select t.ano_inicial,t.mes_inicial,p.titulo,p.natureza,p.tipo,p.categoria,p.keywords,p.setor from fat_producao as p inner join dim_tempo as t where p.id_tempo=t.id_tempo and p.id_user='3036922516937013';

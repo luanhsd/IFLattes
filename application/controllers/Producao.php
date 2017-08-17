@@ -7,7 +7,7 @@ class Producao extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->helper('array');
-        //$this->load->model('Curriculo_model');
+        $this->load->model('producao_model');
     }
 
     public function index() {
@@ -16,11 +16,11 @@ class Producao extends CI_Controller {
             'h1' => "Produção",
             'name' => "IFLattes",
             'autor' => "Luan Dantas",
-            //'data' => $this->Curriculo_model->datalist('curriculum')
+            'data' => $this->producao_model->datalist()
         );
-        $this->load->view('includes/header', $dados);
+        $this->load->view('includes/header_relatorios', $dados);
         $this->load->view('includes/sidebar', $dados);
-        $this->load->view('pages/registros', $dados);
+        $this->load->view('producao/producao_list', $dados);
         $this->load->view('includes/footer', $dados);
     }
 

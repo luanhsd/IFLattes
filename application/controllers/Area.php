@@ -16,11 +16,10 @@ class Area extends CI_Controller {
             'h1' => "Area",
             'name' => "IFLattes",
             'autor' => "Luan Dantas",
-            //'data' => $this->Curriculo_model->datalist('curriculum')
         );
         $this->load->view('includes/header', $dados);
         $this->load->view('includes/sidebar', $dados);
-        //$this->load->view('pages/registros', $dados);
+        $this->load->view('area/area_list', $dados);
         $this->load->view('includes/footer', $dados);
     }
 

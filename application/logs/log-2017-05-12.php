@@ -1,0 +1,18 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+
+ERROR - 2017-05-12 14:54:01 --> Severity: Warning --> move_uploaded_file(C:/wamp/www/IFLattes/uploads/9561797798603672.zip): failed to open stream: No such file or directory C:\wamp\www\IFLattes\application\controllers\Entrada.php 30
+ERROR - 2017-05-12 14:54:01 --> Severity: Warning --> move_uploaded_file(): Unable to move 'C:\wamp\tmp\phpEFDE.tmp' to 'C:/wamp/www/IFLattes/uploads/9561797798603672.zip' C:\wamp\www\IFLattes\application\controllers\Entrada.php 30
+ERROR - 2017-05-12 14:54:01 --> Severity: Warning --> fopen(C:/wamp/www/IFLattes/uploads/9561797798603672.zip): failed to open stream: No such file or directory C:\wamp\www\IFLattes\application\libraries\Unzip.php 246
+ERROR - 2017-05-12 14:54:01 --> Severity: Warning --> chmod(): No such file or directory C:\wamp\www\IFLattes\application\controllers\Entrada.php 72
+ERROR - 2017-05-12 14:54:01 --> Severity: Warning --> rename(C:/wamp/www/IFLattes/uploads/curriculo.xml,C:/wamp/www/IFLattes/uploads/9561797798603672.xml): O sistema n�o pode encontrar o caminho especificado. (code: 3) C:\wamp\www\IFLattes\application\controllers\Entrada.php 73
+ERROR - 2017-05-12 14:56:46 --> Severity: Warning --> fopen(C:/wamp/www/IFLattes/uploads/): failed to open stream: No such file or directory C:\wamp\www\IFLattes\application\libraries\Unzip.php 246
+ERROR - 2017-05-12 14:56:46 --> Severity: Warning --> chmod(): No such file or directory C:\wamp\www\IFLattes\application\controllers\Entrada.php 72
+ERROR - 2017-05-12 14:56:46 --> Severity: Warning --> rename(C:/wamp/www/IFLattes/uploads/curriculo.xml,C:/wamp/www/IFLattes/uploads/uploads.xml): O sistema n�o pode encontrar o caminho especificado. (code: 3) C:\wamp\www\IFLattes\application\controllers\Entrada.php 73
+ERROR - 2017-05-12 14:57:18 --> Severity: Warning --> fopen(C:/wamp/www/IFLattes/uploads/): failed to open stream: No such file or directory C:\wamp\www\IFLattes\application\libraries\Unzip.php 246
+ERROR - 2017-05-12 14:57:18 --> Severity: Warning --> chmod(): No such file or directory C:\wamp\www\IFLattes\application\controllers\Entrada.php 72
+ERROR - 2017-05-12 14:57:18 --> Severity: Warning --> rename(C:/wamp/www/IFLattes/uploads/curriculo.xml,C:/wamp/www/IFLattes/uploads/uploads.xml): O sistema n�o pode encontrar o arquivo especificado. (code: 2) C:\wamp\www\IFLattes\application\controllers\Entrada.php 73
+ERROR - 2017-05-12 14:57:18 --> Query error: Duplicate entry 'C:/wamp/www/IFLattes/uploads/uploads.xml' for key 'PRIMARY' - Invalid query: INSERT INTO `fila_process` (`url`, `log`, `type`) VALUES ('C:/wamp/www/IFLattes/uploads/uploads.xml', NULL, 'XML')
+ERROR - 2017-05-12 14:59:55 --> Severity: Warning --> simplexml_load_file(): I/O warning : failed to load external entity &quot;C:/wamp/www/IFLattes/uploads/0094565524057002.xml&quot; C:\wamp\www\IFLattes\application\controllers\Entrada.php 84
+ERROR - 2017-05-12 14:59:55 --> Severity: Error --> Call to a member function children() on boolean C:\wamp\www\IFLattes\application\controllers\Entrada.php 94
+ERROR - 2017-05-12 15:10:06 --> Query error: Incorrect integer value: 'www' for column 'id_user' at row 1 - Invalid query: INSERT INTO `dim_pessoa` (`id_user`, `nm_user`, `citacao`) VALUES ('www', 'Valdeci Donizete Gonçalves', 'GONÇALVES, V. D.;GONÇALVES, VALDECI DONIZETE')
+ERROR - 2017-05-12 15:10:11 --> Query error: Incorrect integer value: 'www' for column 'id_user' at row 1 - Invalid query: INSERT INTO `dim_pessoa` (`id_user`, `nm_user`, `citacao`) VALUES ('www', 'Valdeci Donizete Gonçalves', 'GONÇALVES, V. D.;GONÇALVES, VALDECI DONIZETE')
