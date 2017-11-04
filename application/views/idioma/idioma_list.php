@@ -18,6 +18,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <div class="panel-heading">
 
                             <div class="options">
+                                <?php qtd_cur(); ?>
                             </div>
                         </div>
                         <div class="panel-body">
@@ -68,6 +69,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <div class="panel-heading">
                             <h4></h4>
                             <div class="options">
+                                <?php qtd_cur(); ?>
                             </div>
                         </div>
                         <div class="panel-body">
@@ -248,6 +250,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     .dimension(runDimension)
                     .group(speedSumGroup)
                     .legend(dc.legend());
+                    
             // example of formatting the legend via svg
             // http://stackoverflow.com/questions/38430632/how-can-we-add-legends-value-beside-of-legend-with-proper-alignment
             compreensaoChart.on('pretransition', function (chart) {

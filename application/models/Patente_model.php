@@ -13,4 +13,11 @@ class Patente_model extends CI_Model {
         return $query->result();
     }
 
+    public function PatentsPerYear() {
+        $query = $this->db->query('select t.ano_inicial as ano,count(t.ano_inicial) as qtd from fat_patente as p inner join dim_tempo as t where p.id_tempo=t.id_tempo group by t.ano_inicial;');
+        return $query->result();
+    }
+
+    
+
 }

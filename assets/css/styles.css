@@ -11,6 +11,9 @@ html {
 body {
   margin: 0;
 }
+#map{
+  height: 300px;
+}
 article,
 aside,
 details,

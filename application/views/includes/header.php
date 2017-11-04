@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <meta name="author" content="<?php echo $autor ?>">
 
         <!-- <link href="assets/less/styles.less" rel="stylesheet/less" media="all">  -->
-        <link rel="stylesheet" href="<?php echo base_url('assets/css/styles.min.css?=113'); ?>">
+        <link rel="stylesheet" href="<?php echo base_url('assets/css/styles.css?=113'); ?>">
         <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600' rel='stylesheet' type='text/css'>
 
         <link rel='stylesheet' type='text/css' href='<?php echo base_url('assets/plugins/datatables/dataTables.css'); ?>' />
@@ -33,6 +33,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <!-- <script type="text/javascript" src="assets/js/less.js"></script> -->
 
         <!-- LIBRARIES GRAPHS -->
+        
         <link rel="stylesheet" href="<?php echo base_url('assets/DC/dc.css'); ?>"/>
         <script src="<?php echo base_url('assets/DC/crossfilter.js'); ?>"></script>
         <script src="<?php echo base_url('assets/DC/d3.js'); ?>"></script>

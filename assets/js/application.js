@@ -187,7 +187,6 @@ enquire.register("screen and (max-width: 767px)", {
 
         });
 
-        console.log("match");
     },
     unmatch : function() {
 

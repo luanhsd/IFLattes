@@ -18,6 +18,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <div class="panel-heading">
                             <h4></h4>
                             <div class="options">
+                                <?php qtd_cur(); ?>
                             </div>
                         </div>
                         <div class="panel-body">
@@ -41,17 +42,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     d3.json("<?php echo base_url('/Json/countFormacao'); ?>", function (error, data) {
         console.log(data);
         var ndx = crossfilter(data),
-                runDimension = ndx.dimension(function (d) {
+                NivelDimension = ndx.dimension(function (d) {
                     return d.nivel;
                 })
-        speedSumGroup = runDimension.group().reduceSum(function (d) {
+        QTDSumGroup = NivelDimension.group().reduceSum(function (d) {
             return d.qtd;
         });
         chart
                 .width(900)
                 .height(480)
-                .dimension(runDimension)
-                .group(speedSumGroup)
+                .dimension(NivelDimension)
+                .group(QTDSumGroup)
                 .legend(dc.legend())
                 // workaround for #703: not enough data is accessible through .label() to display percentages
                 .on('pretransition', function (chart) {

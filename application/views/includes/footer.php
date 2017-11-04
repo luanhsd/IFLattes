@@ -58,6 +58,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         });
     });
 </script>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDeewbHaInUFv1a6vtaWdZuPPt30ksa1Z8&callback=initMap">
+</script>
 
 
 

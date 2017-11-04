@@ -9,7 +9,7 @@ class Docente_model extends CI_Model {
     }
 
     public function datalist() {
-        $query = $this->db->query('select p.id_user as id,p.nm_user as docente,p.citacao,e.cidade as campus from dim_pessoa as p inner join ref_endereco as e where p.id_user=e.id_user;');
+        $query = $this->db->query('select p.id_user as id,p.nm_user as docente,p.citacao,e.cidade as campus from dim_pessoa as p inner join ref_endereco as e where p.id_user=e.id_user order by p.nm_user;');
         return $query->result();
     }
 
@@ -19,7 +19,7 @@ class Docente_model extends CI_Model {
     }
 
     public function curriculo_list() {
-        $query = $this->db->query('select c.nome,c.id_curriculo,c.url,cad.data_cadastro as versao from curriculum as c inner join dim_cadastro as cad where c.data_cadastro=cad.id_dataCadastro;');
+        $query = $this->db->query('select p.nm_user as nome, c.id_curriculo as id, c.url, c.data_cur as versao from curriculos as c inner join dim_pessoa as p where c.id_curriculo=p.id_user;');
         return $query->result();
     }
 

@@ -1,0 +1,336 @@
+[
+    {
+        "campus" : "Araraquara",
+        "cep" : "14801-600",
+        "estado" : "São Paulo",
+        "cidade" : "Araraquara",
+        "logradouro" : "Rua Doutor Aldo Benedito Pierri",
+        "bairro" : "Jardim dos Manacas",
+        "numero" : 250
+    },
+    {
+        "campus":"Avaré",
+        "cep" : "18707-150",
+        "estado" : "São Paulo",
+        "cidade" : "Avaré",
+        "logradouro" : "Av. Prof. Célso Ferreira da Silva",
+        "bairro" : "Jardim Europa II",
+        "numero" : 0
+    },
+    {
+        "campus" : "Barretos",
+        "cep" : "14781-502",
+        "estado" : "São Paulo",
+        "cidade" : "Barretos",
+        "logradouro" : "Avenida C-1",
+        "bairro" : "Ide Daher",
+        "numero" : 250
+    },
+    {
+        "campus":"Birigui",
+        "cep" : "16201-407",
+        "estado" : "São Paulo",
+        "cidade" : "Birigui",
+        "logradouro" : "Rua Pedro Cavalo",
+        "bairro" : "Residencial Portal da Pérola II",
+        "numero" : 709
+    },
+    {
+        "campus":"Boituva",
+        "cep" : "18550-000",
+        "estado" : "São Paulo",
+        "cidade" : "Boituva",
+        "logradouro" : "Av. Zélia de Lima Rosa",
+        "bairro" : "Portal dos Pássaros",
+        "numero" : 100
+    },
+    {
+        "campus":"Bragança Paulista",
+        "cep" : "12929-600",
+        "estado" : "São Paulo",
+        "cidade" : "Bragança Paulista",
+        "logradouro" : "Av. Francisco Samuel Lucchesi Filho",
+        "bairro" : "Penha",
+        "numero" : 770
+    },
+    {
+        "campus":"Campinas",
+        "cep" : "13069-901",
+        "estado" : "São Paulo",
+        "cidade" : "Campinas",
+        "logradouro" : "Av. Comendador Aladino Selmi",
+        "bairro" : "Amarais",
+        "numero" : 0
+    },
+    {
+        "campus":"Campos do Jordão",
+        "cep" : "12460-000",
+        "estado" : "São Paulo",
+        "cidade" : "Campos do Jordão",
+        "logradouro" : "Rua Monsenhor José Vita",
+        "bairro" : "Abernéssia",
+        "numero" : 280
+    },
+    {
+        "campus":"Campos do Jordão",
+        "cep" : "12460-000",
+        "estado" : "São Paulo",
+        "cidade" : "Campos do Jordão",
+        "logradouro" : "Av Januário Miraglia",
+        "bairro" : "Jaguaribe",
+        "numero" : 3000
+    },
+    {
+        "campus":"Capivari",
+        "cep" : "13360-000",
+        "estado" : "São Paulo",
+        "cidade" : "Capivari",
+        "logradouro" : "Avenida Doutor Ênio Pires de Camargo",
+        "bairro" : "São João Batista",
+        "numero" : 2971
+    },
+    {
+        "campus":"Caraguatatuba",
+        "cep" : "11665-071",
+        "estado" : "São Paulo",
+        "cidade" : "Caraguatatuba",
+        "logradouro" : "Avenida Bahia",
+        "bairro" : "Indaiá",
+        "numero" : 1739
+    },
+    {
+        "campus":"Catanduva",
+        "cep" : "15808-305",
+        "estado" : "São Paulo",
+        "cidade" : "Catanduva",
+        "logradouro" : "Av. Pastor José Dutra de Moraes",
+        "bairro" : "Distrito Industrial Antônio Zácaro",
+        "numero" : 239
+    },
+    {
+        "campus":"Cubatão",
+        "cep" : "11533-160",
+        "estado" : "São Paulo",
+        "cidade" : "Cubatão",
+        "logradouro" : "Rua Maria Cristina",
+        "bairro" : "Jardim Casqueiro",
+        "numero" : 50
+    },
+    {
+        "campus":"Guarulhos",
+        "cep" : "07115-000",
+        "estado" : "São Paulo",
+        "cidade" : "Guarulhos",
+        "logradouro" : "Av. Salgado Filho",
+        "bairro" : "Centro",
+        "numero" : 3501
+
+    },
+    {
+        "campus":"Hortolândia",
+        "cep" : "13183-250",
+        "estado" : "São Paulo",
+        "cidade" : "Hortolândia",
+        "logradouro" : "Avenida Thereza Ana Cecon Breda",
+        "bairro" : "Vila São Pedro",
+        "numero" : 0
+    },
+    {
+        "campus":"Ilha Solteira",
+        "cep" : "15385-000",
+        "estado" : "São Paulo",
+        "cidade" : "Ilha Solteira",
+        "logradouro" : "Alameda Tucuruí",
+        "bairro" : "Vila São Pedro",
+        "numero" : 164
+    },
+    {
+        "campus":"Itapetininga",
+        "cep" : "18202-000",
+        "estado" : "São Paulo",
+        "cidade" : "Itapetininga",
+        "logradouro" : "Avenida João Olímpio de Oliveira",
+        "bairro" : "Vila Asem",
+        "numero" : 1561
+    },
+    {
+        "campus":"Itaquaquecetuba",
+        "cep" : "08571-050",
+        "estado" : "São Paulo",
+        "cidade" : "Itaquaquecetuba",
+        "logradouro" : "Rua Primeiro de Maio",
+        "bairro" : "Estação",
+        "numero" : 500
+    },
+    {
+        "campus":"Jacareí",
+        "cep" : "12322-030",
+        "estado" : "São Paulo",
+        "cidade" : "Jacareí",
+        "logradouro" : "Rua Antônio Fogaça de Almeida",
+        "bairro" : "Jardim América",
+        "numero" : 200
+    },
+    {
+        "campus":"Jundiaí",
+        "cep" : "13201-003",
+        "estado" : "São Paulo",
+        "cidade" : "Jundiaí",
+        "logradouro" : "Av. Dr. Cavalcanti",
+        "bairro" : "Complexo Argos - Vila Arens",
+        "numero" : 396
+    },
+    {
+        "campus":"Matão",
+        "cep" : "15991-502",
+        "estado" : "São Paulo",
+        "cidade" : "Matão",
+        "logradouro" : "Rua Stéfano D´avassi",
+        "bairro" : "Nova Cidade",
+        "numero" : 625
+    },
+    {
+        "campus":"Piracicaba",
+        "cep" : "13414-155",
+        "estado" : "São Paulo",
+        "cidade" : "Piracicaba",
+        "logradouro" : "Rua Diácono Jair de Oliveira",
+        "bairro" : "Santa Rosa",
+        "numero" : 1005
+    },
+    {
+        "campus":"Pirituba",
+        "cep" : "05110-000",
+        "estado" : "São Paulo",
+        "cidade" : "Pirituba",
+        "logradouro" : "Av. Mutinga",
+        "bairro" : "Jardim Santo Elias",
+        "numero" : 951
+    },
+    {
+        "campus":"Presidente Epitácio",
+        "cep" : "19470-000",
+        "estado" : "São Paulo",
+        "cidade" : "Presidente Epitácio",
+        "logradouro" : "Rua José Ramos Junior",
+        "bairro" : "Jardim Tropical",
+        "numero" : [27,50]
+    },
+    {
+        "campus":"Registro",
+        "cep" : "11900-000",
+        "estado" : "São Paulo",
+        "cidade" : "Registro",
+        "logradouro" : "Av. Clara Gianotti de Souza",
+        "bairro" : "Agrochá",
+        "numero" :  5180
+    },
+    {
+        "campus":"Salto",
+        "cep" : "13320-271",
+        "estado" : "São Paulo",
+        "cidade" : "Salto",
+        "logradouro" : "Rua Rio Branco",
+        "bairro" : "Vila Teixeira",
+        "numero" :  1780
+    },
+    {
+        "campus":"São Carlos",
+        "cep" : "13565-905",
+        "estado" : "São Paulo",
+        "cidade" : "São Carlos",
+        "logradouro" : "Rodovia Washington Luis, km 235",
+        "bairro" : "Monjolinho",
+        "numero" :  0
+    },
+    {
+        "campus":"São João da Boa Vista",
+        "cep" : "13871-298",
+        "estado" : "São Paulo",
+        "cidade" : "São João da Boa Vista",
+        "logradouro" : "Avenida Marginal",
+        "bairro" : "Fazenda Nossa Senhora Aparecida do Jaguari",
+        "numero" :  585
+    },
+    {
+        "campus":"São José dos Campos",
+        "cep" : "12223-201",
+        "estado" : "São Paulo",
+        "cidade" : "São José dos Campos",
+        "logradouro" : "Rodovia Presidente Dutra",
+        "bairro" : "Jardim Diamante",
+        "numero" :  0
+    },
+    {
+        "campus":"São Miguel Paulista",
+        "cep" : "08021–090",
+        "estado" : "São Paulo",
+        "cidade" : "São Miguel Paulista",
+        "logradouro" : "Rua Tenente Miguel Délia",
+        "bairro" : "Vila Rosária",
+        "numero" :  105
+    },
+    {
+        "campus":"São Paulo",
+        "cep" : "01109-010",
+        "estado" : "São Paulo",
+        "cidade" : "São Paulo",
+        "logradouro" : "Rua Pedro Vicente",
+        "bairro" : "Canindé",
+        "numero" :  625
+    },
+    {
+        "campus":"São Roque",
+        "cep" : "18145-090",
+        "estado" : "São Paulo",
+        "cidade" : "São Roque",
+        "logradouro" : "Rod. Prefeito Quintino de Lima",
+        "bairro" : "Paisagem Colonial",
+        "numero" :  2100
+    },
+    {
+        "campus":"Sorocaba",
+        "cep" : "18095-410",
+        "estado" : "São Paulo",
+        "cidade" : "Sorocaba",
+        "logradouro" : "Rua Maria Cinto de Biaggi",
+        "bairro" : "Santa Rosália",
+        "numero" :  130
+    },
+    {
+        "campus":"Sertãozinho",
+        "cep" : "14169-263",
+        "estado" : "São Paulo",
+        "cidade" : "Sertãozinho",
+        "logradouro" : "Rua Américo Ambrósio",
+        "bairro" : "Jd. Canaã",
+        "numero" :  269
+    },
+    {
+        "campus":"Suzano",
+        "cep" : "08673-010",
+        "estado" : "São Paulo",
+        "cidade" : "Suzano",
+        "logradouro" : "Av. Mogi da Cruzes",
+        "bairro" : "Parque Suzano",
+        "numero" :  1501
+    },
+    {
+        "campus":"Tupã",
+        "cep" : "17607-220",
+        "estado" : "São Paulo",
+        "cidade" : "Tupã",
+        "logradouro" : "Rua Othon Guedes Júnior",
+        "bairro" : "Jardim Ipiranga",
+        "numero" :  175
+    },
+    {
+        "campus":"Votuporanga",
+        "cep" : "15503-110",
+        "estado" : "São Paulo",
+        "cidade" : "Votuporanga",
+        "logradouro" : "Av. Jerônimo Figueira da Costa",
+        "bairro" : "Pozzobon",
+        "numero" :  3014
+    }
+]

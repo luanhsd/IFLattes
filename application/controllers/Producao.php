@@ -16,7 +16,8 @@ class Producao extends CI_Controller {
             'h1' => "Produção",
             'name' => "IFLattes",
             'autor' => "Luan Dantas",
-            'data' => $this->producao_model->datalist()
+            'data' => $this->producao_model->datalist(),
+            'categoria'=>$this->producao_model->categoriaList()
         );
         $this->load->view('includes/header_relatorios', $dados);
         $this->load->view('includes/sidebar', $dados);

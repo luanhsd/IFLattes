@@ -23,15 +23,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             </div>
                         </div> 
                         <div class="panel-body">
-                            <form id="uploadform" action="Curriculo" method="POST" enctype="multipart/form-data">
+                            <form action="url" method="POST">
                                 <div class="progress progress-striped active">
                                     <div class="progress-bar progress-bar-info" id="progressbar" style="width:0%">
                                     </div>                                        
                                 </div>
-                                <textarea></textarea>
+                                <textarea class="form-control" style="min-width: 100%; max-width: 100%;" rows="10" name="listurls"></textarea>
                         </div>
                         <div class="panel-footer">
-                            <button type="submit" class="btn btn-success " id="submit" name="submit">CADASTRAR</button> 
+                            <button type="submit" class="btn btn-success " id="submit">CADASTRAR</button> 
                         </div>
                         </form> 
                     </div>

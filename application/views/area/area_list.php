@@ -48,6 +48,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <div class="panel-heading">
                             <h4></h4>
                             <div class="options">
+                                <?php qtd_cur(); ?>
                             </div>
                         </div> 
                         <div class="panel-body">

@@ -7,7 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <ul class="acc-menu" id="sidebar">
         <li id="search">
             <a href="javascript:;"><i class="icon-search opacity-control"></i></a>
-            <form />
+            <form>
             <input type="text" class="search-query" placeholder="Search..." />
             <button type="submit"><i class="icon-search"></i></button>
             </form>
@@ -21,6 +21,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <ul class="acc-menu">
                 <li><?php echo anchor('Entrada/zip', "<i class='glyphicon glyphicon-book'></i><span>ZipFile</span><span class='badge badge-success'>new</span>"); ?></li>
                 <li><?php echo anchor('Entrada/url', "<i class='glyphicon glyphicon-link'></i><span>URL</span>"); ?></li>
+                <li><?php echo anchor('Entrada/log', "<i class='glyphicon glyphicon-warning-sign'></i><span>LOG</span>"); ?></li>
             </ul>
 
         <li><a href="javascript:;"><i class="icon-sitemap"></i> <span>Dados Gerais</span></a>

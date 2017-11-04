@@ -18,7 +18,8 @@ class IFLATTES extends CI_Controller {
             'data' => $this->docente_model->curriculo_list()
         );
 
-
+        //var_dump($this->docente_model->curriculo_list());
+        
         $this->load->view('includes/header', $dados);
         $this->load->view('includes/sidebar', $dados);
         $this->load->view('iflattes', $dados);

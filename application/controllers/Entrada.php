@@ -46,6 +46,12 @@ class Entrada extends CI_Controller {
     }
 
     public function url() {
+        if ($this->input->post()) {
+            $links = explode("\n", $this->input->post()['listurls']);
+            foreach ($links as $link) {
+                $this->Curriculo_model->insert('fila_process', array('url' => $link, 'log' => null, 'type' => 'URL'));
+            }
+        }
         $dados = array(
             'title' => "Curriculos",
             'h1' => "Incluir/Url",
@@ -58,10 +64,109 @@ class Entrada extends CI_Controller {
         $this->load->view('includes/footer', $dados);
     }
 
+    public function log(){
+        $dados = array(
+            'title' => "Log",
+            'h1' => "Log",
+            'name' => "IFLattes",
+            'autor' => "Luan Dantas"
+        );
+        $this->load->view('includes/header', $dados);
+        $this->load->view('includes/sidebar', $dados);
+        $this->load->view('entrada/log', $dados);
+        $this->load->view('includes/footer', $dados);
+    }
+
+    public function downloadFile($id) {
+        $urlFile = 'http://buscacv.cnpq.br/buscacv/rest/download/curriculo/' . $this->GetNameFile($id);
+        $file = fopen(base_path() . "uploads/$id.zip", 'w');
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $urlFile);
+        curl_setopt($ch, CURLOPT_FAILONERROR, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FILE, $file);
+        curl_exec($ch);
+        curl_close($ch);
+        fclose($file);
+        return base_path() . "uploads/$id.zip";
+    }
+
     public function processList() {
         $first = $this->Curriculo_model->returnFirstUrl();
-        $this->readXml($first);
-        $this->Curriculo_model->delete($first, 'fila_process');
+        if ($first == null) {
+            $this->Curriculo_model->CreateFila();
+            $first = $this->Curriculo_model->returnFirstUrl();
+        }
+
+        switch ($this->Verify($this->getID($first['url']))) {
+            case 'XML':
+                if ($this->VerifyCampus($first['url']))
+                    $this->readXml($first['url']);
+                break;
+
+            case 'URL':
+                $this->readURL($this->getID($first['url']));
+                break;
+        }
+        $this->Curriculo_model->delete($first['url'], 'fila_process');
+    }
+
+    public function Verify($id) {
+        $this->load->helper('format');
+        $url = base_path() . "uploads/$id.xml";
+        return updateDatabase($this->GetDataXML($url), $this->GetDataWeb($id), $this->GetDataDB($id));
+    }
+
+    public function VerifyCampus($file) {
+        $xml = simplexml_load_file($file);
+        $aux = $xml->{'DADOS-GERAIS'}->{'ENDERECO'}->{'ENDERECO-PROFISSIONAL'};
+        $instituicao = $aux['NOME-INSTITUICAO-EMPRESA'];
+        if ($instituicao == 'Instituto Federal de São Paulo')
+            return true;
+        else
+            return false;
+    }
+
+    public function GetNameFile($id) {
+        $urlsearch = "http://buscacv.cnpq.br/buscacv/rest/espelhocurriculo/$id";
+        $ch = curl_init($urlsearch);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
+        $content = curl_exec($ch);
+        curl_close($ch);
+        $json = json_decode($content);
+        $codeFile = $json->cod_rh_cript_s;
+        return $codeFile;
+    }
+
+    public function GetDataWeb($id) {
+        $this->load->helper('format');
+        $urlsearch = 'http://buscacv.cnpq.br/buscacv/rest/espelhocurriculo/' . $id;
+        $ch = curl_init($urlsearch);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
+        $content = curl_exec($ch);
+        curl_close($ch);
+        $json = json_decode($content);
+        $data = $json->docs[0]->dataAtualizacao;
+        $horario = $json->docs[0]->horaAtualizacao;
+        return datetime($data, $horario)->format('Y-m-d H:i:s');
+    }
+
+    public function GetDataXML($file) {
+        $this->load->helper('format');
+        $xml = simplexml_load_file($file);
+        $data = $xml['DATA-ATUALIZACAO'];
+        $horario = $xml['HORA-ATUALIZACAO'];
+        return datetime($data, $horario)->format('Y-m-d H:i:s');
+    }
+
+    public function GetDataDB($id) {
+        if (!$this->Curriculo_model->getDataLastVersion($id) == null)
+            return new DateTime($this->Curriculo_model->getDataLastVersion($id));
+        else
+            return null;
     }
 
     private function extrair($file) {
@@ -76,8 +181,15 @@ class Entrada extends CI_Controller {
 
     public function getID($file) {
         $aux = explode('/', $file);
-        $id = explode('.', $aux[2])[0];
+        $id = explode('.', $aux[sizeof($aux) - 1])[0];
         return $id;
+    }
+
+    public function readURL($id) {
+        $file = $this->downloadFile($id);
+        $FileXML = $this->extrair($file);
+        if ($this->VerifyCampus($FileXML))
+            $this->readXml($FileXML);
     }
 
     Private function readXml($file) {
@@ -91,38 +203,45 @@ class Entrada extends CI_Controller {
         $mes = substr($data_cur, 2, 2);
         $ano = substr($data_cur, 4, 4);
         $data_cur = $ano . '-' . $mes . '-' . $dia;
+
+        $data['data_versao'] = $data_cur;
+
+        $id_versao = $this->Curriculo_model->insert('dim_versao', $data);
+
         foreach ($xml->children() as $child) {
             $name = $child->getName();
             switch ($name) {
                 case 'DADOS-GERAIS':
-                    $this->Gerais($id, $child, $data_cur);
-                    $curriculo['nome'] = $child['NOME-COMPLETO'];
+                    $this->Gerais($id, $child, $data_cur, $id_versao);
                     break;
                 case 'PRODUCAO-BIBLIOGRAFICA':
                 case 'PRODUCAO-TECNICA':
                 case 'OUTRA-PRODUCAO':
-                    $this->Producao($id, $child);
+                    $this->Producao($id, $child, $id_versao);
                     break;
                 case 'DADOS-COMPLEMENTARES':
-                    $this->Complementos($id, $child);
+                    $this->Complementos($id, $child, $id_versao);
                     break;
                 default :
                     //echo "<br>" . 'READXML: ' . $name;
                     break;
             }
         }
-        $curriculo['data_cadastro'] = $this->Curriculo_model->insert('dim_cadastro', array('data_cadastro' => $data_cur));
+
         $curriculo['id_curriculo'] = $id;
-        $curriculo['url'] = 'http://lattes.cnpq.br/' . $id;
-        $curriculo['content'] = $xml;
-        $this->Curriculo_model->insert('curriculum', $curriculo);
+        $curriculo['url'] = $file;
+        $curriculo['data_cur'] = $data_cur;
+        $this->Curriculo_model->insertOrUpdateCurriculo($curriculo);
     }
 
-    private function Gerais($id, $node, $data_cur) {
-        $pessoa['id_user'] = $id;
-        $pessoa['nm_user'] = $node['NOME-COMPLETO'];
-        $pessoa['citacao'] = $node['NOME-EM-CITACOES-BIBLIOGRAFICAS'];
-        $this->Curriculo_model->insert('dim_pessoa', $pessoa);
+    private function Gerais($id, $node, $data_cur, $id_versao) {
+        if ($this->Curriculo_model->verifyId($id) == 0) {
+            $pessoa['id_user'] = $id;
+            $pessoa['nm_user'] = $node['NOME-COMPLETO'];
+            $pessoa['citacao'] = $node['NOME-EM-CITACOES-BIBLIOGRAFICAS'];
+            $this->Curriculo_model->insert('dim_pessoa', $pessoa);
+        }
+
 
         foreach ($node->children() as $child) {
             $name = $child->getName();
@@ -131,18 +250,18 @@ class Entrada extends CI_Controller {
                     $this->Endereco($id, $child);
                     break;
                 case 'FORMACAO-ACADEMICA-TITULACAO':
-                    $this->Formacao($id, $child);
+                    $this->Formacao($id, $child, $id_versao);
                     break;
                 case 'ATUACOES-PROFISSIONAIS':
-                    $this->Atuacao($id, $child);
+                    $this->Atuacao($id, $child, $id_versao);
                     break;
                 case 'AREAS-DE-ATUACAO':
                     break;
                 case 'IDIOMAS':
-                    $this->Idioma($id, $child, $data_cur);
+                    $this->Idioma($id, $child, $data_cur, $id_versao);
                     break;
                 case 'PREMIOS-TITULOS':
-                    $this->Premio($id, $child);
+                    $this->Premio($id, $child, $id_versao);
                     break;
                 case 'RESUMO-CV':
                     break;
@@ -167,7 +286,7 @@ class Entrada extends CI_Controller {
             $coordinates = $this->getLongLat($endereco);
             $endereco['latitude'] = $coordinates['lat'];
             $endereco['longitude'] = $coordinates['long'];
-            $this->Curriculo_model->insert('ref_endereco', $endereco);
+            $this->Curriculo_model->insertOrUpdateAddress($endereco);
         }
     }
 
@@ -189,8 +308,9 @@ class Entrada extends CI_Controller {
         return $coordinates;
     }
 
-    private function Formacao($id, $node) {
+    private function Formacao($id, $node, $id_versao) {
         foreach ($node->children() as $child) {
+            $formacao['id_versao'] = $id_versao;
             $formacao['id_user'] = $id;
             $formacao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $child['ANO-DE-INICIO'], 'ano_final' => (int) $child['ANO-DE-CONCLUSAO']));
             $formacao['nivel'] = $child->getName();
@@ -209,13 +329,14 @@ class Entrada extends CI_Controller {
             if (isset($child->{'AREAS-DO-CONHECIMENTO'}) && count($child->{'AREAS-DO-CONHECIMENTO'}) > 0) {
                 $date = array("ano_inicial" => (int) $child['ANO-DE-INICIO'], "ano_final" => (int) $child['ANO-DE-CONCLUSAO']);
                 $node = $child->{'AREAS-DO-CONHECIMENTO'}->children();
-                $this->Area($id, $node, $date);
+                $this->Area($id, $node, $date, $id_versao);
             }
         }
     }
 
-    private function Atuacao($id, $node) {
+    private function Atuacao($id, $node, $id_versao) {
         foreach ($node as $array) {
+            $atuacao['id_versao'] = $id_versao;
             $atuacao['id_user'] = $id;
             $atuacao['instituicao'] = $array['NOME-INSTITUICAO'];
             foreach ($array->{'VINCULOS'} as $vinculo) {
@@ -232,10 +353,11 @@ class Entrada extends CI_Controller {
         }
     }
 
-    private function Area($id, $node, $data) {
+    private function Area($id, $node, $data, $id_versao) {
         for ($i = 1; $i < 4; $i++) {
             if (isset($node->{'AREA-DO-CONHECIMENTO-' . $i}) && count($node->{'AREA-DO-CONHECIMENTO-' . $i}) > 0) {
                 $aux = $node->{'AREA-DO-CONHECIMENTO-' . $i};
+                $area['id_versao'] = $id_versao;
                 $area['id_user'] = $id;
                 $area['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', $data);
                 $area['grande_area'] = $aux['NOME-GRANDE-AREA-DO-CONHECIMENTO'];
@@ -247,7 +369,8 @@ class Entrada extends CI_Controller {
         }
     }
 
-    private function Idioma($id, $node, $data_cur) {
+    private function Idioma($id, $node, $data_cur, $id_versao) {
+        $idioma['id_versao'] = $id_versao;
         $idioma['id_user'] = $id;
         $idioma['data_cadastro'] = $this->Curriculo_model->insert('dim_cadastro', array('data_cadastro' => $data_cur));
         $idioma['idioma'] = $node->IDIOMA['IDIOMA'];
@@ -258,7 +381,8 @@ class Entrada extends CI_Controller {
         $this->Curriculo_model->insert('fat_idioma', $idioma);
     }
 
-    private function Premio($id, $node) {
+    private function Premio($id, $node, $id_versao) {
+        $premio['id_versao'] = $id_versao;
         $premio['id_user'] = $id;
         $premio['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $node->{'PREMIO-TITULO'}['ANO-DA-PREMIACAO']));
         $premio['nome'] = $node->{'PREMIO-TITULO'}['NOME-DO-PREMIO-OU-TITULO'];
@@ -266,8 +390,9 @@ class Entrada extends CI_Controller {
         $this->Curriculo_model->insert('fat_premio', $premio);
     }
 
-    private function Producao($id, $node) {
+    private function Producao($id, $node, $id_versao) {
         foreach ($node->children() as $child) {
+            $producao['id_versao'] = $id_versao;
             $producao['id_user'] = $id;
             $producao['categoria'] = $child->getName();
             switch ($child->getName()) {
@@ -280,7 +405,7 @@ class Entrada extends CI_Controller {
                     if (isset($aux->{'PALAVRAS-CHAVE'}) && count($aux->{'PALAVRAS-CHAVE'}) > 0) {
                         foreach ($aux->{'PALAVRAS-CHAVE'}->attributes() as $attrib => $values) {
                             if ($values != '')
-                                $producao['keywords'].='[' . ($values) . ']';
+                                $producao['keywords'] .= '[' . ($values) . ']';
                         }
                     }
                     $producao['setor'] = null;
@@ -288,7 +413,7 @@ class Entrada extends CI_Controller {
                         foreach ($aux->{'SETORES-DE-ATIVIDADE'}->attributes() as $attrib => $values) {
 
                             if ($values != '')
-                                $producao['setor'].='[' . ($values) . ']';
+                                $producao['setor'] .= '[' . ($values) . ']';
                         }
                     }
                     $this->Curriculo_model->insert('fat_producao', $producao);
@@ -304,7 +429,7 @@ class Entrada extends CI_Controller {
                     if (isset($aux->{'PALAVRAS-CHAVE'}) && count($aux->{'PALAVRAS-CHAVE'}) > 0) {
                         foreach ($aux->{'PALAVRAS-CHAVE'}->attributes() as $attrib => $values) {
                             if ($values != '')
-                                $producao['keywords'].='[' . ($values) . ']';
+                                $producao['keywords'] .= '[' . ($values) . ']';
                         }
                     }
                     $producao['setor'] = null;
@@ -312,13 +437,14 @@ class Entrada extends CI_Controller {
                         foreach ($aux->{'SETORES-DE-ATIVIDADE'}->attributes() as $attrib => $values) {
 
                             if ($values != '')
-                                $producao['setor'].='[' . ($values) . ']';
+                                $producao['setor'] .= '[' . ($values) . ']';
                         }
                     }
                     break;
 
                 case 'PATENTE':
                     $aux = $child;
+                    $patente['id_versao'] = $id_versao;
                     $patente['id_user'] = $id;
                     $patente['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DA-PATENTE'}['ANO-DESENVOLVIMENTO']));
                     $patente['titulo'] = $aux->{'DADOS-BASICOS-DA-PATENTE'}['TITULO'];
@@ -337,7 +463,7 @@ class Entrada extends CI_Controller {
                     if (isset($aux->{'PALAVRAS-CHAVE'}) && count($aux->{'PALAVRAS-CHAVE'}) > 0) {
                         foreach ($aux->{'PALAVRAS-CHAVE'}->attributes() as $attrib => $values) {
                             if ($values != '')
-                                $producao['keywords'].='[' . ($values) . ']';
+                                $producao['keywords'] .= '[' . ($values) . ']';
                         }
                     }
                     $producao['setor'] = null;
@@ -345,7 +471,7 @@ class Entrada extends CI_Controller {
                         foreach ($aux->{'SETORES-DE-ATIVIDADE'}->attributes() as $attrib => $values) {
 
                             if ($values != '')
-                                $producao['setor'].='[' . ($values) . ']';
+                                $producao['setor'] .= '[' . ($values) . ']';
                         }
                     }
                     $this->Curriculo_model->insert('fat_producao', $producao);
@@ -361,7 +487,7 @@ class Entrada extends CI_Controller {
                     if (isset($aux->{'PALAVRAS-CHAVE'}) && count($aux->{'PALAVRAS-CHAVE'}) > 0) {
                         foreach ($aux->{'PALAVRAS-CHAVE'}->attributes() as $attrib => $values) {
                             if ($values != '')
-                                $producao['keywords'].='[' . ($values) . ']';
+                                $producao['keywords'] .= '[' . ($values) . ']';
                         }
                     }
                     $producao['setor'] = null;
@@ -369,7 +495,7 @@ class Entrada extends CI_Controller {
                         foreach ($aux->{'SETORES-DE-ATIVIDADE'}->attributes() as $attrib => $values) {
 
                             if ($values != '')
-                                $producao['setor'].='[' . ($values) . ']';
+                                $producao['setor'] .= '[' . ($values) . ']';
                         }
                     }
                     $this->Curriculo_model->insert('fat_producao', $producao);
@@ -385,7 +511,7 @@ class Entrada extends CI_Controller {
                     if (isset($aux->{'PALAVRAS-CHAVE'}) && count($aux->{'PALAVRAS-CHAVE'}) > 0) {
                         foreach ($aux->{'PALAVRAS-CHAVE'}->attributes() as $attrib => $values) {
                             if ($values != '')
-                                $producao['keywords'].='[' . ($values) . ']';
+                                $producao['keywords'] .= '[' . ($values) . ']';
                         }
                     }
                     $producao['setor'] = null;
@@ -393,7 +519,7 @@ class Entrada extends CI_Controller {
                         foreach ($aux->{'SETORES-DE-ATIVIDADE'}->attributes() as $attrib => $values) {
 
                             if ($values != '')
-                                $producao['setor'].='[' . ($values) . ']';
+                                $producao['setor'] .= '[' . ($values) . ']';
                         }
                     }
                     $this->Curriculo_model->insert('fat_producao', $producao);
@@ -408,7 +534,7 @@ class Entrada extends CI_Controller {
                     if (isset($aux->{'PALAVRAS-CHAVE'}) && count($aux->{'PALAVRAS-CHAVE'}) > 0) {
                         foreach ($aux->{'PALAVRAS-CHAVE'}->attributes() as $attrib => $values) {
                             if ($values != '')
-                                $producao['keywords'].='[' . ($values) . ']';
+                                $producao['keywords'] .= '[' . ($values) . ']';
                         }
                     }
                     $producao['setor'] = null;
@@ -416,7 +542,7 @@ class Entrada extends CI_Controller {
                         foreach ($aux->{'SETORES-DE-ATIVIDADE'}->attributes() as $attrib => $values) {
 
                             if ($values != '')
-                                $producao['setor'].='[' . ($values) . ']';
+                                $producao['setor'] .= '[' . ($values) . ']';
                         }
                     }
                     $this->Curriculo_model->insert('fat_producao', $producao);
@@ -425,6 +551,7 @@ class Entrada extends CI_Controller {
                 case 'ORIENTACOES-CONCLUIDAS':
                     foreach ($child->children() as $aux) {
                         $tipo = $aux->getName();
+                        $orientacao['id_versao'] = $id_versao;
                         $orientacao['id_user'] = $id;
                         $orientacao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{'DADOS-BASICOS-DE-' . $tipo}['ANO']));
                         $orientacao['titulo'] = $aux->{'DADOS-BASICOS-DE-' . $tipo}['TITULO'];
@@ -433,7 +560,7 @@ class Entrada extends CI_Controller {
                         if (isset($aux->{'PALAVRAS-CHAVE'}) && count($aux->{'PALAVRAS-CHAVE'}) > 0) {
                             foreach ($aux->{'PALAVRAS-CHAVE'}->attributes() as $attrib => $values) {
                                 if ($values != '')
-                                    $orientacao['keywords'].='[' . ($values) . ']';
+                                    $orientacao['keywords'] .= '[' . ($values) . ']';
                             }
                         }
                         $orientacao['setor'] = null;
@@ -441,7 +568,7 @@ class Entrada extends CI_Controller {
                             foreach ($aux->{'SETORES-DE-ATIVIDADE'}->attributes() as $attrib => $values) {
 
                                 if ($values != '')
-                                    $orientacao['setor'].='[' . ($values) . ']';
+                                    $orientacao['setor'] .= '[' . ($values) . ']';
                             }
                         }
                         $orientacao['status'] = "CONCLUIDA";
@@ -461,7 +588,7 @@ class Entrada extends CI_Controller {
                     if (isset($aux->{'PALAVRAS-CHAVE'}) && count($aux->{'PALAVRAS-CHAVE'}) > 0) {
                         foreach ($aux->{'PALAVRAS-CHAVE'}->attributes() as $attrib => $values) {
                             if ($values != '')
-                                $producao['keywords'].='[' . ($values) . ']';
+                                $producao['keywords'] .= '[' . ($values) . ']';
                         }
                     }
                     $producao['setor'] = null;
@@ -469,7 +596,7 @@ class Entrada extends CI_Controller {
                         foreach ($aux->{'SETORES-DE-ATIVIDADE'}->attributes() as $attrib => $values) {
 
                             if ($values != '')
-                                $producao['setor'].='[' . ($values) . ']';
+                                $producao['setor'] .= '[' . ($values) . ']';
                         }
                     }
                     $this->Curriculo_model->insert('fat_producao', $producao);
@@ -504,7 +631,7 @@ class Entrada extends CI_Controller {
                     if (isset($aux->{'PALAVRAS-CHAVE'}) && count($aux->{'PALAVRAS-CHAVE'}) > 0) {
                         foreach ($aux->{'PALAVRAS-CHAVE'}->attributes() as $attrib => $values) {
                             if ($values != '')
-                                $producao['keywords'].='[' . ($values) . ']';
+                                $producao['keywords'] .= '[' . ($values) . ']';
                         }
                     }
                     $producao['setor'] = null;
@@ -512,7 +639,7 @@ class Entrada extends CI_Controller {
                         foreach ($aux->{'SETORES-DE-ATIVIDADE'}->attributes() as $attrib => $values) {
 
                             if ($values != '')
-                                $producao['setor'].='[' . ($values) . ']';
+                                $producao['setor'] .= '[' . ($values) . ']';
                         }
                     }
                     $this->Curriculo_model->insert('fat_producao', $producao);
@@ -527,7 +654,7 @@ class Entrada extends CI_Controller {
                     if (isset($aux->{'PALAVRAS-CHAVE'}) && count($aux->{'PALAVRAS-CHAVE'}) > 0) {
                         foreach ($aux->{'PALAVRAS-CHAVE'}->attributes() as $attrib => $values) {
                             if ($values != '')
-                                $producao['keywords'].='[' . ($values) . ']';
+                                $producao['keywords'] .= '[' . ($values) . ']';
                         }
                     }
                     $producao['setor'] = null;
@@ -535,7 +662,7 @@ class Entrada extends CI_Controller {
                         foreach ($aux->{'SETORES-DE-ATIVIDADE'}->attributes() as $attrib => $values) {
 
                             if ($values != '')
-                                $producao['setor'].='[' . ($values) . ']';
+                                $producao['setor'] .= '[' . ($values) . ']';
                         }
                     }
                     $this->Curriculo_model->insert('fat_producao', $producao);
@@ -550,7 +677,7 @@ class Entrada extends CI_Controller {
                     if (isset($aux->{'PALAVRAS-CHAVE'}) && count($aux->{'PALAVRAS-CHAVE'}) > 0) {
                         foreach ($aux->{'PALAVRAS-CHAVE'}->attributes() as $attrib => $values) {
                             if ($values != '')
-                                $producao['keywords'].='[' . ($values) . ']';
+                                $producao['keywords'] .= '[' . ($values) . ']';
                         }
                     }
                     $producao['setor'] = null;
@@ -558,7 +685,7 @@ class Entrada extends CI_Controller {
                         foreach ($aux->{'SETORES-DE-ATIVIDADE'}->attributes() as $attrib => $values) {
 
                             if ($values != '')
-                                $producao['setor'].='[' . ($values) . ']';
+                                $producao['setor'] .= '[' . ($values) . ']';
                         }
                     }
                     $this->Curriculo_model->insert('fat_producao', $producao);
@@ -573,7 +700,7 @@ class Entrada extends CI_Controller {
                     if (isset($aux->{'PALAVRAS-CHAVE'}) && count($aux->{'PALAVRAS-CHAVE'}) > 0) {
                         foreach ($aux->{'PALAVRAS-CHAVE'}->attributes() as $attrib => $values) {
                             if ($values != '')
-                                $producao['keywords'].='[' . ($values) . ']';
+                                $producao['keywords'] .= '[' . ($values) . ']';
                         }
                     }
                     $producao['setor'] = null;
@@ -581,7 +708,7 @@ class Entrada extends CI_Controller {
                         foreach ($aux->{'SETORES-DE-ATIVIDADE'}->attributes() as $attrib => $values) {
 
                             if ($values != '')
-                                $producao['setor'].='[' . ($values) . ']';
+                                $producao['setor'] .= '[' . ($values) . ']';
                         }
                     }
                     $this->Curriculo_model->insert('fat_producao', $producao);
@@ -596,7 +723,7 @@ class Entrada extends CI_Controller {
                     if (isset($aux->{'PALAVRAS-CHAVE'}) && count($aux->{'PALAVRAS-CHAVE'}) > 0) {
                         foreach ($aux->{'PALAVRAS-CHAVE'}->attributes() as $attrib => $values) {
                             if ($values != '')
-                                $producao['keywords'].='[' . ($values) . ']';
+                                $producao['keywords'] .= '[' . ($values) . ']';
                         }
                     }
                     $producao['setor'] = null;
@@ -604,7 +731,7 @@ class Entrada extends CI_Controller {
                         foreach ($aux->{'SETORES-DE-ATIVIDADE'}->attributes() as $attrib => $values) {
 
                             if ($values != '')
-                                $producao['setor'].='[' . ($values) . ']';
+                                $producao['setor'] .= '[' . ($values) . ']';
                         }
                     }
                     $this->Curriculo_model->insert('fat_producao', $producao);
@@ -619,7 +746,7 @@ class Entrada extends CI_Controller {
                     if (isset($aux->{'PALAVRAS-CHAVE'}) && count($aux->{'PALAVRAS-CHAVE'}) > 0) {
                         foreach ($aux->{'PALAVRAS-CHAVE'}->attributes() as $attrib => $values) {
                             if ($values != '')
-                                $producao['keywords'].='[' . ($values) . ']';
+                                $producao['keywords'] .= '[' . ($values) . ']';
                         }
                     }
                     $producao['setor'] = null;
@@ -627,7 +754,7 @@ class Entrada extends CI_Controller {
                         foreach ($aux->{'SETORES-DE-ATIVIDADE'}->attributes() as $attrib => $values) {
 
                             if ($values != '')
-                                $producao['setor'].='[' . ($values) . ']';
+                                $producao['setor'] .= '[' . ($values) . ']';
                         }
                     }
                     $this->Curriculo_model->insert('fat_producao', $producao);
@@ -648,11 +775,12 @@ class Entrada extends CI_Controller {
         }
     }
 
-    private function Complementos($id, $node) {
+    private function Complementos($id, $node, $id_versao) {
         foreach ($node->children() as $array) {
             $title = $array->getName();
             switch ($title) {
                 case 'PARTICIPACAO-EM-BANCA-JULGADORA':
+                    $banca['id_versao'] = $id_versao;
                     $banca['id_user'] = $id;
                     foreach ($array->children() as $child) {
                         $title = $child->getName();
@@ -704,6 +832,7 @@ class Entrada extends CI_Controller {
 
                 case 'PARTICIPACAO-EM-EVENTOS-CONGRESSOS':
                     foreach ($array->children() as $child) {
+                        $evento['id_versao'] = $id_versao;
                         $evento['id_user'] = $id;
                         switch ($child->getName()) {
                             case 'PARTICIPACAO-EM-SIMPOSIO':
@@ -793,6 +922,7 @@ class Entrada extends CI_Controller {
 
                 case 'FORMACAO-COMPLEMENTAR':
                     $aux = $array->{$array->children()->getName()};
+                    $formacao['id_versao'] = $id_versao;
                     $formacao['id_user'] = $id;
                     $formacao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $aux['ANO-DE-INICIO'], 'ano_final' => (int) $aux['ANO-DE-CONCLUSAO']));
                     $formacao['nivel'] = 'FORMACAO-COMPLEMENTAR';
@@ -801,30 +931,30 @@ class Entrada extends CI_Controller {
                     $this->Curriculo_model->insert('fat_formacao', $formacao);
                     break;
 
+                /*
+                  case 'PARTICIPACAO-EM-BANCA-TRABALHOS-CONCLUSAO':
+                  $aux = $array->children();
+                  switch ($aux->getName()) {
+                  case 'PARTICIPACAO-EM-BANCA-DE-MESTRADO';
+                  //var_dump(count($aux->{'PARTICIPACAO-EM-BANCA-DE-DOUTORADO'}));
+                  break;
 
-                case 'PARTICIPACAO-EM-BANCA-TRABALHOS-CONCLUSAO':
-                    $aux = $array->children();
-                    switch ($aux->getName()) {
-                        case 'PARTICIPACAO-EM-BANCA-DE-MESTRADO';
-                            //var_dump(count($aux->{'PARTICIPACAO-EM-BANCA-DE-DOUTORADO'}));
-                            break;
+                  case 'PARTICIPACAO-EM-BANCA-DE-APERFEICOAMENTO-ESPECIALIZACAO':
+                  break;
 
-                        case 'PARTICIPACAO-EM-BANCA-DE-APERFEICOAMENTO-ESPECIALIZACAO':
-                            break;
+                  case 'PARTICIPACAO-EM-BANCA-DE-GRADUACAO':
+                  break;
+                  case 'PARTICIPACAO-EM-BANCA-DE-DOUTORADO':
+                  break;
+                  case 'PARTICIPACAO-EM-BANCA-DE-EXAME-QUALIFICACAO':
+                  break;
+                  default :
+                  //echo "<br>" . 'PARTICIPACAO_BANCA: ' . $aux->getName();
+                  break;
+                  }
+                  break;
 
-                        case 'PARTICIPACAO-EM-BANCA-DE-GRADUACAO':
-                            break;
-                        case 'PARTICIPACAO-EM-BANCA-DE-DOUTORADO':
-                            break;
-                        case 'PARTICIPACAO-EM-BANCA-DE-EXAME-QUALIFICACAO':
-                            break;
-                        default :
-                            //echo "<br>" . 'PARTICIPACAO_BANCA: ' . $aux->getName();
-                            break;
-                    }
-                    break;
-
-
+                 */
 
                 case 'ORIENTACOES-EM-ANDAMENTO':
                     $aux = $array->children();
@@ -832,6 +962,7 @@ class Entrada extends CI_Controller {
                     switch ($tipo) {
                         case 'ORIENTACAO-EM-ANDAMENTO-DE-APERFEICOAMENTO-ESPECIALIZACAO':
                             $aux = $aux->{$tipo};
+                            $orientacao['id_versao'] = $id_versao;
                             $orientacao['id_user'] = $id;
                             $orientacao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{$aux->children()->getName()}['ANO']));
                             $orientacao['titulo'] = $aux->{$aux->children()->getName()}['TITULO-DO-TRABALHO'];
@@ -840,7 +971,7 @@ class Entrada extends CI_Controller {
                             if (isset($aux->{'PALAVRAS-CHAVE'}) && count($aux->{'PALAVRAS-CHAVE'}) > 0) {
                                 foreach ($aux->{'PALAVRAS-CHAVE'}->attributes() as $attrib => $values) {
                                     if ($values != '')
-                                        $orientacao['keywords'].='[' . ($values) . ']';
+                                        $orientacao['keywords'] .= '[' . ($values) . ']';
                                 }
                             }
                             $orientacao['setor'] = null;
@@ -848,7 +979,7 @@ class Entrada extends CI_Controller {
                                 foreach ($aux->{'SETORES-DE-ATIVIDADE'}->attributes() as $attrib => $values) {
 
                                     if ($values != '')
-                                        $orientacao['setor'].='[' . ($values) . ']';
+                                        $orientacao['setor'] .= '[' . ($values) . ']';
                                 }
                             }
                             $orientacao['status'] = "EM ANDAMENTO";
@@ -858,6 +989,7 @@ class Entrada extends CI_Controller {
 
                         case 'ORIENTACAO-EM-ANDAMENTO-DE-GRADUACAO':
                             $aux = $aux->{$tipo};
+                            $orientacao['id_versao'] = $id_versao;
                             $orientacao['id_user'] = $id;
                             $orientacao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{$aux->children()->getName()}['ANO']));
                             $orientacao['titulo'] = $aux->{$aux->children()->getName()}['TITULO-DO-TRABALHO'];
@@ -866,7 +998,7 @@ class Entrada extends CI_Controller {
                             if (isset($aux->{'PALAVRAS-CHAVE'}) && count($aux->{'PALAVRAS-CHAVE'}) > 0) {
                                 foreach ($aux->{'PALAVRAS-CHAVE'}->attributes() as $attrib => $values) {
                                     if ($values != '')
-                                        $orientacao['keywords'].='[' . ($values) . ']';
+                                        $orientacao['keywords'] .= '[' . ($values) . ']';
                                 }
                             }
                             $orientacao['setor'] = null;
@@ -874,7 +1006,7 @@ class Entrada extends CI_Controller {
                                 foreach ($aux->{'SETORES-DE-ATIVIDADE'}->attributes() as $attrib => $values) {
 
                                     if ($values != '')
-                                        $orientacao['setor'].='[' . ($values) . ']';
+                                        $orientacao['setor'] .= '[' . ($values) . ']';
                                 }
                             }
                             $orientacao['status'] = "EM ANDAMENTO";
@@ -883,6 +1015,7 @@ class Entrada extends CI_Controller {
 
                         case 'ORIENTACAO-EM-ANDAMENTO-DE-MESTRADO':
                             $aux = $aux->{$tipo};
+                            $orientacao['id_versao'] = $id_versao;
                             $orientacao['id_user'] = $id;
                             $orientacao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{$aux->children()->getName()}['ANO']));
                             $orientacao['titulo'] = $aux->{$aux->children()->getName()}['TITULO-DO-TRABALHO'];
@@ -891,7 +1024,7 @@ class Entrada extends CI_Controller {
                             if (isset($aux->{'PALAVRAS-CHAVE'}) && count($aux->{'PALAVRAS-CHAVE'}) > 0) {
                                 foreach ($aux->{'PALAVRAS-CHAVE'}->attributes() as $attrib => $values) {
                                     if ($values != '')
-                                        $orientacao['keywords'].='[' . ($values) . ']';
+                                        $orientacao['keywords'] .= '[' . ($values) . ']';
                                 }
                             }
                             $orientacao['setor'] = null;
@@ -899,7 +1032,7 @@ class Entrada extends CI_Controller {
                                 foreach ($aux->{'SETORES-DE-ATIVIDADE'}->attributes() as $attrib => $values) {
 
                                     if ($values != '')
-                                        $orientacao['setor'].='[' . ($values) . ']';
+                                        $orientacao['setor'] .= '[' . ($values) . ']';
                                 }
                             }
                             $orientacao['status'] = "EM ANDAMENTO";
@@ -908,6 +1041,7 @@ class Entrada extends CI_Controller {
 
                         case 'ORIENTACAO-EM-ANDAMENTO-DE-INICIACAO-CIENTIFICA':
                             $aux = $aux->{$tipo};
+                            $orientacao['id_versao'] = $id_versao;
                             $orientacao['id_user'] = $id;
                             $orientacao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{$aux->children()->getName()}['ANO']));
                             $orientacao['titulo'] = $aux->{$aux->children()->getName()}['TITULO-DO-TRABALHO'];
@@ -916,7 +1050,7 @@ class Entrada extends CI_Controller {
                             if (isset($aux->{'PALAVRAS-CHAVE'}) && count($aux->{'PALAVRAS-CHAVE'}) > 0) {
                                 foreach ($aux->{'PALAVRAS-CHAVE'}->attributes() as $attrib => $values) {
                                     if ($values != '')
-                                        $orientacao['keywords'].='[' . ($values) . ']';
+                                        $orientacao['keywords'] .= '[' . ($values) . ']';
                                 }
                             }
                             $orientacao['setor'] = null;
@@ -924,7 +1058,7 @@ class Entrada extends CI_Controller {
                                 foreach ($aux->{'SETORES-DE-ATIVIDADE'}->attributes() as $attrib => $values) {
 
                                     if ($values != '')
-                                        $orientacao['setor'].='[' . ($values) . ']';
+                                        $orientacao['setor'] .= '[' . ($values) . ']';
                                 }
                             }
                             $orientacao['status'] = "EM ANDAMENTO";
@@ -933,6 +1067,7 @@ class Entrada extends CI_Controller {
 
                         case 'OUTRAS-ORIENTACOES-EM-ANDAMENTO':
                             $aux = $aux->{$tipo};
+                            $orientacao['id_versao'] = $id_versao;
                             $orientacao['id_user'] = $id;
                             $orientacao['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => $aux->{$aux->children()->getName()}['ANO']));
                             $orientacao['titulo'] = $aux->{$aux->children()->getName()}['TITULO-DO-TRABALHO'];
@@ -941,7 +1076,7 @@ class Entrada extends CI_Controller {
                             if (isset($aux->{'PALAVRAS-CHAVE'}) && count($aux->{'PALAVRAS-CHAVE'}) > 0) {
                                 foreach ($aux->{'PALAVRAS-CHAVE'}->attributes() as $attrib => $values) {
                                     if ($values != '')
-                                        $orientacao['keywords'].='[' . ($values) . ']';
+                                        $orientacao['keywords'] .= '[' . ($values) . ']';
                                 }
                             }
                             $orientacao['setor'] = null;
@@ -949,7 +1084,7 @@ class Entrada extends CI_Controller {
                                 foreach ($aux->{'SETORES-DE-ATIVIDADE'}->attributes() as $attrib => $values) {
 
                                     if ($values != '')
-                                        $orientacao['setor'].='[' . ($values) . ']';
+                                        $orientacao['setor'] .= '[' . ($values) . ']';
                                 }
                             }
                             $orientacao['status'] = "EM ANDAMENTO";

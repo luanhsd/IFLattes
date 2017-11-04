@@ -11,6 +11,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <h1><?php echo $h1; ?></h1>
         </div>
         <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h4></h4>
+                            <div class="options">
+                                <?php qtd_cur(); ?>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+
+                        <div id="PatentePerYear">
+                        </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
             <div class="row">
                 <div class="col-md-12">
@@ -19,6 +39,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <div class="panel-heading">
                             <h4></h4>
                             <div class="options">
+                                <?php qtd_cur(); ?>
                             </div>
                         </div>
                         <div class="panel-body">
@@ -50,3 +71,32 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div> <!-- container -->
     </div> <!--wrap -->
 </div> <!-- page-content -->
+
+<script>
+    var chart = dc.barChart("#PatentePerYear");
+    d3.json("<?php echo base_url('/Json/PatentesPorAno'); ?>", function (error, data) {
+        var ndx=crossfilter(data),
+        yearDimension = ndx.dimension(function(d){ return +d.ano;}),
+        qtdGroup= yearDimension.group().reduceSum(function(d){return d.qtd;});
+        chart
+    .width(1000)
+    .height(600)
+    .x(d3.scale.linear().domain([0, data.length + 1]))
+    .brushOn(false)
+    .centerBar(true)
+    .renderLabel(false)
+    .yAxisLabel("Quantidade de Patentes")
+    .xAxisLabel("Ano")
+    .elasticX(true)
+    .dimension(yearDimension)
+    .group(qtdGroup)
+    .renderTitle(true).title(function (d) {
+      return d.key +": "+ d.value;
+        })
+    .renderHorizontalGridLines(true)
+    
+
+  chart.render()
+       
+    });
+</script>
