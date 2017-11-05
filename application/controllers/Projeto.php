@@ -20,7 +20,7 @@ class Projeto extends CI_Controller {
         );
         $this->load->view('includes/header', $dados);
         $this->load->view('includes/sidebar', $dados);
-        $this->load->view('projeto/projeto_list', $dados);
+        $this->load->view('atuacao/atuacao_list', $dados);
         $this->load->view('includes/footer', $dados);
     }
 

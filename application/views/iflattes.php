@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <div class="col-md-12">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <h4>CURRÍCULOS</h4>
+                            <h4>CAMPUS CADASTRADOS</h4>
                             <div class="options">
                                 <?php qtd_cur(); ?>
                             </div>
@@ -85,31 +85,37 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script>
       var map;
       function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 2,
-          center: new google.maps.LatLng(2.8,-187.3),
-          mapTypeId: 'terrain'
-        });
-
-        // Create a <script> tag and set the USGS URL as the source.
-        var script = document.createElement('script');
-        // This example uses a local copy of the GeoJSON stored at
-        // http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.geojsonp
-        script.src = '<?php echo base_url('/Json/CampusCadastrados'); ?>';
-        document.getElementsByTagName('head')[0].appendChild(script);
-      }
-
-      // Loop through the results array and place a marker for each
-      // set of coordinates.
-      window.eqfeed_callback = function(results) {
-        console.log(results);
-        for (var i = 0; i < results.features.length; i++) {
-          var coords = results.features[i].geometry.coordinates;
-          var latLng = new google.maps.LatLng(coords[1],coords[0]);
-          var marker = new google.maps.Marker({
-            position: latLng,
-            map: map
-          });
+        var myOptions = {
+            zoom: 7,
+            center: new google.maps.LatLng(-23.5489, -46.6388),
+            mapTypeId: google.maps.MapTypeId.ROADMAP
         }
+        map = new google.maps.Map(document.getElementById("map"), myOptions);
+
+        $.ajax({
+            url: "Json/CampusCadastrados",
+            dataType: "json",
+            success: function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    var markerOptions = {
+                        map: map,
+                        position: new google.maps.LatLng(data[i].latitude, data[i].longitude),
+                        title: data[i].local
+                    };
+                    marker = new google.maps.Marker(markerOptions);
+                    var iw = new google.maps.InfoWindow();
+                    var content = "<b>" + data[i].cidade + "<b>";
+                    
+                    google.maps.event.addListener(marker, 'click', (function (marker, content, iw) {
+                        return function () {
+                            iw.setContent(content);
+                            iw.open(map, marker);
+                        };
+                    })(marker, content, iw));
+                }
+            }
+        }
+        );
+
       }
 </script>

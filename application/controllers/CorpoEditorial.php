@@ -16,11 +16,11 @@ class CorpoEditorial extends CI_Controller {
             'h1' => "Corpo Editorial",
             'name' => "IFLattes",
             'autor' => "Luan Dantas",
-            //'data' => $this->Curriculo_model->datalist('curriculum')
+            'data' => $this->Curriculo_model->datalist('curriculum')
         );
         $this->load->view('includes/header', $dados);
         $this->load->view('includes/sidebar', $dados);
-        $this->load->view('pages/registros', $dados);
+        $this->load->view('atuacao/atuacao_list', $dados);
         $this->load->view('includes/footer', $dados);
     }
 
