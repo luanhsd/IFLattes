@@ -122,7 +122,7 @@ class Entrada extends CI_Controller {
         $xml = simplexml_load_file($file);
         $aux = $xml->{'DADOS-GERAIS'}->{'ENDERECO'}->{'ENDERECO-PROFISSIONAL'};
         $instituicao = $aux['NOME-INSTITUICAO-EMPRESA'];
-        if ($instituicao == 'Instituto Federal de São Paulo')
+        if ($instituicao == Institution())
             return true;
         else
             return false;

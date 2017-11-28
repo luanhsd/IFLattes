@@ -14,12 +14,15 @@ class Idioma_model extends CI_Model {
     }
 
     public function datalist() {
-        $query = $this->db->query('select p.nm_user,p.citacao,i.data_cadastro,c.data_cadastro,i.idioma,i.le,i.fala,i.escreve,i.compreende from dim_pessoa as p inner join fat_idioma as i inner join dim_cadastro as c where p.id_user=i.id_user and i.data_cadastro=c.id_dataCadastro');
+        $query = $this->db->query('select i.id_versao,p.nm_user,c.data_cadastro,i.idioma,i.le,i.fala,i.escreve,i.compreende 
+        from fat_idioma as i inner join dim_pessoa as p inner join dim_cadastro as c
+        where i.id_user=p.id_user and c.id_dataCadastro=i.data_cadastro and
+        i.id_versao=(select max(i2.id_versao) from fat_idioma as i2 where i2.id_user=i.id_user);');
         return $query->result();
     }
 
     public function listIdiomas() {
-        $query = $this->db->query('select idioma from fat_idioma group by idioma order by idioma;');
+        $query = $this->db->query('select distinct idioma from fat_idioma order by idioma;');
         return $query->result();
     }
 

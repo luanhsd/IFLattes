@@ -18,7 +18,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <div class="col-md-12">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <h4>CURRÍCULOS</h4>
+                            <h4>LOG DE PROCESSAMENTO</h4>
                             <div class="options">
                                 <?php qtd_cur(); ?>
                             </div>
@@ -29,10 +29,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered datatables" id="table-cliente">
                                     <thead>
                                         <tr>
-                                            <th width="30%">NOME</th>
-                                            <th>ID</th>
+                                            <th width="15%">ID</th>
                                             <th>URL</th>
-                                            <th>VERSÃO</th>
+                                            <th width="50%">ERROR</th>
                                         </tr>
                                     </thead>
                                     <tbody>

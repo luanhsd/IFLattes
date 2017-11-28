@@ -7,7 +7,7 @@ class Atuacao extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->helper('array');
-        //$this->load->model('Curriculo_model');
+        $this->load->model('atuacao_model');
     }
 
     public function index() {
@@ -16,11 +16,12 @@ class Atuacao extends CI_Controller {
             'h1' => "Atuação",
             'name' => "IFLattes",
             'autor' => "Luan Dantas",
-            //'data' => $this->Curriculo_model->datalist('curriculum')
+            'data' => $this->atuacao_model->datalist()
         );
         $this->load->view('includes/header_relatorios', $dados);
         $this->load->view('includes/sidebar', $dados);
         $this->load->view('includes/rightbar', $dados);
+        //var_dump($this->atuacao_model->datalist());
         $this->load->view('atuacao/atuacao_list', $dados);
         $this->load->view('includes/footer', $dados);
     }

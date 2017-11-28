@@ -21,7 +21,7 @@ class Formacao extends CI_Controller {
         $this->load->view('includes/header_relatorios', $dados);
         $this->load->view('includes/sidebar', $dados);
         $this->load->view('includes/rightbar', $dados);
-        $this->load->view('atuacao/atuacao_list', $dados);
+        $this->load->view('desenvolvimento', $dados);
         $this->load->view('includes/footer', $dados);
     }
 
