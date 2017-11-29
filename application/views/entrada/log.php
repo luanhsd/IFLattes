@@ -30,12 +30,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <thead>
                                         <tr>
                                             <th width="15%">ID</th>
-                                            <th>URL</th>
                                             <th width="50%">ERROR</th>
+                                            <th width="10%">DATA</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                       
+
                                     </tbody>
                                 </table>
                             </div>

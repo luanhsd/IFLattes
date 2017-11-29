@@ -14,6 +14,11 @@ class Curriculo_model extends CI_Model {
             return $this->db->insert_id();
         }
     }
+    
+    public function insertLog($dados = NULL){
+            if($dados!= null)
+                $this->db->insert('logs',$dados);
+    }
 
     public function verifyId($id) {
         $query = $this->db->get_where('dim_pessoa', array(
@@ -85,7 +90,7 @@ class Curriculo_model extends CI_Model {
     }
 
     public function CreateFila() {
-        $query = $this->db->query("insert into fila_process(url,log,type) select url,null,'XML' from curriculos;");
+        $query = $this->db->query("insert into fila_process(url,type) select url,'XML' from curriculos;");
     }
 
 }

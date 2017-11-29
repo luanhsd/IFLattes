@@ -29,7 +29,7 @@ class Entrada extends CI_Controller {
                 $targetFile = $_FILES['file']['name'];
                 move_uploaded_file($_FILES['file']['tmp_name'], $targetPath . $targetFile);
                 $FileXML = $this->extrair($targetPath . $targetFile);
-                $this->Curriculo_model->insert('fila_process', array('url' => $FileXML, 'log' => null, 'type' => 'XML'));
+                $this->Curriculo_model->insert('fila_process', array('url' => $FileXML, 'type' => 'XML'));
             }
         }
 
@@ -64,7 +64,7 @@ class Entrada extends CI_Controller {
         $this->load->view('includes/footer', $dados);
     }
 
-    public function log(){
+    public function log() {
         $dados = array(
             'title' => "Log",
             'h1' => "Log",
@@ -124,8 +124,10 @@ class Entrada extends CI_Controller {
         $instituicao = $aux['NOME-INSTITUICAO-EMPRESA'];
         if ($instituicao == Institution())
             return true;
-        else
+        else {
+            ExceptionCur($this->getID($file), 1);
             return false;
+        }
     }
 
     public function GetNameFile($id) {
@@ -190,6 +192,13 @@ class Entrada extends CI_Controller {
         $FileXML = $this->extrair($file);
         if ($this->VerifyCampus($FileXML))
             $this->readXml($FileXML);
+    }
+
+    private function VerifyYearFact($year) {
+        if (!($year > date("Y")))
+            return true;
+        else
+            return false;
     }
 
     Private function readXml($file) {
@@ -836,74 +845,101 @@ class Entrada extends CI_Controller {
                         $evento['id_user'] = $id;
                         switch ($child->getName()) {
                             case 'PARTICIPACAO-EM-SIMPOSIO':
-                                $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-SIMPOSIO'}['ANO']));
-                                $evento['natureza'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-SIMPOSIO'}['NATUREZA'];
-                                $evento['titulo'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-SIMPOSIO'}['TITULO'];
-                                $evento['nome'] = $child->{'DETALHAMENTO-DA-PARTICIPACAO-EM-SIMPOSIO'}['NOME-DO-EVENTO'];
-                                $this->Curriculo_model->insert('fat_evento', $evento);
+                                if ($this->VerifyYearFact((int) $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-SIMPOSIO'}['ANO'])) {
+                                    $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-SIMPOSIO'}['ANO']));
+                                    $evento['natureza'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-SIMPOSIO'}['NATUREZA'];
+                                    $evento['titulo'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-SIMPOSIO'}['TITULO'];
+                                    $evento['nome'] = $child->{'DETALHAMENTO-DA-PARTICIPACAO-EM-SIMPOSIO'}['NOME-DO-EVENTO'];
+                                    $this->Curriculo_model->insert('fat_evento', $evento);
+                                } else
+                                    ExceptionCur($id, 2);
                                 break;
 
                             case 'PARTICIPACAO-EM-ENCONTRO':
-                                $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-ENCONTRO'}['ANO']));
-                                $evento['natureza'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-ENCONTRO'}['NATUREZA'];
-                                $evento['titulo'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-ENCONTRO'}['TITULO'];
-                                $evento['nome'] = $child->{'DETALHAMENTO-DA-PARTICIPACAO-EM-ENCONTRO'}['NOME-DO-EVENTO'];
-                                $this->Curriculo_model->insert('fat_evento', $evento);
+                                if ($this->VerifyYearFact((int) $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-ENCONTRO'}['ANO'])) {
+                                    $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-ENCONTRO'}['ANO']));
+                                    $evento['natureza'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-ENCONTRO'}['NATUREZA'];
+                                    $evento['titulo'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-ENCONTRO'}['TITULO'];
+                                    $evento['nome'] = $child->{'DETALHAMENTO-DA-PARTICIPACAO-EM-ENCONTRO'}['NOME-DO-EVENTO'];
+                                    $this->Curriculo_model->insert('fat_evento', $evento);
+                                } else
+                                    ExceptionCur($id, 2);
                                 break;
 
                             case 'OUTRAS-PARTICIPACOES-EM-EVENTOS-CONGRESSOS':
-                                $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $child->{'DADOS-BASICOS-DE-OUTRAS-PARTICIPACOES-EM-EVENTOS-CONGRESSOS'}['ANO']));
-                                $evento['natureza'] = $child->{'DADOS-BASICOS-DE-OUTRAS-PARTICIPACOES-EM-EVENTOS-CONGRESSOS'}['NATUREZA'];
-                                $evento['titulo'] = $child->{'DADOS-BASICOS-DE-OUTRAS-PARTICIPACOES-EM-EVENTOS-CONGRESSOS'}['TITULO'];
-                                $evento['nome'] = $child->{'DETALHAMENTO-DE-OUTRAS-PARTICIPACOES-EM-EVENTOS-CONGRESSOS'}['NOME-DO-EVENTO'];
-                                $this->Curriculo_model->insert('fat_evento', $evento);
+                                if ($this->VerifyYearFact((int) $child->{'DADOS-BASICOS-DE-OUTRAS-PARTICIPACOES-EM-EVENTOS-CONGRESSOS'}['ANO'])) {
+                                    $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $child->{'DADOS-BASICOS-DE-OUTRAS-PARTICIPACOES-EM-EVENTOS-CONGRESSOS'}['ANO']));
+                                    $evento['natureza'] = $child->{'DADOS-BASICOS-DE-OUTRAS-PARTICIPACOES-EM-EVENTOS-CONGRESSOS'}['NATUREZA'];
+                                    $evento['titulo'] = $child->{'DADOS-BASICOS-DE-OUTRAS-PARTICIPACOES-EM-EVENTOS-CONGRESSOS'}['TITULO'];
+                                    $evento['nome'] = $child->{'DETALHAMENTO-DE-OUTRAS-PARTICIPACOES-EM-EVENTOS-CONGRESSOS'}['NOME-DO-EVENTO'];
+                                    $this->Curriculo_model->insert('fat_evento', $evento);
+                                } else
+                                    ExceptionCur($id, 2);
                                 break;
 
                             case 'PARTICIPACAO-EM-CONGRESSO':
-                                $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-CONGRESSO'}['ANO']));
-                                $evento['natureza'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-CONGRESSO'}['NATUREZA'];
-                                $evento['titulo'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-CONGRESSO'}['TITULO'];
-                                $evento['nome'] = $child->{'DETALHAMENTO-DA-PARTICIPACAO-EM-CONGRESSO'}['NOME-DO-EVENTO'];
-                                $this->Curriculo_model->insert('fat_evento', $evento);
+                                if ($this->VerifyYearFact((int) $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-CONGRESSO'}['ANO'])) {
+                                    $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-CONGRESSO'}['ANO']));
+                                    $evento['natureza'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-CONGRESSO'}['NATUREZA'];
+                                    $evento['titulo'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-CONGRESSO'}['TITULO'];
+                                    $evento['nome'] = $child->{'DETALHAMENTO-DA-PARTICIPACAO-EM-CONGRESSO'}['NOME-DO-EVENTO'];
+                                    $this->Curriculo_model->insert('fat_evento', $evento);
+                                } else
+                                    ExceptionCur($id, 2);
                                 break;
 
 
                             case 'PARTICIPACAO-EM-SEMINARIO':
-                                $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-SEMINARIO'}['ANO']));
-                                $evento['natureza'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-SEMINARIO'}['NATUREZA'];
-                                $evento['titulo'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-SEMINARIO'}['TITULO'];
-                                $evento['nome'] = $child->{'DETALHAMENTO-DA-PARTICIPACAO-EM-SEMINARIO'}['NOME-DO-EVENTO'];
-                                $this->Curriculo_model->insert('fat_evento', $evento);
+                                if ($this->VerifyYearFact((int) $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-SEMINARIO'}['ANO'])) {
+                                    $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-SEMINARIO'}['ANO']));
+                                    $evento['natureza'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-SEMINARIO'}['NATUREZA'];
+                                    $evento['titulo'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-SEMINARIO'}['TITULO'];
+                                    $evento['nome'] = $child->{'DETALHAMENTO-DA-PARTICIPACAO-EM-SEMINARIO'}['NOME-DO-EVENTO'];
+                                    $this->Curriculo_model->insert('fat_evento', $evento);
+                                } else
+                                    ExceptionCur($id, 2);
                                 break;
 
                             case 'PARTICIPACAO-EM-OFICINA':
-                                $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-OFICINA'}['ANO']));
-                                $evento['natureza'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-OFICINA'}['NATUREZA'];
-                                $evento['titulo'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-OFICINA'}['TITULO'];
-                                $evento['nome'] = $child->{'DETALHAMENTO-DA-PARTICIPACAO-EM-OFICINA'}['NOME-DO-EVENTO'];
-                                $this->Curriculo_model->insert('fat_evento', $evento);
+                                if ($this->VerifyYearFact((int) $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-OFICINA'}['ANO'])) {
+                                    $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-OFICINA'}['ANO']));
+                                    $evento['natureza'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-OFICINA'}['NATUREZA'];
+                                    $evento['titulo'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-OFICINA'}['TITULO'];
+                                    $evento['nome'] = $child->{'DETALHAMENTO-DA-PARTICIPACAO-EM-OFICINA'}['NOME-DO-EVENTO'];
+                                    $this->Curriculo_model->insert('fat_evento', $evento);
+                                } else
+                                    ExceptionCur($id, 2);
                                 break;
 
                             case 'PARTICIPACAO-EM-OLIMPIADA':
-                                $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-OLIMPIADA'}['ANO']));
-                                $evento['natureza'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-OLIMPIADA'}['NATUREZA'];
-                                $evento['titulo'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-OLIMPIADA'}['TITULO'];
-                                $evento['nome'] = $child->{'DETALHAMENTO-DA-PARTICIPACAO-EM-OLIMPIADA'}['NOME-DO-EVENTO'];
-                                $this->Curriculo_model->insert('fat_evento', $evento);
+                                if ($this->VerifyYearFact((int) $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-OLIMPIADA'}['ANO'])) {
+                                    $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-OLIMPIADA'}['ANO']));
+                                    $evento['natureza'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-OLIMPIADA'}['NATUREZA'];
+                                    $evento['titulo'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-OLIMPIADA'}['TITULO'];
+                                    $evento['nome'] = $child->{'DETALHAMENTO-DA-PARTICIPACAO-EM-OLIMPIADA'}['NOME-DO-EVENTO'];
+                                    $this->Curriculo_model->insert('fat_evento', $evento);
+                                } else
+                                    ExceptionCur($id, 2);
                                 break;
                             case 'PARTICIPACAO-EM-FEIRA':
-                                $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-FEIRA'}['ANO']));
-                                $evento['natureza'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-FEIRA'}['NATUREZA'];
-                                $evento['titulo'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-FEIRA'}['TITULO'];
-                                $evento['nome'] = $child->{'DETALHAMENTO-DA-PARTICIPACAO-EM-FEIRA'}['NOME-DO-EVENTO'];
-                                $this->Curriculo_model->insert('fat_evento', $evento);
+                                if ($this->VerifyYearFact((int) $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-FEIRA'}['ANO'])) {
+                                    $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-FEIRA'}['ANO']));
+                                    $evento['natureza'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-FEIRA'}['NATUREZA'];
+                                    $evento['titulo'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-FEIRA'}['TITULO'];
+                                    $evento['nome'] = $child->{'DETALHAMENTO-DA-PARTICIPACAO-EM-FEIRA'}['NOME-DO-EVENTO'];
+                                    $this->Curriculo_model->insert('fat_evento', $evento);
+                                } else
+                                    ExceptionCur($id, 2);
                                 break;
                             case 'PARTICIPACAO-EM-EXPOSICAO':
-                                $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-EXPOSICAO'}['ANO']));
-                                $evento['natureza'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-EXPOSICAO'}['NATUREZA'];
-                                $evento['titulo'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-EXPOSICAO'}['TITULO'];
-                                $evento['nome'] = $child->{'DETALHAMENTO-DA-PARTICIPACAO-EM-EXPOSICAO'}['NOME-DO-EVENTO'];
-                                $this->Curriculo_model->insert('fat_evento', $evento);
+                                if ($this->VerifyYearFact((int) $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-EXPOSICAO'}['ANO'])) {
+                                    $evento['id_tempo'] = $this->Curriculo_model->insert('dim_tempo', array('ano_inicial' => (int) $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-EXPOSICAO'}['ANO']));
+                                    $evento['natureza'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-EXPOSICAO'}['NATUREZA'];
+                                    $evento['titulo'] = $child->{'DADOS-BASICOS-DA-PARTICIPACAO-EM-EXPOSICAO'}['TITULO'];
+                                    $evento['nome'] = $child->{'DETALHAMENTO-DA-PARTICIPACAO-EM-EXPOSICAO'}['NOME-DO-EVENTO'];
+                                    $this->Curriculo_model->insert('fat_evento', $evento);
+                                } else
+                                    ExceptionCur($id, 2);
                                 break;
 
                             default :
